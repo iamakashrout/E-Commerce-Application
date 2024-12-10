@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import User from "../../models/userSchema";
+import User from "../models/userSchema";
 
 interface JwtPayload {
   id: string;

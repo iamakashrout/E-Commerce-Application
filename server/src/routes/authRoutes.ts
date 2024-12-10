@@ -1,8 +1,8 @@
 import express from "express";
 
-import { login } from "../controllers/authControllers.js";
-import { register } from "../controllers/authControllers.js";
-import { logout } from "../controllers/authControllers.js";
+import { login } from "../controllers/authControllers";
+import { register } from "../controllers/authControllers";
+import { logout } from "../controllers/authControllers";
 const router = express.Router();
 
 router.post("/login", login);
