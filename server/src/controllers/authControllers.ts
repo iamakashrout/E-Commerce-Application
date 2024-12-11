@@ -3,9 +3,6 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import User from "../models/userSchema";
 
-interface JwtPayload {
-  id: string;
-}
 
 /* REGISTER USER */
 export const register = async (req: Request, res: Response): Promise<void> => {
@@ -53,24 +50,25 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+
 /* LOG IN USER */
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }); // find requested user from database
     if (!user) {
-      res.status(400).json({ msg: "User does not exist!" });
+      res.status(400).json({ msg: "User does not exist!" }); // user not found
       return;
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password); // compare with hashed password
     if (!isMatch) {
-      res.status(400).json({ msg: "Invalid credentials." });
+      res.status(400).json({ msg: "Invalid credentials." }); // email, password did not match
       return;
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
-      expiresIn: "1h", // Optional: set token expiration
+      expiresIn: "6h", // Optional: set token expiration
     });
 
     // Exclude the password from the user object
@@ -82,16 +80,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+
 /* LOG OUT USER */
 export const logout = async (_req: Request, res: Response): Promise<void> => {
   try {
     // Invalidate the token by sending a message to the client
     res.status(200).json({ msg: "Logged out successfully." });
-
-    // Note: Token invalidation isn't directly possible in stateless JWT. 
-    // Options for token invalidation:
-    // - Use a token blacklist stored in a database or cache (e.g., Redis).
-    // - Adjust token expiry to be shorter and use a refresh token mechanism.
   } catch (err) {
     res.status(500).json({ error: (err as Error).message });
   }

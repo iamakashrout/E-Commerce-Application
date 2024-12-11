@@ -12,6 +12,8 @@ app.use(express.json());
 // auth routes
 app.use("/api/auth", authRoutes);
 
+
+// MongoDB connection
 const startApp = async () => {
   try {
       const db = await connectToDatabase();
