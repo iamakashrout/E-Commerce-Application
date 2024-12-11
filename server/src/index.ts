@@ -5,7 +5,12 @@ import { connectToDatabase } from './mongo';
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use("/auth", authRoutes);
+// Middleware to parse JSON
+app.use(express.json());
+
+
+// auth routes
+app.use("/api/auth", authRoutes);
 
 const startApp = async () => {
   try {

@@ -5,7 +5,8 @@ interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  phone?: string; // Optional field
+  phone: string;
+  addresses: string[];
   loyaltyPoints: number;
   createdAt: Date;
 }
@@ -15,7 +16,8 @@ const UserSchema: Schema<IUser> = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  phone: { type: String }, // Optional
+  phone: { type: String, required: true },
+  addresses: { type: [String], default: [] },
   loyaltyPoints: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
 });

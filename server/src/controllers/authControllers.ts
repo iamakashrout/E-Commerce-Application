@@ -11,30 +11,39 @@ interface JwtPayload {
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const {
-      firstName,
-      lastName,
+      name,
       email,
       password,
-      picturePath,
-      friends,
-      location,
-      occupation,
+      phone,
+      addresses=[],
+      loyaltyPoints=0,
+      createdAt,
     } = req.body;
+
+      // validation
+    if (!name || !email || !password) {
+      res.status(400).json({ error: "Name, email, and password are required." });
+      return;
+    }
+
+    // check if email is unique
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      res.status(409).json({ error: "Email already in use." });
+      return;
+    }
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
     const newUser = new User({
-      firstName,
-      lastName,
+      name,
       email,
       password: passwordHash,
-      picturePath,
-      friends,
-      location,
-      occupation,
-      viewedProfile: Math.floor(Math.random() * 10000),
-      impressions: Math.floor(Math.random() * 10000),
+      phone,
+      addresses,
+      loyaltyPoints,
+      createdAt,
     });
 
     const savedUser = await newUser.save();

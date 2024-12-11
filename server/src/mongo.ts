@@ -1,5 +1,6 @@
 import { MongoClient, Db } from 'mongodb';
 import dotenv from 'dotenv';
+import mongoose from "mongoose";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -17,7 +18,7 @@ let db: Db;
 export const connectToDatabase = async (): Promise<Db> => {
     if (!db) {
         try {
-            await client.connect();
+            await mongoose.connect(uri);
             console.log('Connected to MongoDB Atlas');
             db = client.db('admin');
         } catch (error) {
