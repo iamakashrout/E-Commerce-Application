@@ -1,98 +1,171 @@
-import bcrypt from "bcrypt";
+import bcrypt, { compare } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import User from "../models/userSchema";
+import User, { IUser } from "../../models/userSchema";
+import BlacklistedToken from "../../models/blacklistSchema";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 interface JwtPayload {
   id: string;
 }
 
-/* REGISTER USER */
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    const {
-      name,
-      email,
-      password,
-      phone,
-      addresses=[],
-      loyaltyPoints=0,
-      createdAt,
-    } = req.body;
+    const { name, email, password } = req.body;
 
-      // validation
-    if (!name || !email || !password) {
-      res.status(400).json({ error: "Name, email, and password are required." });
+    // Validate name
+    if (!name || typeof name !== 'string' || name.trim().length === 0) {
+      res.status(400).json({ error: 'Name is required and must be a valid string' });
       return;
     }
 
-    // check if email is unique
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      res.status(400).json({ error: 'Invalid email format' });
+      return;
+    }
+
+    // Validate password
+    if (!password || password.length < 8) {
+      res.status(400).json({ error: 'Password must be at least 8 characters long' });
+      return;
+    }
+
+    // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      res.status(409).json({ error: "Email already in use." });
+      res.status(409).json({ error: 'Email already in use' });
       return;
     }
 
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(password, salt);
+    // Hash the password
+    const hashedPassword = await hash(password, 10);
 
-    const newUser = new User({
+    // Create a new user
+    const user: IUser = new User({
       name,
       email,
-      password: passwordHash,
-      phone,
-      addresses,
-      loyaltyPoints,
-      createdAt,
+      password: hashedPassword,
     });
 
-    const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
-  } catch (err) {
-    res.status(500).json({ error: (err as Error).message });
+    await user.save();
+
+    // Generate JWT token
+    const secret = process.env.ACCESS_TOKEN_SECRET;
+    if (!secret) {
+      console.error('ACCESS_TOKEN_SECRET is not set');
+      res.status(500).json({ error: 'Internal Server Error' });
+      return;
+    }
+
+    let accessToken: string;
+    try {
+      accessToken = jwt.sign({ id: user._id }, secret);
+    } catch (error) {
+      console.error('Error generating access token:', error);
+      res.status(500).json({ error: 'Token generation failed' });
+      return;
+    }
+
+    // Send the response
+    res.json({ user, accessToken });
+  } catch (error) {
+    console.error('Error in register route:', error);
+    res.status(500).json({ error: 'Failed to register user' });
   }
 };
 
-/* LOG IN USER */
+
 export const login = async (req: Request, res: Response): Promise<void> => {
+  const { email, password } = req.body;
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordMinLength = 8;
+
+  // Validate email and password
+  if (!email || !emailRegex.test(email)) {
+    res.status(400).json({ error: "Invalid email format" });
+    return;
+  }
+
+  if (!password || password.length < passwordMinLength) {
+    res.status(400).json({ error: `Password must be at least ${passwordMinLength} characters long` });
+    return;
+  }
+
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    // Find the user by email
+    const user: IUser | null = await User.findOne({ email });
+
     if (!user) {
-      res.status(400).json({ msg: "User does not exist!" });
+      res.status(404).json({ error: "User not found" });
       return;
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      res.status(400).json({ msg: "Invalid credentials." });
+    // Compare the provided password with the hashed password in the database
+    const isPasswordValid: boolean = await compare(password, user.password);
+    if (!isPasswordValid) {
+      res.status(401).json({ error: "Invalid password" });
       return;
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
-      expiresIn: "1h", // Optional: set token expiration
-    });
+    // Generate the JWT token
+    const secret: string | undefined = process.env.ACCESS_TOKEN_SECRET;
+    if (!secret) {
+      console.error("JWT secret is not defined.");
+      res.status(500).json({ error: "Internal server error" });
+      return;
+    }
 
-    // Exclude the password from the user object
-    const userWithoutPassword = { ...user.toObject(), password: undefined };
+    const tokenPayload = { id: user._id };
+    const accessToken = jwt.sign({ id: tokenPayload.id }, secret);
 
-    res.status(200).json({ token, user: userWithoutPassword });
-  } catch (err) {
-    res.status(500).json({ error: (err as Error).message });
+    res.status(200).json({ message: "Logged in successfully", accessToken });
+  } catch (error) {
+    console.error("Error during login:", error);
+    res.status(500).json({ error: "Failed to login" });
   }
 };
+
 
 /* LOG OUT USER */
-export const logout = async (_req: Request, res: Response): Promise<void> => {
-  try {
-    // Invalidate the token by sending a message to the client
-    res.status(200).json({ msg: "Logged out successfully." });
+export const logout = async (req: Request, res: Response): Promise<void> => {
+  const authHeader = req.headers.authorization;
 
-    // Note: Token invalidation isn't directly possible in stateless JWT. 
-    // Options for token invalidation:
-    // - Use a token blacklist stored in a database or cache (e.g., Redis).
-    // - Adjust token expiry to be shorter and use a refresh token mechanism.
-  } catch (err) {
-    res.status(500).json({ error: (err as Error).message });
+  // Check if the Authorization header exists
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    res.status(401).json({ error: "Authorization token is missing or invalid" });
+    return;
+  }
+
+  // Extract the token
+  const token = authHeader.split(" ")[1];
+
+  try {
+    // Verify the token (to ensure it's valid before blacklisting)
+    const secret: string | undefined = process.env.ACCESS_TOKEN_SECRET;
+    if (!secret) {
+      console.error("JWT secret is not defined.");
+      res.status(500).json({ error: "Internal server error" });
+      return;
+    }
+
+    const decoded = jwt.verify(token, secret);
+    if (!decoded) {
+      res.status(401).json({ error: "Invalid token" });
+      return;
+    }
+
+    // Blacklist the token by saving it to the database
+    await BlacklistedToken.create({ token });
+
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error("Error during logout:", error);
+    res.status(500).json({ error: "Failed to logout" });
   }
 };
+
