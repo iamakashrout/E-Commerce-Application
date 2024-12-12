@@ -2,9 +2,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import User from "../models/userSchema";
+import dotenv from "dotenv";
+dotenv.config();
 
-
-/* REGISTER USER */
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const {
@@ -46,12 +46,11 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const savedUser = await newUser.save();
     res.status(201).json(savedUser);
   } catch (err) {
+    console.error(err); // Log the error for debugging
     res.status(500).json({ error: (err as Error).message });
   }
 };
 
-
-/* LOG IN USER */
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
@@ -68,7 +67,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
-      expiresIn: "6h", // Optional: set token expiration
+      expiresIn: "6h",
     });
 
     // Exclude the password from the user object
