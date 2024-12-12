@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Cart from "../models/cartSchema"; // Import your Cart model
 import Product from "../models/productSchema"; // Assuming cart items reference products
 
-export const addItemToCart = async (req: Request, res: Response): Promise<void> => {
+export const addToCart = async (req: Request, res: Response): Promise<void> => {
   try {
     const { productId, quantity } = req.body;
 
@@ -44,7 +44,7 @@ export const getCartDetails = async (req: Request, res: Response): Promise<void>
   }
 };
 
-export const removeItemFromCart = async (req: Request, res: Response): Promise<void> => {
+export const removeFromCart = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
 

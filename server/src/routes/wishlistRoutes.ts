@@ -1,12 +1,12 @@
-import express from "express";
-import { addItemToWishlist, getWishlistDetails } from "../controllers/wishlistController";
+// import express from "express";
+// import { addItemToWishlist, getWishlistDetails } from "../controllers/wishlistController";
 
-const router = express.Router();
+// const router = express.Router();
 
-// Route to add an item to the wishlist
-router.post("/api/wishlist", addItemToWishlist);
+// // Route to add an item to the wishlist
+// router.post("/api/wishlist", addItemToWishlist);
 
-// Route to get wishlist details
-router.get("/api/wishlist", getWishlistDetails);
+// // Route to get wishlist details
+// router.get("/api/wishlist", getWishlistDetails);
 
-export default router;
+// export default router;

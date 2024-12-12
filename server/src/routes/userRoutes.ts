@@ -1,9 +1,9 @@
 import express from "express";
-import { updateAddress } from "../controllers/addressController";
+import { updateAddress } from "../controllers/userControllers";
 
 const router = express.Router();
 
 // Route to add/update address
-router.put("/api/address", updateAddress);
+router.put("/:userId/updateAddress", updateAddress);
 
 export default router;

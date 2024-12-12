@@ -1,9 +1,9 @@
-import express from "express";
-import { submitReview } from "../controllers/reviewController";
+// import express from "express";
+// import { submitReview } from "../controllers/reviewController";
 
-const router = express.Router();
+// const router = express.Router();
 
-// Route to submit a product review
-router.post("/api/review", submitReview);
+// // Route to submit a product review
+// router.post("/api/review", submitReview);
 
-export default router;
+// export default router;

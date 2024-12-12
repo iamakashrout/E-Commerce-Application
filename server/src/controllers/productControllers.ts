@@ -1,7 +1,86 @@
 import { Request, Response } from "express";
-import Product from "../models/productSchema"; // Import your Product model
+import Product from "../models/productSchema";
+import Seller from "../models/sellerSchema";
 
 export const getAllProducts = async (req: Request, res: Response): Promise<void> => {
+  try {
+    // Retrieve all products from the database without any filters
+    const products = await Product.find();
+
+    res.status(200).json({ success: true, data: products });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({ success: false, error: "Failed to fetch products" });
+  }
+};
+
+export const getProductById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { productId } = req.params; // Get the productId from the URL parameters
+
+    // Find the product by its ID
+    const product = await Product.findById(productId).populate('sellerId', 'name email'); // Optionally populate seller details
+
+    // If no product is found, return a 404 error
+    if (!product) {
+      res.status(404).json({ error: "Product not found." });
+      return;
+    }
+
+    // Return the product details
+    res.status(200).json({ success: true, data: product });
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    res.status(500).json({ success: false, error: "Failed to fetch product." });
+  }
+};
+
+export const addProduct = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { name, description, price, category, stock, images, sellerId } = req.body;
+
+    // Validation checks for required fields
+    if (!name || !description || !price || !category || !stock || !sellerId) {
+      res.status(400).json({ success: false, error: "All fields are required" });
+      return;
+    }
+
+    const sellerExists = await Seller.findById(sellerId);
+    if (!sellerExists) {
+      res.status(404).json({ success: false, error: "Seller not found" });
+      return;
+    }
+
+    // Create a new product document
+    const newProduct = new Product({
+      name,
+      description,
+      price,
+      category,
+      stock,
+      images: images || [],  // Default to an empty array if images are not provided
+      sellerId,
+    });
+
+    // Save the product to the database
+    const savedProduct = await newProduct.save();
+
+    // Send a success response with the saved product data
+    res.status(201).json({
+      success: true,
+      message: "Product added successfully",
+      data: savedProduct,
+    });
+  } catch (error) {
+    console.error("Error adding product:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to add product",
+    });
+  }
+};
+
+export const searchProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const { search, category, minPrice, maxPrice, sortBy, order } = req.query;
 
@@ -36,21 +115,3 @@ export const getAllProducts = async (req: Request, res: Response): Promise<void>
   }
 };
 
-export const getProductById = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { id } = req.params;
-
-    // Find the product by ID
-    const product = await Product.findById(id);
-
-    if (!product) {
-      res.status(404).json({ success: false, error: "Product not found" });
-      return;
-    }
-
-    res.status(200).json({ success: true, data: product });
-  } catch (error) {
-    console.error("Error fetching product by ID:", error);
-    res.status(500).json({ success: false, error: "Failed to fetch product" });
-  }
-};
