@@ -1,5 +1,4 @@
 import bcrypt, { compare } from "bcrypt";
-import bcrypt, { compare } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import User, { IUser } from "../../models/userSchema";
@@ -7,10 +6,6 @@ import BlacklistedToken from "../../models/blacklistSchema";
 import dotenv from 'dotenv';
 
 dotenv.config();
-import User, { IUser } from "../../models/userSchema";
-import BlacklistedToken from "../../models/blacklistSchema";
-import dotenv from 'dotenv';
-
 dotenv.config();
 
 interface JwtPayload {
