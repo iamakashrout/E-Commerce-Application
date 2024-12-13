@@ -57,6 +57,12 @@ export const addProduct = async (req: Request, res: Response): Promise<void> => 
       return;
     }
 
+    const productExists = await Product.findOne({id: id});
+    if (productExists) {
+      res.status(404).json({ success: false, error: "Product ID already exists" });
+      return;
+    }
+
     // Create a new product document
     const newProduct = new Product({
       id,
