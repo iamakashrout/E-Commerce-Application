@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 dotenv.config();
 
+
+// ADD NEW SELLER
 export const addSeller = async (req: Request, res: Response): Promise<void> => {
   try {
     const {

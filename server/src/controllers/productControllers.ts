@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import Product from "../models/productSchema";
 import Seller from "../models/sellerSchema";
 
+
+// LIST ALL PRODUCTS
 export const getAllProducts = async (req: Request, res: Response): Promise<void> => {
   try {
     // Retrieve all products from the database without any filters
@@ -14,12 +16,14 @@ export const getAllProducts = async (req: Request, res: Response): Promise<void>
   }
 };
 
+
+// GET PRODUCT BY PRODUCT ID (UNIQUE IDENTIFIER)
 export const getProductById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { productId } = req.params; // Get the productId from the URL parameters
 
     // Find the product by its ID
-    const product = await Product.findById(productId).populate('sellerId', 'name email'); // Optionally populate seller details
+    const product = await Product.findOne({id: productId}) // Optionally populate seller details
 
     // If no product is found, return a 404 error
     if (!product) {
@@ -35,17 +39,19 @@ export const getProductById = async (req: Request, res: Response): Promise<void>
   }
 };
 
+
+// ADD NEW PRODUCT
 export const addProduct = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, description, price, category, stock, images, sellerId } = req.body;
+    const {id, name, company, description, price, category, stock, images, sellerName } = req.body;
 
     // Validation checks for required fields
-    if (!name || !description || !price || !category || !stock || !sellerId) {
+    if (!id || !name || !company || !description || !price || !category || !stock || !sellerName) {
       res.status(400).json({ success: false, error: "All fields are required" });
       return;
     }
 
-    const sellerExists = await Seller.findById(sellerId);
+    const sellerExists = await Seller.findOne({name: sellerName});
     if (!sellerExists) {
       res.status(404).json({ success: false, error: "Seller not found" });
       return;
@@ -53,13 +59,15 @@ export const addProduct = async (req: Request, res: Response): Promise<void> => 
 
     // Create a new product document
     const newProduct = new Product({
+      id,
       name,
+      company,
       description,
       price,
       category,
       stock,
       images: images || [],  // Default to an empty array if images are not provided
-      sellerId,
+      sellerName,
     });
 
     // Save the product to the database
@@ -80,22 +88,24 @@ export const addProduct = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
+
+// SEARCH FOR PRODUCT USING CRITERIA
 export const searchProduct = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { search, category, minPrice, maxPrice, sortBy, order } = req.query;
+    const { name, category, minPrice, maxPrice, sortBy, order } = req.query;
 
     // Build the query object
     const query: Record<string, any> = {};
 
-    if (search) {
-      query.name = { $regex: search, $options: "i" }; // Case-insensitive search
+    if (name) { // product name
+      query.name = { $regex: name, $options: "i" }; // Case-insensitive search
     }
 
-    if (category) {
+    if (category) { // product category
       query.category = category; // Match the category exactly
     }
 
-    if (minPrice || maxPrice) {
+    if (minPrice || maxPrice) { // product price
       query.price = {};
       if (minPrice) query.price.$gte = parseFloat(minPrice as string);
       if (maxPrice) query.price.$lte = parseFloat(maxPrice as string);
