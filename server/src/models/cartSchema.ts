@@ -1,17 +1,35 @@
 import mongoose, { Document, Schema, Model } from "mongoose";
 
-interface ICartItem extends Document {
-  product: mongoose.Schema.Types.ObjectId; // References a product
+
+// schema of cart item
+export interface ICartItem {
+  productId: string; // identifier of product to be added
   quantity: number;
-  addedAt: Date;
 }
 
-const CartSchema: Schema<ICartItem> = new mongoose.Schema({
-  product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
-  quantity: { type: Number, required: true, min: 1 },
-  addedAt: { type: Date, default: Date.now },
+// schema of cart
+export interface ICart extends Document {
+  user: string; // email of user, unique identifier
+  items: ICartItem[]; // items
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const CartItemSchema: Schema<ICartItem> = new mongoose.Schema({
+  productId: { type: String, required: true },
+  quantity: { type: Number, required: true, default: 1 },
 });
 
-const Cart: Model<ICartItem> = mongoose.model<ICartItem>("Cart", CartSchema);
+const CartSchema: Schema<ICart> = new mongoose.Schema(
+  {
+    user: { type: String, required: true },
+    items: [CartItemSchema],
+  },
+  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+);
+
+// const CartItem: Model<ICartItem> = mongoose.model<ICartItem>("CartItem", CartItemSchema);
+
+const Cart: Model<ICart> = mongoose.model<ICart>("Cart", CartSchema);
 
 export default Cart;

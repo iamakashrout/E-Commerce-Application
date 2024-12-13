@@ -4,7 +4,7 @@ import { addToCart, removeFromCart, getCartDetails} from "../controllers/cartCon
 const router = express.Router();
 
 router.post("/addToCart", addToCart);
-router.delete("/removeFromCart/:id", removeFromCart);
-router.get("/getCartDetails", getCartDetails);
+router.post("/removeFromCart", removeFromCart);
+router.get("/getCartDetails/:user", getCartDetails);
 
 export default router;

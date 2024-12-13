@@ -4,8 +4,8 @@ import { getAllProducts, getProductById, addProduct, searchProduct } from "../co
 const router = express.Router();
 
 router.get("/getAllProducts", getAllProducts);
-router.get("/:productId/getProductById", getProductById);
+router.get("/getProduct/:productId", getProductById);
 router.post("/addProduct", addProduct);
-router.post("/searchProduct", searchProduct);
+router.get("/searchProducts", searchProduct);
 
 export default router;
