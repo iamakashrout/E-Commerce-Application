@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 import { addToCart } from '../redux/cartSlice';
-import styles from '../styles/Home.module.css';
+// import styles from '../styles/Home.module.css';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -11,11 +13,13 @@ const Home = () => {
 
   // Fetch products on page load
   useEffect(() => {
+    const token = localStorage.getItem('token');
     const fetchProducts = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/products/getAllProducts', {
           headers: {
             'Access-Control-Allow-Origin': '*',
+            Authorization: `Bearer ${token}`,
           },
         });
         if (response.data.success) {
@@ -34,18 +38,34 @@ const Home = () => {
   const handleQuantityChange = (productId: string, quantity: number) => {
     setQuantities(prev => ({ ...prev, [productId]: quantity }));
   };
-
+  const userId = useSelector((state: RootState) => state.user.userId);
   const handleAddToCart = async (product: { id: string; name: string; price: number }) => {
+    // const userId = useSelector((state: RootState) => state.user.userId);
+    if (!userId) {
+      console.error('User not logged in!');
+      return;
+    }
     const quantity = quantities[product.id] || 1;
     try {
+      const token = localStorage.getItem('token');
       console.log('Adding item to cart:', product, quantity, product.id);
-      const response = await axios.post('http://localhost:5000/api/cart/addToCart', {
-        productId: product.id,
-        quantity,
-      });
+      const response = await axios.post(
+        'http://localhost:5000/api/cart/addToCart',
+        {
+          user: userId,
+          productId: product.id,
+          quantity,
+        },
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.data.success) {
-        dispatch(addToCart({ ...product, quantity }));
+        dispatch(addToCart({ ...product, quantity })); 
         console.log('Item added to cart:', response.data.data);
       } else {
         console.error('Failed to add item to cart:', response.data.error);

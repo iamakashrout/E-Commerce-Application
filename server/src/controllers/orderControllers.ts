@@ -13,18 +13,18 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
         }
 
         for (const product of products) {
-            const currProd = await Product.findOne({id: product.productId});
-            if(!currProd) {
+            const currProd = await Product.findOne({ id: product.productId });
+            if (!currProd) {
                 res.status(400).json({ success: false, error: 'Product does not exist' });
                 return;
             }
-            if(product.quantity > currProd.stock) {
+            if (product.quantity > currProd.stock) {
                 res.status(400).json({ success: false, error: 'Insufficient stock of products' });
                 return;
             }
         }
 
-         // Create a new order
+        // Create a new order
         const newOrder = new Order({
             user,
             products,
@@ -44,8 +44,8 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
         });
 
         for (const product of products) {
-            const currProd = await Product.findOne({id: product.productId});
-            if(!currProd) {
+            const currProd = await Product.findOne({ id: product.productId });
+            if (!currProd) {
                 res.status(400).json({ success: false, error: 'Product does not exist' });
                 return;
             }
