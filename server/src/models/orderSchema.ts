@@ -1,44 +1,64 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
-// Define an interface for the Order document
-export interface IOrderProduct {
-  productId: mongoose.Types.ObjectId;
+
+export interface ISelectedProduct {
+  productId: string; // identifier of product to be added
   quantity: number;
-  price: number;
 }
 
-export interface IOrder extends Document {
-  userId: mongoose.Types.ObjectId;
-  products: IOrderProduct[];
-  totalAmount: number;
-  status: 'Ordered' | 'Shipped' | 'Delivered' | 'Cancelled';
-  shippingAddress: mongoose.Types.ObjectId;
-  paymentMethod: string; // e.g., 'Credit Card', 'UPI'
-  createdAt: Date;
+export interface ITotal {
+  subtotal: number;
+  tax: number;
+  shipping: number;
+  discount: number;
+  grandTotal: number;
 }
 
-// Create the Order schema
-const OrderSchema: Schema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  products: [
-    {
-      productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-      quantity: { type: Number, required: true },
-      price: { type: Number, required: true },
-    },
-  ],
-  totalAmount: { type: Number, required: true },
-  status: {
-    type: String,
-    enum: ['Ordered', 'Shipped', 'Delivered', 'Cancelled'],
-    default: 'Ordered',
-  },
-  shippingAddress: { type: mongoose.Schema.Types.ObjectId, ref: 'Address', required: true },
-  paymentMethod: { type: String, required: true }, // e.g., 'Credit Card', 'UPI'
-  createdAt: { type: Date, default: Date.now },
+const SelectedProductSchema: Schema<ISelectedProduct> = new mongoose.Schema({
+  productId: { type: String, required: true },
+  quantity: { type: Number, required: true, default: 1 },
 });
 
-// Export the Order model with the interface
-const Order: Model<IOrder> = mongoose.model<IOrder>('Order', OrderSchema);
+export interface IOrder extends Document {
+    orderId: string;
+    user: string;
+    products: ISelectedProduct[];
+    orderDate: Date;
+    status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
+    paymentMode: string;
+    address: string;
+    total: ITotal;
+}
+
+const OrderSchema: Schema<IOrder> = new mongoose.Schema(
+  {
+    orderId: {
+      type: String,
+      default: uuidv4,
+      unique: true,
+      required: true,
+    },
+    user: {type: String, required: true},
+    products: [ SelectedProductSchema ],
+    orderDate: { type: Date, default: Date.now }, // Timestamp
+    status: {
+      type: String,
+      enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
+      default: 'Pending',
+    },
+    paymentMode: {type: String, required: true},
+    address: {type: String, required: true},
+    total: {
+      subtotal: { type: Number, required: true },
+      tax: { type: Number, required: true },
+      shipping: { type: Number, required: true },
+      discount: { type: Number, default: 0 },
+      grandTotal: { type: Number, required: true },
+    },
+  }
+);
+
+const Order: Model<IOrder> = mongoose.model<IOrder>("Order", OrderSchema);
 
 export default Order;
