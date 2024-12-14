@@ -6,12 +6,16 @@ import userRoutes from "./routes/userRoutes";
 import cartRoutes from "./routes/cartRoutes";
 // import receiptRoutes from "./routes/receiptRoutes";
 import { connectToDatabase } from './mongo';
+import cors from 'cors';
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware to parse JSON
 app.use(express.json());
+
+// Middleware to enable CORS
+app.use(cors());
 
 // routes
 app.use("/api/auth", authRoutes);
