@@ -1,12 +1,9 @@
-// import express from "express";
-// import { placeOrder, getOrderDetails } from "../controllers/orderController";
+import express from "express";
+import { verifyToken } from "../middleware/auth";
+import { placeOrder } from "../controllers/orderControllers";
 
-// const router = express.Router();
+const router = express.Router();
 
-// // Route to place an order
-// router.post("/api/order", placeOrder);
+router.post("/placeOrder", placeOrder);
 
-// // Route to get order details by ID
-// router.get("/api/orders/:id", getOrderDetails);
-
-// export default router;
+export default router;
