@@ -2,7 +2,7 @@ import express from 'express';
 import authRoutes from "./routes/authRoutes";
 import productRoutes from "./routes/productRoutes";
 import sellerRoutes from "./routes/sellerRoutes";
-import userRoutes from "./routes/userRoutes";
+import addressRoutes from "./routes/addressRoutes";
 import cartRoutes from "./routes/cartRoutes";
 import { connectToDatabase } from './mongo';
 
@@ -16,8 +16,8 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/sellers", sellerRoutes);
-app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/address", addressRoutes);
 
 // MongoDB connection
 const startApp = async () => {

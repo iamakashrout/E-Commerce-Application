@@ -1,18 +1,36 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Document, Schema, Model } from 'mongoose';
 
-// Define an interface for the Address document
-export interface IAddress extends Document {
-  userId: mongoose.Types.ObjectId;
-  addressLine: string;
+
+// individual address
+export interface IAddress {
+  name: string; // unique identifier
+  address: string;
 }
 
-// Create the Address schema
-const AddressSchema: Schema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  addressLine: { type: String, required: true },
+// list of all addresses of one user
+export interface IAddressList extends Document {
+  user: string; // email of user, unique identifier
+  addresses: IAddress[]; // items
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+
+const AddressSchema: Schema<IAddress> = new mongoose.Schema({
+  name: { type: String, required: true },
+  address: { type: String, required: true },
 });
 
-// Export the Address model with the interface
-const Address: Model<IAddress> = mongoose.model<IAddress>('Address', AddressSchema);
 
-export default Address;
+const AddressListSchema: Schema<IAddressList> = new mongoose.Schema(
+  {
+    user: { type: String, required: true },
+    addresses: [AddressSchema],
+  },
+  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+);
+
+
+const AddressList: Model<IAddressList> = mongoose.model<IAddressList>("AddressList", AddressListSchema);
+
+export default AddressList;
