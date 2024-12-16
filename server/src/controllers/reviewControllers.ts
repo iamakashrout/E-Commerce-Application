@@ -1,43 +1,69 @@
-// import { Request, Response } from "express";
-// import Product from "../models/productSchema"; // Assuming the Product model is used to submit reviews
-// import Review from "../models/reviewSchema"; // Assuming you have a Review model
+import { Request, Response } from "express";
+import Review from "../models/reviewSchema";
+import Product from "../models/productSchema";
 
-// export const submitReview = async (req: Request, res: Response): Promise<void> => {
-//   try {
-//     const { productId, rating, comment } = req.body;
-//     const userId = req.user?.id; // Assuming you have authentication middleware that adds userId to the request
 
-//     if (!userId) {
-//       res.status(401).json({ success: false, error: "User not authenticated" });
-//       return;
-//     }
 
-//     if (!productId || !rating || rating < 1 || rating > 5) {
-//       res.status(400).json({ success: false, error: "Invalid product ID or rating. Rating must be between 1 and 5." });
-//       return;
-//     }
+// give product review
+export const addReview = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { user, productId, rating, reviewText } = req.body;
 
-//     // Create a new review
-//     const review = new Review({
-//       productId,
-//       userId,
-//       rating,
-//       comment,
-//       createdAt: new Date(),
-//     });
+        if (!user || !productId || !rating) {
+            res.status(400).json({ success: false, error: 'Please fill all mandatory fields.' });
+            return;
+        }
 
-//     await review.save();
+        const currProd = await Product.findOne({id: productId});
+        if(!currProd) {
+            res.status(400).json({ success: false, error: 'Product does not exist' });
+            return;
+        }
 
-//     // Optionally, update product with new review
-//     const product = await Product.findById(productId);
-//     if (product) {
-//       product.reviews.push(review._id);
-//       await product.save();
-//     }
+        const existingReview = await Review.findOne({user: user, productId: productId});
+        if(existingReview) {
+            res.status(400).json({ success: false, error: 'User has already reviewed this product.' });
+            return;
+        }
 
-//     res.status(201).json({ success: true, message: "Review submitted successfully", data: review });
-//   } catch (error) {
-//     console.error("Error submitting review:", error);
-//     res.status(500).json({ success: false, error: "Failed to submit review" });
-//   }
-// };
+        const newReview = new Review({
+            user,
+            productId,
+            rating,
+            reviewText,
+        });
+
+        const savedReview = await newReview.save();
+
+        res.status(201).json({
+            success: true,
+            message: 'Review added successfully.',
+            data: savedReview,
+        });
+
+    } catch (error) {
+        console.error("Error adding review:", error);
+        res.status(500).json({ success: false, error: "Failed to add review" });
+    }
+}
+
+
+// get all reviews of a product
+export const getProductReviews = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { productId } = req.params;
+
+        const currProd = await Product.findOne({id: productId});
+        if(!currProd) {
+            res.status(400).json({ success: false, error: 'Product does not exist' });
+            return;
+        }
+
+        const reviews = await Review.find({ productId });
+        res.status(200).json({ success: true, data: reviews });
+
+    } catch (error) {
+        console.error("Error fetching reviews:", error);
+        res.status(500).json({ success: false, error: "Failed to fetch product reviews" });
+    }
+}

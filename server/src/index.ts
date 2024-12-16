@@ -5,6 +5,7 @@ import sellerRoutes from "./routes/sellerRoutes";
 import addressRoutes from "./routes/addressRoutes";
 import cartRoutes from "./routes/cartRoutes";
 import orderRoutes from "./routes/orderRoutes";
+import reviewRoutes from "./routes/reviewRoutes";
 import { connectToDatabase } from './mongo';
 
 const app = express();
@@ -20,6 +21,7 @@ app.use("/api/sellers", sellerRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/address", addressRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/review", reviewRoutes);
 
 // MongoDB connection
 const startApp = async () => {
