@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch } from 'react-redux';
-import { setUser } from '../redux/userSlice';
+import { setUser } from '../redux/features/userSlice';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");

@@ -1,15 +1,18 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import { addToCart } from '../redux/cartSlice';
+import { addToCart } from "../redux/features/cartSlice";
+// import { addToCartAsync, setUser } from '../redux/features/cartSlice';
+import { AppDispatch } from '../redux/store';
 // import styles from '../styles/Home.module.css';
 
 const Home = () => {
-  const dispatch = useDispatch();
   const [products, setProducts] = useState<any[]>([]); // State to store fetched products
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+  const dispatch = useDispatch<AppDispatch>();
+  const cart = useSelector((state: RootState) => state.cart);
+  const user = useSelector((state: RootState) => state.cart.user);
 
   // Fetch products on page load
   useEffect(() => {
@@ -22,8 +25,9 @@ const Home = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log('Products fetched:', response.data);
         if (response.data.success) {
-          setProducts(response.data.data); // Update state with fetched products
+          setProducts(response.data.data); 
         } else {
           console.error('Failed to fetch products:', response.data.error);
         }
@@ -38,40 +42,15 @@ const Home = () => {
   const handleQuantityChange = (productId: string, quantity: number) => {
     setQuantities(prev => ({ ...prev, [productId]: quantity }));
   };
-  const userId = useSelector((state: RootState) => state.user.userId);
-  const handleAddToCart = async (product: { id: string; name: string; price: number }) => {
-    // const userId = useSelector((state: RootState) => state.user.userId);
-    if (!userId) {
-      console.error('User not logged in!');
-      return;
-    }
-    const quantity = quantities[product.id] || 1;
-    try {
-      const token = localStorage.getItem('token');
-      console.log('Adding item to cart:', product, quantity, product.id);
-      const response = await axios.post(
-        'http://localhost:5000/api/cart/addToCart',
-        {
-          user: userId,
-          productId: product.id,
-          quantity,
-        },
-        {
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
 
-      if (response.data.success) {
-        dispatch(addToCart({ ...product, quantity })); 
-        console.log('Item added to cart:', response.data.data);
-      } else {
-        console.error('Failed to add item to cart:', response.data.error);
-      }
-    } catch (error) {
-      console.error('Error adding item to cart:', error);
+  const handleAddToCart = (product: { id: string; name: string; price: number }) => {
+    const quantity = quantities[product.id] || 1;
+    if (user) {
+      console.log('Adding to cart:', { user: user.id, productId: product.id, quantity });
+      dispatch(addToCart({ user: user.id, productId: product.id, quantity }));
+      console.log('Cart after adding item:', cart);
+    } else {
+      console.error('User not found');
     }
   };
 

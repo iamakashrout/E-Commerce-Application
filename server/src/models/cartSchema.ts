@@ -3,14 +3,14 @@ import mongoose, { Document, Schema, Model } from "mongoose";
 
 // schema of cart item
 export interface ICartItem {
-  productId: string; // identifier of product to be added
+  productId: string; 
   quantity: number;
 }
 
 // schema of cart
 export interface ICart extends Document {
-  user: string; // email of user, unique identifier
-  items: ICartItem[]; // items
+  user: string;
+  items: ICartItem[]; 
   createdAt: Date;
   updatedAt: Date;
 }
