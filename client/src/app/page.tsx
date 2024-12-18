@@ -1,12 +1,15 @@
 'use client'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { clearUser } from "./redux/features/userSlice";
 
 export default function Home() {
   const router = useRouter();
   const isAuth = useSelector((data: RootState) => data.userState.isAuthenticated);
+
+  const dispatch = useDispatch();
   
   useEffect(() => {
     if (!isAuth) {
@@ -21,6 +24,7 @@ export default function Home() {
   return (
     <main>
        <h1>Welcome to the Home Page!</h1>
+       <button onClick={()=>dispatch(clearUser())}>LOG OUT</button>
     </main>
   );
 }
