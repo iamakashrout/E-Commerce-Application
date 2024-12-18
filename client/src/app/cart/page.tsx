@@ -61,10 +61,10 @@ export default function CartPage() {
         <div>
             <h1>Cart Items</h1>
              <div>
-                        {cartItems.length === 0 ? (
+                        {cartItems?.length === 0 ? (
                       <p>Cart is empty!</p> // Display loading message if products are still being fetched
                     ) : (
-                        cartItems.map((item: CartItem, index: number) => (
+                        cartItems?.map((item: CartItem, index: number) => (
                         <div key={index}>
                           <h2>{item.productId}</h2>
                           <p>{item.quantity}</p>
