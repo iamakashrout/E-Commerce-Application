@@ -4,6 +4,8 @@ import { RootState } from "./redux/store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { clearUser } from "./redux/features/userSlice";
+import ProductsList from "@/components/ProductsList";
+import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
@@ -24,6 +26,9 @@ export default function Home() {
   return (
     <main>
        <h1>Welcome to the Home Page!</h1>
+       <ProductsList />
+       <Link href="/cart">Go to Cart</Link>
+       <br/>
        <button onClick={()=>dispatch(clearUser())}>LOG OUT</button>
     </main>
   );

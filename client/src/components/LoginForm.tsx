@@ -23,7 +23,7 @@ export default function LoginForm() {
 
       console.log("Login successful:", response.data);
       const { token, user } = response.data;
-      dispatch(setUser({userEmail: user, token: token}));
+      dispatch(setUser({userEmail: user.email, token: token}));
       alert("Login successful!");
       router.push('/');
       // if (onSuccess) onSuccess(response.data);

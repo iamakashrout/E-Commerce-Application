@@ -16,7 +16,7 @@ export interface IProduct extends Document {
 
 // Create the Product schema
 const ProductSchema: Schema = new mongoose.Schema({
-  id: { type: String, required: true },
+  id: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   company: { type: String, required: true },
   description: { type: String, required: true },
