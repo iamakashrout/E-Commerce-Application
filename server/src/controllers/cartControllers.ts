@@ -7,7 +7,6 @@ import Product from "../models/productSchema"; // Assuming cart items reference 
 // add product to user's cart
 export const addToCart = async (req: Request, res: Response): Promise<void> => {
   try {
-    console.log("in controller");
     // const { user, productId, quantity } = req.body;
     const { user, productId, quantity }: { user: string; productId: string; quantity: number } = req.body;
 

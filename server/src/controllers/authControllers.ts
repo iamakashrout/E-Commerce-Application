@@ -12,7 +12,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       email,
       password,
       phone,
-      addresses=[],
       loyaltyPoints=0,
       createdAt,
     } = req.body;
@@ -38,13 +37,19 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       email,
       password: passwordHash,
       phone,
-      addresses,
       loyaltyPoints,
       createdAt,
     });
 
     const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
+
+    const userWithoutPassword = { ...savedUser.toObject(), password: undefined };
+    const token = jwt.sign({ id: savedUser?._id }, process.env.JWT_SECRET as string, {
+      expiresIn: "6h",
+    });
+
+    res.status(200).json({ token, user: userWithoutPassword });
+    // res.status(201).json(savedUser);
   } catch (err) {
     console.error(err); // Log the error for debugging
     res.status(500).json({ error: (err as Error).message });
