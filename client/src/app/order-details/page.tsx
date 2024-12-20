@@ -2,7 +2,7 @@
 
 import { CartItem } from '@/types/cart';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import apiClient from '@/utils/axiosInstance';
@@ -16,10 +16,34 @@ export default function OrderDetailsPage() {
 
     const [paymentMode, setPaymentMode] = useState('COD');
     const [address, setAddress] = useState('');
+    const [savedAddresses, setSavedAddresses] = useState<string[]>([]);
+    const [isManualAddress, setIsManualAddress] = useState(false);
+
+    useEffect(() => {
+        const fetchAddresses = async () => {
+            try {
+                const response = await apiClient.get(`/address/getAddresses/${user}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (response.data.success) {
+                    setSavedAddresses(response.data.data.addresses || []);
+                } else {
+                    console.error('Failed to fetch addresses:', response.data.error);
+                }
+            } catch (err: any) {
+                console.error('Error fetching addresses:', err);
+            }
+        };
+
+        fetchAddresses();
+    }, [token, user]);
 
     const handleConfirmOrder = async () => {
         if (!address) {
-            alert('Please provide a valid address.');
+            alert('Please select or provide a valid address.');
             return;
         }
 
@@ -81,10 +105,49 @@ export default function OrderDetailsPage() {
                 </label>
             </div>
             <div>
-                <label>
-                    Address:
-                    <textarea value={address} onChange={(e) => setAddress(e.target.value)} />
-                </label>
+                <h2>Select Address</h2>
+                {savedAddresses.length > 0 ? (
+                    <div>
+                        {savedAddresses.map((savedAddress, index) => (
+                            <div key={index}>
+                                <input
+                                    type="radio"
+                                    id={`address-${index}`}
+                                    name="address"
+                                    value={savedAddress}
+                                    checked={address === savedAddress}
+                                    onChange={() => {
+                                        setAddress(savedAddress);
+                                        setIsManualAddress(false);
+                                    }}
+                                />
+                                <label htmlFor={`address-${index}`}>{savedAddress}</label>
+                            </div>
+                        ))}
+                        <div>
+                            <input
+                                type="radio"
+                                id="manual-address"
+                                name="address"
+                                checked={isManualAddress}
+                                onChange={() => {
+                                    setAddress('');
+                                    setIsManualAddress(true);
+                                }}
+                            />
+                            <label htmlFor="manual-address">Enter a new address</label>
+                        </div>
+                    </div>
+                ) : (
+                    <p>No saved addresses found. Please enter a new address.</p>
+                )}
+                {isManualAddress && (
+                    <textarea
+                        placeholder="Enter your address"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                )}
             </div>
             <button onClick={handleConfirmOrder}>Confirm Order</button>
         </div>
