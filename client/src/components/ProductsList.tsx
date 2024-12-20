@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 export default function ProductsList() {
     const [products, setProducts] = useState<Product[]>([]);
-    const [quantities, setQuantities] = useState<{ [key: string]: number }>({}); // Track quantities for each product
+    const [quantities, setQuantities] = useState<{ [key: string]: number }>({}); 
     const token = useSelector((data: RootState) => data.userState.token);
     const user = useSelector((data: RootState) => data.userState.userEmail);
 

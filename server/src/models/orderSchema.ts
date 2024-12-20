@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 export interface ISelectedProduct {
   productId: string; // identifier of product to be added
   quantity: number;
+  name: string;
+  price: number;
 }
 
 export interface ITotal {
@@ -18,6 +20,8 @@ export interface ITotal {
 const SelectedProductSchema: Schema<ISelectedProduct> = new mongoose.Schema({
   productId: { type: String, required: true },
   quantity: { type: Number, required: true, default: 1 },
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
 });
 
 export interface IOrder extends Document {

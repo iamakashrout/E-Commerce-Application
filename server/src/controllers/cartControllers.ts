@@ -8,7 +8,7 @@ import Product from "../models/productSchema"; // Assuming cart items reference 
 export const addToCart = async (req: Request, res: Response): Promise<void> => {
   try {
     // const { user, productId, quantity } = req.body;
-    const { user, productId, quantity }: { user: string; productId: string; quantity: number } = req.body;
+    const { user, productId, quantity, name, price }: { user: string; productId: string; quantity: number, name: string, price: number } = req.body;
 
 
     // Validate request
@@ -29,6 +29,8 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
     const newItem: ICartItem = {
       productId: productId,
       quantity: quantity,
+      name: name,
+      price: price,
     }
 
     if (cart) {
@@ -78,7 +80,7 @@ export const getCartDetails = async (req: Request, res: Response): Promise<void>
 // remove product from cart
 export const removeFromCart = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { user, productId, quantity }: { user: string; productId: string; quantity?: number } = req.body;
+    const { user, productId, quantity, name, price }: { user: string; productId: string; quantity?: number, name: string, price: number } = req.body;
 
     // Find the user's cart
     const cart = await Cart.findOne({ user });
