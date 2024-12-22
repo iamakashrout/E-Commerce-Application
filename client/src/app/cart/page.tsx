@@ -1,6 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { CartItem } from '@/types/cart';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -51,10 +52,10 @@ export default function CartPage() {
         }
 
         // Navigate to the order details page with selected items
-        router.push({
-            pathname: '/order-details',
-            query: { items: JSON.stringify(selectedItems) },
-        });
+        // console.log("order placed click", encodeURIComponent(JSON.stringify(selectedItems)));
+        
+        // alert('Order placed successfully!');
+        router.push(`/order-details?items=${encodeURIComponent(JSON.stringify(selectedItems))}`);
     };
 
     return (
@@ -78,7 +79,7 @@ export default function CartPage() {
                     ))
                 )}
             </div>
-            <button onClick={handlePlaceOrder} disabled={selectedItems.length === 0}>
+            <button onClick={(e)=>handlePlaceOrder()} disabled={selectedItems.length === 0}>
                 Place Order
             </button>
         </div>

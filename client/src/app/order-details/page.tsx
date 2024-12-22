@@ -1,7 +1,9 @@
 'use client';
 
 import { CartItem } from '@/types/cart';
-import { useRouter } from 'next/router';
+import { IAddress } from '@/types/address';
+import { ITotal } from '@/types/order';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
@@ -9,14 +11,15 @@ import apiClient from '@/utils/axiosInstance';
 
 export default function OrderDetailsPage() {
     const router = useRouter();
-    const { items } = router.query;
-    const selectedItems = items ? JSON.parse(items as string) : [];
+    const searchParams = useSearchParams();
+    const items = searchParams.get('items');
+    const selectedItems = items ? JSON.parse(items) : [];
     const token = useSelector((data: RootState) => data.userState.token);
     const user = useSelector((data: RootState) => data.userState.userEmail);
 
     const [paymentMode, setPaymentMode] = useState('COD');
     const [address, setAddress] = useState('');
-    const [savedAddresses, setSavedAddresses] = useState<string[]>([]);
+    const [savedAddresses, setSavedAddresses] = useState<IAddress[]>([]);
     const [isManualAddress, setIsManualAddress] = useState(false);
 
     useEffect(() => {
@@ -30,6 +33,8 @@ export default function OrderDetailsPage() {
 
                 if (response.data.success) {
                     setSavedAddresses(response.data.data.addresses || []);
+                    // console.log('Addresses:', savedAddresses);
+                    console.log(response.data.data.addresses);
                 } else {
                     console.error('Failed to fetch addresses:', response.data.error);
                 }
@@ -47,8 +52,11 @@ export default function OrderDetailsPage() {
             return;
         }
 
-        const totals = selectedItems.reduce((sum: number, item: CartItem) => sum + item.price * item.quantity, 0);
-
+        const subtotal = selectedItems.reduce((sum: number, item: CartItem) => sum + item.price * item.quantity, 0);
+        const tax = 0;
+        const shipping = 0;
+        const discount = 0;
+        const grandTotal = subtotal;
         const orderPayload = {
             user,
             products: selectedItems.map((item: CartItem) => ({
@@ -59,9 +67,15 @@ export default function OrderDetailsPage() {
             })),
             paymentMode,
             address,
-            total: totals,
+            total: {
+                subtotal,
+                tax,
+                shipping,
+                discount,
+                grandTotal,
+            } as ITotal,
         };
-
+        console.log(orderPayload);
         try {
             const response = await apiClient.post(`/order/placeOrder`, orderPayload, {
                 headers: {
@@ -70,8 +84,10 @@ export default function OrderDetailsPage() {
             });
 
             if (response.data.success) {
-                alert('Order placed successfully!');
-                router.push(`/order-summary/${response.data.orderId}`);
+                // console.log('Order placed:', response.data.orderId);
+                // console.log('Order placed:', response.data.data.orderId);
+                // alert(`Order placed: ${response.data.orderId}`);
+                router.push(`/order-summary?orderId=${response.data.data.orderId}`);
             } else {
                 console.error('Failed to place order:', response.data.error);
                 alert('Failed to place order. Please try again.');
@@ -87,7 +103,7 @@ export default function OrderDetailsPage() {
             <h1>Order Details</h1>
             <div>
                 <h2>Selected Items</h2>
-                {selectedItems.map((item: any, index: number) => (
+                {selectedItems.map((item: CartItem, index: number) => (
                     <div key={index}>
                         <h3>{item.name}</h3>
                         <p>Quantity: {item.quantity}</p>
@@ -114,14 +130,13 @@ export default function OrderDetailsPage() {
                                     type="radio"
                                     id={`address-${index}`}
                                     name="address"
-                                    value={savedAddress}
-                                    checked={address === savedAddress}
+                                    value={JSON.stringify(savedAddress)}
                                     onChange={() => {
-                                        setAddress(savedAddress);
+                                        setAddress(JSON.stringify(savedAddress));
                                         setIsManualAddress(false);
                                     }}
                                 />
-                                <label htmlFor={`address-${index}`}>{savedAddress}</label>
+                                <label htmlFor={`address-${index}`}>{savedAddress.name}</label>
                             </div>
                         ))}
                         <div>
