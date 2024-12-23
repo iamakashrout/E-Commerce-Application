@@ -44,7 +44,7 @@ export default function CheckoutPage() {
         };
 
         fetchAddresses();
-    }, [token, user]);
+    }, []);
 
     const handleConfirmOrder = async () => {
         if (!address) {

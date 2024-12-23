@@ -8,5 +8,4 @@ export interface Product {
     stock: number;
     images?: string[];
     sellerName: string;
-    createdAt: Date;
 }

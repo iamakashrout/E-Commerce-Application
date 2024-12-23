@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 
 export default function OrderDetailsPage() {
-    const router = useRouter();
     const searchParams = useSearchParams();
     const orderId = searchParams.get('orderId');
     const [orderDetails, setOrderDetails] = useState<Order>({} as Order);
