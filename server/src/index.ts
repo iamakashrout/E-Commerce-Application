@@ -6,6 +6,7 @@ import addressRoutes from "./routes/addressRoutes";
 import cartRoutes from "./routes/cartRoutes";
 import orderRoutes from "./routes/orderRoutes";
 import reviewRoutes from "./routes/reviewRoutes";
+import userRoutes from "./routes/userRoutes";
 import { connectToDatabase } from './mongo';
 import cors from 'cors';
 
@@ -26,6 +27,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/address", addressRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/review", reviewRoutes);
+app.use("/api/user", userRoutes);
 
 // MongoDB connection
 const startApp = async () => {
