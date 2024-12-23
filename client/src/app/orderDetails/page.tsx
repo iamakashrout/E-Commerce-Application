@@ -1,20 +1,27 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import {IOrder, ISelectedProduct}  from '@/types/order';
+import {Order, SelectedProduct}  from '@/types/order';
 import { useEffect, useState } from 'react';
 import apiClient from '@/utils/axiosInstance';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
-export default function OrderSummaryPage() {
+export default function OrderDetailsPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const orderId = searchParams.get('orderId');
-    const [orderDetails, setOrderDetails] = useState<IOrder>({} as IOrder);
+    const [orderDetails, setOrderDetails] = useState<Order>({} as Order);
+    const token = useSelector((data: RootState) => data.userState.token);
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
             try {
-                const response = await apiClient.get(`/order/getOrderDetails/${orderId}`);
+                const response = await apiClient.get(`/order/getOrderDetails/${orderId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
                 if (response.data.success) {
                     // console.log('response data data', response.data.data);
                     console.log(response.data);
@@ -36,12 +43,12 @@ export default function OrderSummaryPage() {
             <h1>Order Summary</h1>
             {orderDetails ? (
                 <div>
-                    <h2>Order ID: {orderDetails?.orderId}</h2>
+                    <h2>Order ID: {orderDetails.orderId}</h2>
                     <p>Total: {orderDetails?.total?.grandTotal}</p>
                     <p>Payment Mode: {orderDetails.paymentMode}</p>
                     <p>Address: {orderDetails.address}</p>
                     <h3>Items:</h3>
-                    {orderDetails?.products?.map((item: ISelectedProduct, index: number) => (
+                    {orderDetails?.products?.map((item: SelectedProduct, index: number) => (
                         <div key={index}>
                             <p>{item.name}</p>
                             <p>Quantity: {item.quantity}</p>

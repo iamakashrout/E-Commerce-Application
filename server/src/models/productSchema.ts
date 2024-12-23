@@ -24,7 +24,6 @@ const ProductSchema: Schema = new mongoose.Schema({
   category: { type: String, required: true },
   stock: { type: Number, required: true },
   images: [{ type: String }], // Optional array of image URLs
-  // sellerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Seller', required: true }, // Reference to the Seller model
   sellerName: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }, // Timestamp
 });

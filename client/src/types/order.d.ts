@@ -1,13 +1,13 @@
 // order.d.ts
 
-export interface ISelectedProduct {
+export interface SelectedProduct {
     productId: string; 
     quantity: number;  
     name: string;     
     price: number;     
   }
   
-  export interface ITotal {
+  export interface Total {
     subtotal: number;  
     tax: number;       
     shipping: number; 
@@ -15,10 +15,10 @@ export interface ISelectedProduct {
     grandTotal: number;
   }
   
-  export interface IOrder {
+  export interface Order {
     orderId: string; 
     user: string; 
-    products: ISelectedProduct[];
+    products: SelectedProduct[];
     orderDate: Date; 
     status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled'; 
     paymentMode: string; 

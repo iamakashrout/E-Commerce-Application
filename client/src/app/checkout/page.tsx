@@ -1,15 +1,15 @@
 'use client';
 
 import { CartItem } from '@/types/cart';
-import { IAddress } from '@/types/address';
-import { ITotal } from '@/types/order';
+import { Address } from '@/types/address';
+import { Total } from '@/types/order';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import apiClient from '@/utils/axiosInstance';
 
-export default function OrderDetailsPage() {
+export default function CheckoutPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const items = searchParams.get('items');
@@ -19,7 +19,7 @@ export default function OrderDetailsPage() {
 
     const [paymentMode, setPaymentMode] = useState('COD');
     const [address, setAddress] = useState('');
-    const [savedAddresses, setSavedAddresses] = useState<IAddress[]>([]);
+    const [savedAddresses, setSavedAddresses] = useState<Address[]>([]);
     const [isManualAddress, setIsManualAddress] = useState(false);
 
     useEffect(() => {
@@ -56,7 +56,7 @@ export default function OrderDetailsPage() {
         const tax = 0;
         const shipping = 0;
         const discount = 0;
-        const grandTotal = subtotal;
+        const grandTotal = subtotal+tax+shipping+discount;
         const orderPayload = {
             user,
             products: selectedItems.map((item: CartItem) => ({
@@ -73,7 +73,7 @@ export default function OrderDetailsPage() {
                 shipping,
                 discount,
                 grandTotal,
-            } as ITotal,
+            } as Total,
         };
         console.log(orderPayload);
         try {
@@ -87,7 +87,7 @@ export default function OrderDetailsPage() {
                 // console.log('Order placed:', response.data.orderId);
                 // console.log('Order placed:', response.data.data.orderId);
                 // alert(`Order placed: ${response.data.orderId}`);
-                router.push(`/order-summary?orderId=${response.data.data.orderId}`);
+                router.push(`/orderDetails?orderId=${response.data.data.orderId}`);
             } else {
                 console.error('Failed to place order:', response.data.error);
                 alert('Failed to place order. Please try again.');
@@ -100,7 +100,7 @@ export default function OrderDetailsPage() {
 
     return (
         <div>
-            <h1>Order Details</h1>
+            <h1>Order Summary</h1>
             <div>
                 <h2>Selected Items</h2>
                 {selectedItems.map((item: CartItem, index: number) => (
@@ -114,7 +114,7 @@ export default function OrderDetailsPage() {
             <div>
                 <label>
                     Payment Mode:
-                    <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)}>
+                    <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} style={{color: 'black'}}>
                         <option value="COD">Cash on Delivery</option>
                         <option value="Online">Online Payment</option>
                     </select>
@@ -130,9 +130,9 @@ export default function OrderDetailsPage() {
                                     type="radio"
                                     id={`address-${index}`}
                                     name="address"
-                                    value={JSON.stringify(savedAddress)}
+                                    value={savedAddress.address}
                                     onChange={() => {
-                                        setAddress(JSON.stringify(savedAddress));
+                                        setAddress(savedAddress.address);
                                         setIsManualAddress(false);
                                     }}
                                 />

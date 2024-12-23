@@ -71,9 +71,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
-      expiresIn: "6h",
-    });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string);
 
     // Exclude the password from the user object
     const userWithoutPassword = { ...user.toObject(), password: undefined };

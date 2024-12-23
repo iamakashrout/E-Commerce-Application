@@ -35,7 +35,7 @@ export default function CartPage() {
         };
 
         fetchCart();
-    }, [token, user]);
+    }, []);
 
     const handleSelectItem = (item: CartItem) => {
         if (selectedItems.find((selected) => selected.productId === item.productId)) {
@@ -45,17 +45,12 @@ export default function CartPage() {
         }
     };
 
-    const handlePlaceOrder = () => {
+    const handleCheckout = () => {
         if (selectedItems.length === 0) {
             alert('Please select at least one product to place an order.');
             return;
         }
-
-        // Navigate to the order details page with selected items
-        // console.log("order placed click", encodeURIComponent(JSON.stringify(selectedItems)));
-        
-        // alert('Order placed successfully!');
-        router.push(`/order-details?items=${encodeURIComponent(JSON.stringify(selectedItems))}`);
+        router.push(`/checkout?items=${encodeURIComponent(JSON.stringify(selectedItems))}`);
     };
 
     return (
@@ -72,15 +67,15 @@ export default function CartPage() {
                                 checked={selectedItems.some((selected) => selected.productId === item.productId)}
                                 onChange={() => handleSelectItem(item)}
                             />
-                            <h2>{item.productId}</h2>
+                            <h2>{item.name}</h2>
                             <p>Quantity: {item.quantity}</p>
                             <p>Price: {item.price}</p>
                         </div>
                     ))
                 )}
             </div>
-            <button onClick={(e)=>handlePlaceOrder()} disabled={selectedItems.length === 0}>
-                Place Order
+            <button onClick={(e)=>handleCheckout()} disabled={selectedItems.length === 0}>
+                Proceed to Checkout
             </button>
         </div>
     );
