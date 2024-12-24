@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { User } from "@/types/user";
 import apiClient from "@/utils/axiosInstance";
 import AddressList from "@/components/AddressList";
+import OrderHistory from "@/components/OrderHistory";
 
 export default function ProfilePage() {
 
@@ -51,6 +52,7 @@ export default function ProfilePage() {
                     <p>Email: {user.email}</p>
                     <p>Loyalty Points: {user.loyaltyPoints}</p>
                     <AddressList />
+                    <OrderHistory />
                 </div>
             ) : (
                 <p>Loading user details...</p>

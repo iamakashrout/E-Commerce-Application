@@ -29,6 +29,8 @@ export default function Home() {
        <ProductsList />
        <Link href="/cart">Go to Cart</Link>
        <br/>
+       <Link href="/profile">Profile</Link>
+       <br/>
        <button onClick={()=>dispatch(clearUser())}>LOG OUT</button>
     </main>
   );

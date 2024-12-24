@@ -39,7 +39,7 @@ export default function OrderDetailsPage() {
 
     return (
         <div>
-            <h1>Order Summary</h1>
+            <h1>Order Details</h1>
             {orderDetails ? (
                 <div>
                     <h2>Order ID: {orderDetails.orderId}</h2>

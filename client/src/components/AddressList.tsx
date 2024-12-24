@@ -23,7 +23,6 @@ export default function AddressList() {
 
                 if (response.data.success) {
                     setAddresses(response.data.data.addresses || []);
-                    console.log(response.data.data.addresses);
                 } else {
                     console.error('Failed to fetch addresses:', response.data.error);
                 }
@@ -100,10 +99,12 @@ export default function AddressList() {
 
     return (
         <div>
-            <h2>Saved Addresses</h2>
-            <button onClick={toggleExpand}>
-                {isExpanded ? "Hide" : "Show"}
-            </button>
+            <h2>
+                Saved Addresses
+                <button onClick={toggleExpand} style={{ marginLeft: "10px" }}>
+                    {isExpanded ? "Hide" : "Show"}
+                </button>
+            </h2>
             {isExpanded && (
                 <>
                 <div>
