@@ -7,7 +7,8 @@ import Product from "../models/productSchema";
 // give product review
 export const addReview = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { user, productId, rating, reviewText } = req.body;
+        const {productId} = req.params;
+        const { user, rating, reviewText } = req.body;
 
         if (!user || !productId || !rating) {
             res.status(400).json({ success: false, error: 'Please fill all mandatory fields.' });
