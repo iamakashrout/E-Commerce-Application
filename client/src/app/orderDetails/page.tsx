@@ -1,13 +1,14 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import {Order, SelectedProduct}  from '@/types/order';
+import { Order, SelectedProduct } from '@/types/order';
 import { useEffect, useState } from 'react';
 import apiClient from '@/utils/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 
 export default function OrderDetailsPage() {
+    const router = useRouter();
     const searchParams = useSearchParams();
     const orderId = searchParams.get('orderId');
     const [orderDetails, setOrderDetails] = useState<Order>({} as Order);
@@ -52,6 +53,12 @@ export default function OrderDetailsPage() {
                             <p>{item.name}</p>
                             <p>Quantity: {item.quantity}</p>
                             <p>Price: {item.price}</p>
+                            <button
+                                onClick={() => router.push(`/getProductById?productId=${item.productId}`)}
+                                style={{ marginTop: '10px' }}
+                            >
+                                View Details
+                            </button>
                         </div>
                     ))}
                 </div>
