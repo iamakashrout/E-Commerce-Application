@@ -38,27 +38,6 @@ export const getProductById = async (req: Request, res: Response): Promise<void>
     res.status(500).json({ success: false, error: "Failed to fetch product." });
   }
 };
-export const getProductByName = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { productName } = req.params; // Get the productId from the URL parameters
-
-    // Find the product by its ID
-    const product = await Product.findOne({name: productName}) // Optionally populate seller details
-
-    // If no product is found, return a 404 error
-    if (!product) {
-      res.status(404).json({ error: "Product not found." });
-      return;
-    }
-
-    // Return the product details
-    res.status(200).json({ success: true, data: product });
-  } catch (error) {
-    console.error("Error fetching product:", error);
-    res.status(500).json({ success: false, error: "Failed to fetch product." });
-  }
-};
-
 
 // ADD NEW PRODUCT
 export const addProduct = async (req: Request, res: Response): Promise<void> => {
