@@ -7,9 +7,8 @@ import Product from "../models/productSchema"; // Assuming cart items reference 
 // add product to user's cart
 export const addToCart = async (req: Request, res: Response): Promise<void> => {
   try {
-    console.log("in controller");
     // const { user, productId, quantity } = req.body;
-    const { user, productId, quantity }: { user: string; productId: string; quantity: number } = req.body;
+    const { user, productId, quantity}: { user: string; productId: string; quantity: number } = req.body;
 
 
     // Validate request
@@ -30,6 +29,8 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
     const newItem: ICartItem = {
       productId: productId,
       quantity: quantity,
+      name: product.name,
+      price: product.price,
     }
 
     if (cart) {

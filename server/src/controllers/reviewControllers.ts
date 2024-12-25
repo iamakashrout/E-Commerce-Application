@@ -7,21 +7,22 @@ import Product from "../models/productSchema";
 // give product review
 export const addReview = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { user, productId, rating, reviewText } = req.body;
+        const { productId } = req.params;
+        const { user, rating, reviewText } = req.body;
 
         if (!user || !productId || !rating) {
             res.status(400).json({ success: false, error: 'Please fill all mandatory fields.' });
             return;
         }
 
-        const currProd = await Product.findOne({id: productId});
-        if(!currProd) {
+        const currProd = await Product.findOne({ id: productId });
+        if (!currProd) {
             res.status(400).json({ success: false, error: 'Product does not exist' });
             return;
         }
 
-        const existingReview = await Review.findOne({user: user, productId: productId});
-        if(existingReview) {
+        const existingReview = await Review.findOne({ user: user, productId: productId });
+        if (existingReview) {
             res.status(400).json({ success: false, error: 'User has already reviewed this product.' });
             return;
         }
@@ -53,8 +54,8 @@ export const getProductReviews = async (req: Request, res: Response): Promise<vo
     try {
         const { productId } = req.params;
 
-        const currProd = await Product.findOne({id: productId});
-        if(!currProd) {
+        const currProd = await Product.findOne({ id: productId });
+        if (!currProd) {
             res.status(400).json({ success: false, error: 'Product does not exist' });
             return;
         }

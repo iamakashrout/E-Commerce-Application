@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Order from "../models/orderSchema";
 import Product from "../models/productSchema";
 import User from "../models/userSchema";
+import Cart from "../models/cartSchema";
 
 
 // place an order
@@ -54,6 +55,21 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
             }
             currProd.stock = currProd.stock - product.quantity;
             await currProd.save();
+        }
+
+        const cart = await Cart.findOne({user}); // update cart
+        if(cart){
+            for (const product of products) {
+                const itemIndex = cart.items.findIndex((item) => item.productId === product.productId);
+                if (itemIndex > -1) {
+                    if (product.quantity && cart.items[itemIndex].quantity > product.quantity) {
+                      cart.items[itemIndex].quantity -= product.quantity;
+                    } else {
+                      cart.items.splice(itemIndex, 1);
+                    }
+                  } 
+            }
+            await cart.save();
         }
 
     } catch (error) {
