@@ -1,6 +1,6 @@
 import express from "express";
 
-import { getAllProducts, getProductById, addProduct, searchProduct, getProductByName } from "../controllers/productControllers";
+import { getAllProducts, getProductById, addProduct, searchProduct } from "../controllers/productControllers";
 import { verifyToken } from "../middleware/auth";
 const router = express.Router();
 
