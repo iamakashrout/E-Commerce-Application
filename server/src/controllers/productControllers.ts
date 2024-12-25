@@ -21,7 +21,6 @@ export const getAllProducts = async (req: Request, res: Response): Promise<void>
 export const getProductById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { productId } = req.params; // Get the productId from the URL parameters
-
     // Find the product by its ID
     const product = await Product.findOne({id: productId}) // Optionally populate seller details
 
@@ -38,7 +37,6 @@ export const getProductById = async (req: Request, res: Response): Promise<void>
     res.status(500).json({ success: false, error: "Failed to fetch product." });
   }
 };
-
 
 // ADD NEW PRODUCT
 export const addProduct = async (req: Request, res: Response): Promise<void> => {
