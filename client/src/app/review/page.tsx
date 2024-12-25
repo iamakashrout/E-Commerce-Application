@@ -19,6 +19,7 @@ export default function AddReviewPage() {
     const searchParams = useSearchParams();
     const productId = searchParams.get('productId');
     const token = useSelector((data: RootState) => data.userState.token);
+    const user = useSelector((data: RootState) => data.userState.userEmail);
 
     const [productDetails, setProductDetails] = useState<Product | null>(null);
     const [review, setReview] = useState('');
@@ -27,7 +28,7 @@ export default function AddReviewPage() {
     useEffect(() => {
         const fetchProductDetails = async () => {
             try {
-                const response = await apiClient.get(`/product/getProductById/${productId}`, {
+                const response = await apiClient.get(`/products/getProductById/${productId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -51,8 +52,9 @@ export default function AddReviewPage() {
             const response = await apiClient.post(
                 `/review/addReview/${productId}`,
                 {
+                    user,
                     productId,
-                    review,
+                    reviewText: review, 
                     rating,
                 },
                 {
