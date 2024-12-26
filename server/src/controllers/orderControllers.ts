@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import stripe from "stripe";
 import Order from "../models/orderSchema";
 import Product from "../models/productSchema";
 import User from "../models/userSchema";
@@ -143,5 +144,37 @@ export const cancelOrder = async (req: Request, res: Response): Promise<void> =>
     } catch (error) {
         console.error("Error cancelling order:", error);
         res.status(500).json({ success: false, error: "Failed to cancel the order" });
+    }
+}
+
+// Stripe payment gateway
+export const paymentGateway = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const {products, orderId}=req.body;
+        const lineItems=products.map((product: any)=>({
+            price_data: {
+                currency: "usd",
+                product_data: {
+                    name: product.name
+                },
+                unit_amount: product.price*100,
+            },
+            quantity: product.quantity
+        }));
+
+        const stripeInstance = new stripe(process.env.STRIPE_SECRET || '');
+
+        const session = await stripeInstance.checkout.sessions.create({
+            payment_method_types: ["card"],
+            line_items: lineItems,
+            mode: "payment",
+            success_url: `http://localhost:3000/orderDetails?orderId=${orderId}`,
+            cancel_url: "http://localhost:3000/"
+        });
+
+        res.status(200).json({success:true, id: session.id});
+    } catch (error) {
+        console.error("Payment gateway failed:", error);
+        res.status(500).json({ success: false, error: "Failed to process payment" });
     }
 }
