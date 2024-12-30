@@ -2,10 +2,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { clearUser } from "./redux/features/userSlice";
 import ProductsList from "@/components/ProductsList";
 import Link from "next/link";
+import HelpChat from "@/components/HelpChat";
+import HelpButton from "@/components/HelpButton";
 
 export default function Home() {
   const router = useRouter();
@@ -23,6 +25,8 @@ export default function Home() {
     return null; // Prevent rendering while redirecting
   }
 
+  const [showPopup, setShowPopup] = useState(false);
+
   return (
     <main>
        <h1>Welcome to the Home Page!</h1>
@@ -32,6 +36,8 @@ export default function Home() {
        <Link href="/profile">Profile</Link>
        <br/>
        <button onClick={()=>dispatch(clearUser())}>LOG OUT</button>
+      {/* Helpline Popup */}
+      {showPopup ? (<HelpChat onClose={() => setShowPopup(false)} />):  <HelpButton onClick={() => setShowPopup(true)} />}
     </main>
   );
 }

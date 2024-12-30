@@ -68,3 +68,22 @@ export const getProductReviews = async (req: Request, res: Response): Promise<vo
         res.status(500).json({ success: false, error: "Failed to fetch product reviews" });
     }
 }
+
+
+// get review of a product by a user
+export const getUserReview = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { productId, user } = req.params;
+
+        const userReview = await Review.findOne({ productId, user });
+        if (!userReview) {
+            res.status(200).json({ success: true, data:{"rating": 0, "reviewText": ""} });
+            return;
+        }
+        res.status(200).json({ success: true, data: userReview });
+
+    } catch (error) {
+        console.error("Error fetching user review:", error);
+        res.status(500).json({ success: false, error: "Failed to fetch user review" });
+    }
+}

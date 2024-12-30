@@ -22,8 +22,30 @@ export default function AddReviewPage() {
     const user = useSelector((data: RootState) => data.userState.userEmail);
 
     const [productDetails, setProductDetails] = useState<Product | null>(null);
+    const [prevReview, setPrevReview] = useState('');
+    const [prevRating, setPrevRating] = useState(0);
     const [review, setReview] = useState('');
     const [rating, setRating] = useState(0);
+
+    const fetchReview = async () => {
+        try {
+            const response = await apiClient.get(`/review/getUserReview/${productId}/${user}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.data.success) {
+                console.log('rating', response.data.data);
+                setPrevRating(response.data.data.rating);
+                setPrevReview(response.data.data.reviewText);
+            } else {
+                console.error('Failed to fetch product review:', response.data.error);
+            }
+        } catch (err: any) {
+            console.error('Error fetching product review:', err);
+        }
+    }
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -44,8 +66,11 @@ export default function AddReviewPage() {
             }
         };
 
-        if (productId) fetchProductDetails();
-    }, [productId]);
+        if (productId) {
+            fetchProductDetails();
+            fetchReview();
+        }
+    }, []);
 
     const handleSubmitReview = async () => {
         try {
@@ -54,7 +79,7 @@ export default function AddReviewPage() {
                 {
                     user,
                     productId,
-                    reviewText: review, 
+                    reviewText: review,
                     rating,
                 },
                 {
@@ -68,6 +93,7 @@ export default function AddReviewPage() {
                 alert('Review submitted successfully!');
                 setReview('');
                 setRating(0);
+                fetchReview();
             } else {
                 console.error('Failed to submit review:', response.data.error);
             }
@@ -88,27 +114,39 @@ export default function AddReviewPage() {
                     {productDetails.imageUrl && (
                         <img src={productDetails.imageUrl} alt={productDetails.name} style={{ width: '200px' }} />
                     )}
-                    <h3>Submit Your Review</h3>
-                    <textarea
-                        value={review}
-                        onChange={(e) => setReview(e.target.value)}
-                        placeholder="Write your review here..."
-                        rows={4}
-                        cols={50}
-                    />
-                    <br />
-                    <label>
-                        Rating:
-                        <input
-                            type="number"
-                            value={rating}
-                            onChange={(e) => setRating(Number(e.target.value))}
-                            min={1}
-                            max={5}
-                        />
-                    </label>
-                    <br />
-                    <button onClick={handleSubmitReview}>Submit Review</button>
+                    <div>
+                        {prevRating !== 0 ? (
+                            <div>
+                                <h4>{prevRating} Stars</h4>
+                                <p>{prevReview}</p>
+                            </div>
+                        ) : (
+                            <div>
+                                <h3>Submit Your Review</h3>
+                                <textarea
+                                    value={review}
+                                    onChange={(e) => setReview(e.target.value)}
+                                    placeholder="Write your review here..."
+                                    rows={4}
+                                    cols={50}
+                                />
+                                <br />
+                                <label>
+                                    Rating:
+                                    <input
+                                        type="number"
+                                        value={rating}
+                                        onChange={(e) => setRating(Number(e.target.value))}
+                                        min={1}
+                                        max={5}
+                                        style={{ color: 'black' }}
+                                    />
+                                </label>
+                                <br />
+                                <button onClick={handleSubmitReview}>Submit Review</button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             ) : (
                 <p>Loading product details...</p>

@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import apiClient from '@/utils/axiosInstance';
+import { loadStripe } from '@stripe/stripe-js';
 
 export default function CheckoutPage() {
     const router = useRouter();
@@ -56,7 +57,7 @@ export default function CheckoutPage() {
         const tax = 0;
         const shipping = 0;
         const discount = 0;
-        const grandTotal = subtotal+tax+shipping+discount;
+        const grandTotal = subtotal + tax + shipping + discount;
         const orderPayload = {
             user,
             products: selectedItems.map((item: CartItem) => ({
@@ -76,6 +77,7 @@ export default function CheckoutPage() {
             } as Total,
         };
         console.log(orderPayload);
+
         try {
             const response = await apiClient.post(`/order/placeOrder`, orderPayload, {
                 headers: {
@@ -84,10 +86,48 @@ export default function CheckoutPage() {
             });
 
             if (response.data.success) {
-                // console.log('Order placed:', response.data.orderId);
-                // console.log('Order placed:', response.data.data.orderId);
-                // alert(`Order placed: ${response.data.orderId}`);
-                router.push(`/orderDetails?orderId=${response.data.data.orderId}`);
+                const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+
+                const stripePayload = {
+                    orderId: response.data.data.orderId,
+                    user,
+                    products: selectedItems.map((item: CartItem) => ({
+                        productId: item.productId,
+                        quantity: item.quantity,
+                        name: item.name,
+                        price: item.price,
+                    })),
+                    paymentMode,
+                    address,
+                    total: {
+                        subtotal,
+                        tax,
+                        shipping,
+                        discount,
+                        grandTotal,
+                    } as Total,
+                };
+
+                const stripeResponse = await apiClient.post(`/order/paymentGateway`, 
+                    stripePayload,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                const session = stripeResponse.data;
+
+                const result = stripe?.redirectToCheckout({
+                    sessionId: session.id
+                });
+
+                if ((await result)?.error) {
+                    console.error('Error during checkout redirect:', (await result)?.error.message);
+                    alert(`Error: ${(await result)?.error.message}`);
+                }
+
             } else {
                 console.error('Failed to place order:', response.data.error);
                 alert('Failed to place order. Please try again.');
@@ -114,7 +154,7 @@ export default function CheckoutPage() {
             <div>
                 <label>
                     Payment Mode:
-                    <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} style={{color: 'black'}}>
+                    <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} style={{ color: 'black' }}>
                         <option value="COD">Cash on Delivery</option>
                         <option value="Online">Online Payment</option>
                     </select>

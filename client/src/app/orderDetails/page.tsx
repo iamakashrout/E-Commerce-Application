@@ -55,7 +55,7 @@ export default function OrderDetailsPage() {
                             <p>Price: {item.price}</p>
                             <button
                                 onClick={() => router.push(`/review?productId=${item.productId}`)}
-                                style={{ marginTop: '10px' }}
+                                style={{ marginBottom: '10px' }}
                             >
                                 View Details
                             </button>
