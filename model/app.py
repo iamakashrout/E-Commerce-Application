@@ -2,11 +2,13 @@ from flask import Flask, request, jsonify
 import numpy as np
 import pandas as pd
 
-from content_based_recommendation_logic import content_based_recommendations
+from recommendation_logic import content_based_recommendations
 
 app = Flask(__name__)
+from flask_cors import CORS
+CORS(app)
 
-train_data = pd.read_csv('marketing_sample_for_walmart_com-walmart_com_product_review__20200701_20201231__5k_data.tsv')
+train_data = pd.read_csv('products.csv')
 
 # Health Check Endpoint
 @app.route('/', methods=['GET'])
@@ -19,7 +21,7 @@ def get_recommendations():
     try:
         # Get query parameters
         item_name = request.args.get('item_name')
-        top_n = request.args.get('top_n', default=10, type=int)
+        top_n = request.args.get('top_n', default=4, type=int)
 
         if not item_name:
             return jsonify({
