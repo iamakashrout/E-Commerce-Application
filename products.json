@@ -1,0 +1,302 @@
+[
+  {
+    "id": "1",
+    "name": "Wireless Earbuds",
+    "company": "SoundPro",
+    "description": "High-quality wireless earbuds with noise cancellation.",
+    "price": 2999,
+    "category": "Electronics",
+    "stock": 50,
+    "images": [
+      "earbuds1.jpg",
+      "earbuds2.jpg"
+    ],
+    "sellerName": "TechHub",
+    "createdAt": "2023-12-01T10:00:00Z"
+  },
+  {
+    "id": "2",
+    "name": "Smartphone X10",
+    "company": "TechWorld",
+    "description": "Latest smartphone with cutting-edge features and a sleek design.",
+    "price": 54999,
+    "category": "Electronics",
+    "stock": 30,
+    "images": [
+      "smartphone1.jpg",
+      "smartphone2.jpg"
+    ],
+    "sellerName": "GadgetStore",
+    "createdAt": "2023-11-20T09:30:00Z"
+  },
+  {
+    "id": "3",
+    "name": "Gaming Laptop GX500",
+    "company": "GameTech",
+    "description": "Powerful gaming laptop with high refresh rate display.",
+    "price": 89999,
+    "category": "Computers",
+    "stock": 20,
+    "images": [
+      "laptop1.jpg",
+      "laptop2.jpg"
+    ],
+    "sellerName": "LaptopWorld",
+    "createdAt": "2023-10-15T14:00:00Z"
+  },
+  {
+    "id": "4",
+    "name": "Running Shoes",
+    "company": "FitLife",
+    "description": "Comfortable and lightweight running shoes for daily workouts.",
+    "price": 2499,
+    "category": "Sports",
+    "stock": 100,
+    "images": [
+      "shoes1.jpg",
+      "shoes2.jpg"
+    ],
+    "sellerName": "SportsStore",
+    "createdAt": "2023-11-10T08:00:00Z"
+  },
+  {
+    "id": "5",
+    "name": "Bluetooth Speaker",
+    "company": "SoundPro",
+    "description": "Portable Bluetooth speaker with excellent sound quality.",
+    "price": 1999,
+    "category": "Electronics",
+    "stock": 60,
+    "images": [
+      "speaker1.jpg",
+      "speaker2.jpg"
+    ],
+    "sellerName": "MusicWorld",
+    "createdAt": "2023-12-05T16:00:00Z"
+  },
+  {
+    "id": "6",
+    "name": "Office Chair",
+    "company": "ComfortPlus",
+    "description": "Ergonomic office chair with lumbar support.",
+    "price": 7999,
+    "category": "Furniture",
+    "stock": 40,
+    "images": [
+      "chair1.jpg",
+      "chair2.jpg"
+    ],
+    "sellerName": "FurnitureHub",
+    "createdAt": "2023-11-25T11:00:00Z"
+  },
+  {
+    "id": "7",
+    "name": "Digital Watch",
+    "company": "TimeMaster",
+    "description": "Stylish digital watch with fitness tracking features.",
+    "price": 3499,
+    "category": "Accessories",
+    "stock": 70,
+    "images": [
+      "watch1.jpg",
+      "watch2.jpg"
+    ],
+    "sellerName": "WatchStore",
+    "createdAt": "2023-10-30T10:30:00Z"
+  },
+  {
+    "id": "8",
+    "name": "Electric Kettle",
+    "company": "HomeTech",
+    "description": "Fast boiling electric kettle with auto shut-off feature.",
+    "price": 1499,
+    "category": "Home Appliances",
+    "stock": 80,
+    "images": [
+      "kettle1.jpg",
+      "kettle2.jpg"
+    ],
+    "sellerName": "HomeStore",
+    "createdAt": "2023-11-15T09:00:00Z"
+  },
+  {
+    "id": "9",
+    "name": "Yoga Mat",
+    "company": "FitLife",
+    "description": "Durable and non-slip yoga mat for all fitness levels.",
+    "price": 999,
+    "category": "Sports",
+    "stock": 120,
+    "images": [
+      "yogamat1.jpg",
+      "yogamat2.jpg"
+    ],
+    "sellerName": "FitnessStore",
+    "createdAt": "2023-12-02T13:00:00Z"
+  },
+  {
+    "id": "10",
+    "name": "Wireless Mouse",
+    "company": "TechWorld",
+    "description": "Compact and ergonomic wireless mouse with long battery life.",
+    "price": 899,
+    "category": "Computers",
+    "stock": 90,
+    "images": [
+      "mouse1.jpg",
+      "mouse2.jpg"
+    ],
+    "sellerName": "GadgetStore",
+    "createdAt": "2023-11-18T15:00:00Z"
+  },
+  {
+    "id": "11",
+    "name": "4K Smart TV",
+    "company": "VisionTech",
+    "description": "Ultra HD 4K smart TV with vibrant colors and built-in streaming apps.",
+    "price": 39999,
+    "category": "Electronics",
+    "stock": 25,
+    "images": [
+      "tv1.jpg",
+      "tv2.jpg"
+    ],
+    "sellerName": "ElectroStore",
+    "createdAt": "2023-12-10T14:00:00Z"
+  },
+  {
+    "id": "12",
+    "name": "Air Fryer",
+    "company": "KitchenPro",
+    "description": "Healthy air fryer for oil-free cooking with multiple presets.",
+    "price": 4999,
+    "category": "Home Appliances",
+    "stock": 50,
+    "images": [
+      "airfryer1.jpg",
+      "airfryer2.jpg"
+    ],
+    "sellerName": "KitchenStore",
+    "createdAt": "2023-11-22T12:00:00Z"
+  },
+  {
+    "id": "13",
+    "name": "Electric Guitar",
+    "company": "MusicMaster",
+    "description": "Professional electric guitar with high-quality sound and sleek design.",
+    "price": 15999,
+    "category": "Musical Instruments",
+    "stock": 15,
+    "images": [
+      "guitar1.jpg",
+      "guitar2.jpg"
+    ],
+    "sellerName": "MusicStore",
+    "createdAt": "2023-10-25T18:00:00Z"
+  },
+  {
+    "id": "14",
+    "name": "Backpack",
+    "company": "TravelPro",
+    "description": "Durable and spacious backpack suitable for travel and daily use.",
+    "price": 1499,
+    "category": "Accessories",
+    "stock": 100,
+    "images": [
+      "backpack1.jpg",
+      "backpack2.jpg"
+    ],
+    "sellerName": "BagWorld",
+    "createdAt": "2023-11-28T11:00:00Z"
+  },
+  {
+    "id": "15",
+    "name": "Fitness Tracker",
+    "company": "FitLife",
+    "description": "Advanced fitness tracker with heart rate monitoring and step counter.",
+    "price": 2999,
+    "category": "Electronics",
+    "stock": 60,
+    "images": [
+      "tracker1.jpg",
+      "tracker2.jpg"
+    ],
+    "sellerName": "HealthStore",
+    "createdAt": "2023-12-08T10:00:00Z"
+  },
+  {
+    "id": "16",
+    "name": "Blender",
+    "company": "KitchenPro",
+    "description": "Powerful blender for smoothies, shakes, and food preparation.",
+    "price": 2499,
+    "category": "Home Appliances",
+    "stock": 70,
+    "images": [
+      "blender1.jpg",
+      "blender2.jpg"
+    ],
+    "sellerName": "KitchenStore",
+    "createdAt": "2023-11-30T16:00:00Z"
+  },
+  {
+    "id": "17",
+    "name": "Mechanical Keyboard",
+    "company": "TechWorld",
+    "description": "High-performance mechanical keyboard with customizable RGB lighting.",
+    "price": 4999,
+    "category": "Computers",
+    "stock": 40,
+    "images": [
+      "keyboard1.jpg",
+      "keyboard2.jpg"
+    ],
+    "sellerName": "GadgetStore",
+    "createdAt": "2023-11-18T15:00:00Z"
+  },
+  {
+    "id": "18",
+    "name": "Camping Tent",
+    "company": "OutdoorPro",
+    "description": "Waterproof and lightweight camping tent for 4 people.",
+    "price": 5999,
+    "category": "Outdoor",
+    "stock": 30,
+    "images": [
+      "tent1.jpg",
+      "tent2.jpg"
+    ],
+    "sellerName": "AdventureGear",
+    "createdAt": "2023-12-03T14:00:00Z"
+  },
+  {
+    "id": "19",
+    "name": "Action Camera",
+    "company": "VisionTech",
+    "description": "Compact action camera with 4K recording and waterproof design.",
+    "price": 8999,
+    "category": "Electronics",
+    "stock": 25,
+    "images": [
+      "camera1.jpg",
+      "camera2.jpg"
+    ],
+    "sellerName": "ElectroStore",
+    "createdAt": "2023-11-25T10:00:00Z"
+  },
+  {
+    "id": "20",
+    "name": "Bookshelf",
+    "company": "HomeDecor",
+    "description": "Modern wooden bookshelf with 5 spacious compartments.",
+    "price": 6999,
+    "category": "Furniture",
+    "stock": 20,
+    "images": [
+      "bookshelf1.jpg",
+      "bookshelf2.jpg"
+    ],
+    "sellerName": "FurnitureHub",
+    "createdAt": "2023-11-20T13:00:00Z"
+  }
+]
