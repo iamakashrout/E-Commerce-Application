@@ -5,6 +5,7 @@ import Seller from "../models/sellerSchema";
 import Product from "../models/productSchema";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import Order from "../models/orderSchema";
 dotenv.config();
 
 // ADD NEW SELLER
@@ -193,5 +194,46 @@ export const removeProduct = async (
   } catch (error) {
     console.error("Error removing product:", error);
     res.status(500).json({ success: false, error: "Failed to remove product" });
+  }
+};
+
+// GET PRODUCT SALES DATA (CAN BE FETCHED BY SELLER)
+export const getProductSales = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { productId } = req.params;
+
+    // Check if the product exists
+    const product = await Product.findOne({ id: productId });
+    if (!product) {
+      res.status(404).json({ success: false, error: 'Product not found' });
+      return;
+    }
+
+    // Find all orders that contain this product
+    const orders = await Order.find({ 'products.productId': productId });
+
+    // Extract relevant sales data
+    const salesData = orders.map((order) => {
+      const productDetails = order.products.find(
+        (item) => item.productId === productId
+      );
+
+      if (!productDetails) return null;
+
+      return {
+        orderId: order.orderId,
+        quantity: productDetails.quantity,
+        unitPrice: productDetails.price,
+        total: productDetails.quantity * productDetails.price,
+      };
+    }).filter(data => data !== null); // Filter out null values
+
+    res.status(200).json({ success: true, data: salesData });
+  } catch (error) {
+    console.error('Error fetching product sales data:', error);
+    res.status(500).json({ success: false, error: 'Failed to fetch product sales data' });
   }
 };

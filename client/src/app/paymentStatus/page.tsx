@@ -1,6 +1,6 @@
 'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { clearOrder } from '../redux/features/orderSlice';
@@ -16,6 +16,9 @@ export default function PaymentStatus() {
   const token = useSelector((data: RootState) => data.userState.token);
   const dispatch = useDispatch();
   const [orderId, setOrderId]=useState('');
+
+  // Prevent double execution using ref
+  const hasPlacedOrder = useRef(false);
 
   useEffect( () => {
     const placeOrder = async () => {
@@ -42,16 +45,18 @@ export default function PaymentStatus() {
             alert('An error occurred while placing the order.');
         }
     }
-    if (status === "True") {
-        placeOrder();
-        dispatch(clearOrder());  
-    } else if (status === "False") {
-      setPaymentStatus("failed");
+    // Check if order placement has already occurred
+    if (!hasPlacedOrder.current && status === 'True') {
+      hasPlacedOrder.current = true; // Mark as executed
+      placeOrder();
+      dispatch(clearOrder());
+    } else if (status === 'False') {
+      setPaymentStatus('failed');
       dispatch(clearOrder());
     } else {
-      setPaymentStatus(null); // Handle invalid statuses gracefully
+      setPaymentStatus('succeeded');
     }
-  }, [status]);
+  }, [status, payload, token, dispatch]);
 
   // Conditional rendering based on payment status
   if (paymentStatus === null) {

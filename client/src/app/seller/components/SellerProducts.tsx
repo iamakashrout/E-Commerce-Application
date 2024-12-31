@@ -6,6 +6,7 @@ import apiClient from "@/utils/axiosInstance";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import EditProduct from "./EditProduct";
+import SalesData from "./SalesData";
 
 
 interface SellerProductsProps {
@@ -31,6 +32,8 @@ export default function SellerProducts({ sellerName, refreshCount }: SellerProdu
     const [products, setProducts] = useState<Product[]>([]);
     const [editProduct, setEditProduct] = useState<Product | null>(null);
     const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+    const [isSalesPopupOpen, setIsSalesPopupOpen] = useState(false);
+    const [currentProductId, setCurrentProductId] = useState<string | null>(null);
     const token = useSelector((data: RootState) => data.sellerState.token);
 
     const fetchProducts = async () => {
@@ -87,6 +90,16 @@ export default function SellerProducts({ sellerName, refreshCount }: SellerProdu
         fetchProducts(); // Refresh the product list after editing
     };
 
+    const handleViewSales = (productId: string) => {
+        setCurrentProductId(productId);
+        setIsSalesPopupOpen(true);
+    };
+
+    const handleCloseSalesPopup = () => {
+        setCurrentProductId(null);
+        setIsSalesPopupOpen(false);
+    };
+
     return (
         <div>
             <h1>Products List</h1>
@@ -95,6 +108,13 @@ export default function SellerProducts({ sellerName, refreshCount }: SellerProdu
                     <li key={product.id} className="flex justify-between items-center py-2">
                         <span>{product.name}</span>
                         <div className="space-x-2">
+                        <button
+                                onClick={() => handleViewSales(product.id)}
+                                className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
+                            >
+                                View Sales
+                            </button>
+
                             <button
                                 onClick={() => handleEditProduct(product)}
                                 className="px-3 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition"
@@ -111,6 +131,13 @@ export default function SellerProducts({ sellerName, refreshCount }: SellerProdu
                     </li>
                 ))}
             </ul>
+
+            {isSalesPopupOpen && currentProductId && (
+                <SalesData
+                    productId={currentProductId}
+                    onClose={handleCloseSalesPopup}
+                />
+            )}
 
             {isEditPopupOpen && editProduct && (
                 <EditProduct product={editProduct} onClose={handleCloseEditPopup} />
