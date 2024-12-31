@@ -44,9 +44,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const savedUser = await newUser.save();
 
     const userWithoutPassword = { ...savedUser.toObject(), password: undefined };
-    const token = jwt.sign({ id: savedUser?._id }, process.env.JWT_SECRET as string, {
-      expiresIn: "6h",
-    });
+    const token = jwt.sign({ id: savedUser?._id }, process.env.JWT_SECRET as string);
 
     res.status(200).json({ token, user: userWithoutPassword });
     // res.status(201).json(savedUser);
