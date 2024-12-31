@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useEffect, useState } from "react";
 import { clearSeller } from "../redux/features/sellerSlice";
+import SellerDetails from "./components/SellerDetails";
 
 export default function SellerPage () {
     const router = useRouter();
@@ -25,6 +26,7 @@ export default function SellerPage () {
     return (
       <main>
          <h1>Welcome to the Seller Page!</h1>
+         <SellerDetails />
          <button onClick={()=>dispatch(clearSeller())}>LOG OUT</button>
       </main>
     );

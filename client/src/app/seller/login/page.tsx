@@ -1,6 +1,6 @@
 "use client"
-import SellerLogin from "@/components/SellerLogin";
-import SellerRegister from "@/components/SellerRegister";
+import SellerLogin from "@/app/seller/components/SellerLogin";
+import SellerRegister from "@/app/seller/components/SellerRegister";
 import { useState } from "react";
 
 export default function SellerLoginPage () {

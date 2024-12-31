@@ -60,6 +60,7 @@ export const sellerRegister = async (
   }
 };
 
+// SELLER LOGIN
 export const sellerLogin = async (
   req: Request,
   res: Response
@@ -109,13 +110,6 @@ export const getSellersProducts = async (
 
     // Fetch products belonging to the seller
     const products = await Product.find({ sellerName }).populate("sellerName"); // populate seller info if needed
-
-    if (products.length === 0) {
-      res
-        .status(404)
-        .json({ success: false, error: "No products found for this seller" });
-      return;
-    }
 
     // Send the response with the found products
     res.status(200).json({ success: true, data: products });
