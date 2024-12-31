@@ -1,12 +1,14 @@
 import express from "express";
 
-import { addSeller, getSellersProducts, updateProduct, removeProduct } from "../controllers/sellerControllers";
+import { getSellersProducts, updateProduct, removeProduct, sellerRegister, sellerLogin, getProductSales } from "../controllers/sellerControllers";
 import { verifyToken } from "../middleware/auth";
 const router = express.Router();
 
-router.post("/addSeller", verifyToken, addSeller);
+router.post("/sellerRegister", sellerRegister);
+router.post("/sellerLogin", sellerLogin);
 router.get("/getSellerProducts/:sellerName", verifyToken, getSellersProducts);
 router.put("/updateProduct/:productId", verifyToken, updateProduct);
 router.delete("/removeProduct/:productId", verifyToken, removeProduct);
+router.get("/getProductSales/:productId", verifyToken, getProductSales);
 
 export default router;

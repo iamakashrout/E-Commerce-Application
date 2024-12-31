@@ -1,3 +1,4 @@
+"use client"
 import { useChat } from "@ai-sdk/react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";

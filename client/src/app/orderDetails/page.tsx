@@ -38,6 +38,25 @@ export default function OrderDetailsPage() {
         if (orderId) fetchOrderDetails();
     }, []);
 
+    function formatMongoDate(mongoDate: Date, options?: Intl.DateTimeFormatOptions): string {
+        const date = new Date(mongoDate);
+        const defaultOptions: Intl.DateTimeFormatOptions = {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true, // Use 12-hour format
+        };
+      
+        // Merge options if provided
+        const formatOptions = { ...defaultOptions, ...options };
+        
+        return date.toLocaleString(undefined, formatOptions); // Auto-detect locale
+      }
+      
+
     return (
         <div>
             <h1>Order Details</h1>
@@ -46,6 +65,7 @@ export default function OrderDetailsPage() {
                     <h2>Order ID: {orderDetails.orderId}</h2>
                     <p>Total: {orderDetails?.total?.grandTotal}</p>
                     <p>Payment Mode: {orderDetails.paymentMode}</p>
+                    <p>Date: {formatMongoDate(orderDetails.orderDate)}</p>
                     <p>Address: {orderDetails.address}</p>
                     <h3>Items:</h3>
                     {orderDetails?.products?.map((item: SelectedProduct, index: number) => (

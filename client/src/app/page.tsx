@@ -14,7 +14,9 @@ export default function Home() {
   const isAuth = useSelector((data: RootState) => data.userState.isAuthenticated);
 
   const dispatch = useDispatch();
-  
+
+  const [showPopup, setShowPopup] = useState(false);
+
   useEffect(() => {
     if (!isAuth) {
       router.push("/login"); // Redirect to login page if not authenticated
@@ -24,9 +26,7 @@ export default function Home() {
   if (!isAuth) {
     return null; // Prevent rendering while redirecting
   }
-
-  const [showPopup, setShowPopup] = useState(false);
-
+  
   return (
     <main>
        <h1>Welcome to the Home Page!</h1>
