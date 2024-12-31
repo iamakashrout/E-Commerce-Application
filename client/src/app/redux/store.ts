@@ -3,9 +3,10 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "./storage";
 import userReducer from "./features/userSlice";
 import orderReducer from "./features/orderSlice";
+import sellerReducer from "./features/sellerSlice";
 
 // Persist configuration for the userState, login needs to persist after refresh
-const persistConfig = {
+const persistUserConfig = {
     key: "userState",
     storage,
 };
@@ -15,13 +16,20 @@ const persistOrderConfig = {
     storage,
 }
 
-const persistedUserReducer = persistReducer(persistConfig, userReducer);
+const persistSellerConfig = {
+    key: "sellerState",
+    storage,
+}
+
+const persistedUserReducer = persistReducer(persistUserConfig, userReducer);
 const persistedOrderReducer = persistReducer(persistOrderConfig, orderReducer);
+const persistedSellerReducer = persistReducer(persistSellerConfig, sellerReducer);
 
 export const store = configureStore({
     reducer: {
         userState: persistedUserReducer,
         orderState: persistedOrderReducer,
+        sellerState: persistedSellerReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
