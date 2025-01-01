@@ -15,7 +15,7 @@ export default function EditProduct({ product, onClose }: EditProductPopupProps)
   const token = useSelector((data: RootState) => data.sellerState.token);
 
   const [productDetails, setProductDetails] = useState(product);
-
+  const [images, setImages] = useState<File[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -24,6 +24,16 @@ export default function EditProduct({ product, onClose }: EditProductPopupProps)
       ...prev,
       [name]: name === "price" || name === "stock" ? parseInt(value) : value,
     }));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setImages((prev) => [...prev, ...Array.from(e.target.files!)]);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const validateForm = () => {
@@ -40,6 +50,32 @@ export default function EditProduct({ product, onClose }: EditProductPopupProps)
     return Object.keys(newErrors).length === 0;
   };
 
+  const uploadImagesToCloudinary = async (): Promise<string[]> => {
+    const urls: string[] = [];
+    for (const image of images) {
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
+      formData.append("cloud_name", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!);
+
+      try {
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        const data = await response.json();
+        urls.push(data.secure_url);
+      } catch (err) {
+        console.error("Image upload failed:", err);
+        alert("Failed to upload an image. Please try again.");
+      }
+    }
+    return urls;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -48,8 +84,16 @@ export default function EditProduct({ product, onClose }: EditProductPopupProps)
       return;
     }
 
+    const imageUrls = await uploadImagesToCloudinary();
+
+    const updatedProductDetails = {
+      ...productDetails,
+      images: [...(productDetails.images || []), ...imageUrls],
+    };
+
+
     try {
-      const response = await apiClient.put(`/seller/updateProduct/${productDetails.id}`, productDetails, {
+      const response = await apiClient.put(`/seller/updateProduct/${productDetails.id}`, updatedProductDetails, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -158,6 +202,32 @@ export default function EditProduct({ product, onClose }: EditProductPopupProps)
               rows={3}
             ></textarea>
             {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+          </div>
+           <div>
+            <label className="block text-gray-700 font-medium mb-1">Images</label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageChange}
+              className="w-full border border-gray-300 rounded-md p-2"
+            />
+            <div className="mt-3 flex flex-wrap gap-3">
+              {images.map((image, index) => (
+                <div key={index} className="flex items-center space-x-2 bg-gray-100 p-2 rounded-md">
+                  <p className="truncate max-w-[150px] text-black" title={image.name}>
+                    {image.name}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    &times;
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
           {/* Buttons */}
           <div className="flex justify-end space-x-3">
