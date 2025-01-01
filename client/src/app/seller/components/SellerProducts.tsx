@@ -102,28 +102,49 @@ export default function SellerProducts({ sellerName, refreshCount }: SellerProdu
 
     return (
         <div>
-            <h1>Products List</h1>
-            <ul>
+            <h1 className="text-xl font-bold mb-4">Products List</h1>
+            <ul className="space-y-6">
                 {products.map((product) => (
-                    <li key={product.id} className="flex justify-between items-center py-2">
-                        <span>{product.name}</span>
-                        <div className="space-x-2">
-                        <button
+                    <li key={product.id} className="border rounded-lg p-4 shadow-md">
+                        <h2 className="text-lg font-semibold">{product.name}</h2>
+                        <p className="text-white-700">Category: {product.category}</p>
+                        <p className="text-white-700">Company: {product.company}</p>
+                        <p className="text-white-700">Price: ${product.price}</p>
+                        <p className="text-white-700">Stock: {product.stock}</p>
+
+                        {/* Display Product Images */}
+                        {product.images.length > 0 ? (
+                            <div className="mt-3 flex space-x-2 overflow-x-auto">
+                                {product.images.map((image, index) => (
+                                    <img
+                                        key={index}
+                                        src={image}
+                                        alt={`${product.name} - ${index + 1}`}
+                                        className="w-20 h-20 object-cover rounded-lg"
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-gray-500 italic mt-2">No images available</p>
+                        )}
+
+                        {/* Action Buttons */}
+                        <div className="mt-4 flex space-x-2">
+                            <button
                                 onClick={() => handleViewSales(product.id)}
-                                className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
+                                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
                             >
                                 View Sales
                             </button>
-
                             <button
                                 onClick={() => handleEditProduct(product)}
-                                className="px-3 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition"
+                                className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition"
                             >
                                 Edit
                             </button>
                             <button
                                 onClick={() => handleDeleteProduct(product.id)}
-                                className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
                             >
                                 Delete
                             </button>
@@ -133,10 +154,7 @@ export default function SellerProducts({ sellerName, refreshCount }: SellerProdu
             </ul>
 
             {isSalesPopupOpen && currentProductId && (
-                <SalesData
-                    productId={currentProductId}
-                    onClose={handleCloseSalesPopup}
-                />
+                <SalesData productId={currentProductId} onClose={handleCloseSalesPopup} />
             )}
 
             {isEditPopupOpen && editProduct && (
