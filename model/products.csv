@@ -1,21 +1,81 @@
 id,name,company,description,price,category,stock,images,sellerName,createdAt
-1,Wireless Earbuds,SoundPro,High-quality wireless earbuds with noise cancellation.,2999,Electronics,50,"['earbuds1.jpg', 'earbuds2.jpg']",TechHub,2023-12-01T10:00:00Z
-2,Smartphone X10,TechWorld,Latest smartphone with cutting-edge features and a sleek design.,54999,Electronics,30,"['smartphone1.jpg', 'smartphone2.jpg']",GadgetStore,2023-11-20T09:30:00Z
-3,Gaming Laptop GX500,GameTech,Powerful gaming laptop with high refresh rate display.,89999,Computers,20,"['laptop1.jpg', 'laptop2.jpg']",LaptopWorld,2023-10-15T14:00:00Z
-4,Running Shoes,FitLife,Comfortable and lightweight running shoes for daily workouts.,2499,Sports,100,"['shoes1.jpg', 'shoes2.jpg']",SportsStore,2023-11-10T08:00:00Z
-5,Bluetooth Speaker,SoundPro,Portable Bluetooth speaker with excellent sound quality.,1999,Electronics,60,"['speaker1.jpg', 'speaker2.jpg']",MusicWorld,2023-12-05T16:00:00Z
-6,Office Chair,ComfortPlus,Ergonomic office chair with lumbar support.,7999,Furniture,40,"['chair1.jpg', 'chair2.jpg']",FurnitureHub,2023-11-25T11:00:00Z
-7,Digital Watch,TimeMaster,Stylish digital watch with fitness tracking features.,3499,Accessories,70,"['watch1.jpg', 'watch2.jpg']",WatchStore,2023-10-30T10:30:00Z
-8,Electric Kettle,HomeTech,Fast boiling electric kettle with auto shut-off feature.,1499,Home Appliances,80,"['kettle1.jpg', 'kettle2.jpg']",HomeStore,2023-11-15T09:00:00Z
-9,Yoga Mat,FitLife,Durable and non-slip yoga mat for all fitness levels.,999,Sports,120,"['yogamat1.jpg', 'yogamat2.jpg']",FitnessStore,2023-12-02T13:00:00Z
-10,Wireless Mouse,TechWorld,Compact and ergonomic wireless mouse with long battery life.,899,Computers,90,"['mouse1.jpg', 'mouse2.jpg']",GadgetStore,2023-11-18T15:00:00Z
-11,4K Smart TV,VisionTech,Ultra HD 4K smart TV with vibrant colors and built-in streaming apps.,39999,Electronics,25,"['tv1.jpg', 'tv2.jpg']",ElectroStore,2023-12-10T14:00:00Z
-12,Air Fryer,KitchenPro,Healthy air fryer for oil-free cooking with multiple presets.,4999,Home Appliances,50,"['airfryer1.jpg', 'airfryer2.jpg']",KitchenStore,2023-11-22T12:00:00Z
-13,Electric Guitar,MusicMaster,Professional electric guitar with high-quality sound and sleek design.,15999,Musical Instruments,15,"['guitar1.jpg', 'guitar2.jpg']",MusicStore,2023-10-25T18:00:00Z
-14,Backpack,TravelPro,Durable and spacious backpack suitable for travel and daily use.,1499,Accessories,100,"['backpack1.jpg', 'backpack2.jpg']",BagWorld,2023-11-28T11:00:00Z
-15,Fitness Tracker,FitLife,Advanced fitness tracker with heart rate monitoring and step counter.,2999,Electronics,60,"['tracker1.jpg', 'tracker2.jpg']",HealthStore,2023-12-08T10:00:00Z
-16,Blender,KitchenPro,"Powerful blender for smoothies, shakes, and food preparation.",2499,Home Appliances,70,"['blender1.jpg', 'blender2.jpg']",KitchenStore,2023-11-30T16:00:00Z
-17,Mechanical Keyboard,TechWorld,High-performance mechanical keyboard with customizable RGB lighting.,4999,Computers,40,"['keyboard1.jpg', 'keyboard2.jpg']",GadgetStore,2023-11-18T15:00:00Z
-18,Camping Tent,OutdoorPro,Waterproof and lightweight camping tent for 4 people.,5999,Outdoor,30,"['tent1.jpg', 'tent2.jpg']",AdventureGear,2023-12-03T14:00:00Z
-19,Action Camera,VisionTech,Compact action camera with 4K recording and waterproof design.,8999,Electronics,25,"['camera1.jpg', 'camera2.jpg']",ElectroStore,2023-11-25T10:00:00Z
-20,Bookshelf,HomeDecor,Modern wooden bookshelf with 5 spacious compartments.,6999,Furniture,20,"['bookshelf1.jpg', 'bookshelf2.jpg']",FurnitureHub,2023-11-20T13:00:00Z
+1,Wireless Earbuds,SoundTech,High-quality wireless earbuds with noise cancellation.,59.99,Electronics,150,"['image1.jpg', 'image2.jpg']",TechStore,2024-01-01T10:00:00Z
+2,Gaming Laptop,GamePro,High-performance gaming laptop with RGB keyboard.,1299.99,Computers,50,['image3.jpg'],LaptopHub,2024-01-02T11:00:00Z
+3,Smartphone,PhoneMax,Latest smartphone with cutting-edge features.,999.99,Mobiles,200,"['image4.jpg', 'image5.jpg']",MobileWorld,2024-01-03T12:00:00Z
+4,Bluetooth Speaker,AudioPlus,Portable Bluetooth speaker with deep bass.,79.99,Electronics,300,['image6.jpg'],SoundCity,2024-01-04T13:00:00Z
+5,Office Chair,ChairPro,Ergonomic office chair with lumbar support.,149.99,Furniture,100,['image7.jpg'],FurnitureMart,2024-01-05T14:00:00Z
+6,Fitness Tracker,FitTech,Advanced fitness tracker with heart rate monitoring.,49.99,Wearables,500,['image8.jpg'],HealthHub,2024-01-06T15:00:00Z
+7,4K Smart TV,VisionTech,Ultra HD 4K Smart TV with HDR support.,799.99,Electronics,75,"['image9.jpg', 'image10.jpg']",TVWorld,2024-01-07T16:00:00Z
+8,Coffee Maker,BrewMaster,Automatic coffee maker with multiple brew settings.,99.99,Kitchen Appliances,120,['image11.jpg'],KitchenStore,2024-01-08T17:00:00Z
+9,Electric Kettle,BoilPro,Fast boiling electric kettle with auto shut-off.,39.99,Kitchen Appliances,250,['image12.jpg'],ApplianceMart,2024-01-09T18:00:00Z
+10,Running Shoes,RunFit,Lightweight running shoes with superior cushioning.,89.99,Footwear,400,['image13.jpg'],ShoeStore,2024-01-10T19:00:00Z
+11,Wireless Mouse,ClickTech,Ergonomic wireless mouse with adjustable DPI.,29.99,Accessories,600,['image14.jpg'],GadgetHub,2024-01-11T20:00:00Z
+12,Gaming Headset,GameSound,Surround sound gaming headset with noise isolation.,99.99,Accessories,150,['image15.jpg'],GameGear,2024-01-12T21:00:00Z
+13,Tablet,TabPro,High-performance tablet with stylus support.,499.99,Computers,80,['image16.jpg'],TabletWorld,2024-01-13T22:00:00Z
+14,Smartwatch,WatchTech,Feature-rich smartwatch with health tracking.,199.99,Wearables,300,['image17.jpg'],TechStore,2024-01-14T23:00:00Z
+15,Backpack,PackPro,Durable and spacious backpack for travel and work.,49.99,Accessories,350,['image18.jpg'],BagWorld,2024-01-15T00:00:00Z
+16,Electric Scooter,EcoRide,Eco-friendly electric scooter with long battery life.,599.99,Vehicles,40,['image19.jpg'],EcoStore,2024-01-16T01:00:00Z
+17,Yoga Mat,FlexFit,Non-slip yoga mat with extra cushioning.,29.99,Fitness,500,['image20.jpg'],FitnessGear,2024-01-17T02:00:00Z
+18,Digital Camera,PhotoPro,Compact digital camera with 4K video recording.,399.99,Photography,100,['image21.jpg'],CameraStore,2024-01-18T03:00:00Z
+19,Electric Toothbrush,SmileTech,Rechargeable electric toothbrush with multiple modes.,49.99,Personal Care,300,['image22.jpg'],CareMart,2024-01-19T04:00:00Z
+20,Smart Home Hub,HomeConnect,Central hub for controlling smart home devices.,129.99,Smart Home,200,['image23.jpg'],SmartWorld,2024-01-20T05:00:00Z
+21,Bluetooth Speaker,JBL,Portable Bluetooth speaker with high-quality sound.,2999.0,Electronics,25,['https://example.com/images/bluetooth_speaker.jpg'],TechMart,2025-01-01T12:00:00Z
+22,Yoga Mat,Liforme,Eco-friendly yoga mat with excellent grip.,3999.0,Fitness,40,['https://example.com/images/yoga_mat.jpg'],Wellness Store,2025-01-01T12:00:00Z
+23,Wireless Earbuds,Sony,Noise-canceling wireless earbuds with a sleek design.,9999.0,Electronics,15,['https://example.com/images/wireless_earbuds.jpg'],GadgetZone,2025-01-01T12:00:00Z
+24,Electric Kettle,Philips,Fast-boiling electric kettle with a 1.5L capacity.,2199.0,Home Appliances,50,['https://example.com/images/electric_kettle.jpg'],KitchenPro,2025-01-01T12:00:00Z
+25,Men's Running Shoes,Nike,Comfortable and durable running shoes for men.,5999.0,Footwear,30,['https://example.com/images/running_shoes.jpg'],SportsWorld,2025-01-01T12:00:00Z
+26,Women's Handbag,Michael Kors,Stylish handbag with multiple compartments.,8999.0,Accessories,20,['https://example.com/images/handbag.jpg'],FashionHub,2025-01-01T12:00:00Z
+27,Gaming Chair,Secretlab,Ergonomic gaming chair with adjustable armrests.,22999.0,Furniture,10,['https://example.com/images/gaming_chair.jpg'],FurniTech,2025-01-01T12:00:00Z
+28,4K Smart TV,Samsung,55-inch 4K UHD Smart TV with HDR support.,45999.0,Electronics,8,['https://example.com/images/4k_smart_tv.jpg'],TechWorld,2025-01-01T12:00:00Z
+29,Cookware Set,Prestige,Non-stick cookware set with 5 pieces.,3299.0,Kitchen,60,['https://example.com/images/cookware_set.jpg'],KitchenKing,2025-01-01T12:00:00Z
+30,Smartwatch,Garmin,Fitness smartwatch with GPS and heart rate monitor.,15999.0,Wearables,12,['https://example.com/images/smartwatch.jpg'],FitnessGear,2025-01-01T12:00:00Z
+31,Gaming Laptop,Asus,High-performance gaming laptop with RTX graphics.,89999.0,Electronics,5,['https://example.com/images/gaming_laptop.jpg'],Gamer's Paradise,2025-01-01T12:00:00Z
+32,Electric Bike,Hero,Eco-friendly electric bike with a range of 50 km.,45999.0,Automotive,7,['https://example.com/images/electric_bike.jpg'],EcoWheels,2025-01-01T12:00:00Z
+33,DSLR Camera,Canon,24MP DSLR camera with 18-55mm lens kit.,42999.0,Electronics,10,['https://example.com/images/dslr_camera.jpg'],ShutterWorld,2025-01-01T12:00:00Z
+34,Air Purifier,Dyson,Advanced air purifier with HEPA filtration.,34999.0,Home Appliances,15,['https://example.com/images/air_purifier.jpg'],CleanAir,2025-01-01T12:00:00Z
+35,Electric Toothbrush,Oral-B,Rechargeable electric toothbrush with multiple modes.,2999.0,Personal Care,35,['https://example.com/images/electric_toothbrush.jpg'],CareMart,2025-01-01T12:00:00Z
+36,Bean Bag,Sattva,Comfortable bean bag with high-quality fabric.,2499.0,Furniture,25,['https://example.com/images/bean_bag.jpg'],HomeStyle,2025-01-01T12:00:00Z
+37,Cordless Vacuum Cleaner,Eureka Forbes,Lightweight cordless vacuum cleaner with powerful suction.,9999.0,Home Appliances,18,['https://example.com/images/cordless_vacuum.jpg'],CleanPro,2025-01-01T12:00:00Z
+38,Men's Leather Jacket,Levi's,Premium leather jacket for men with a stylish look.,12999.0,Apparel,20,['https://example.com/images/leather_jacket.jpg'],StyleHub,2025-01-01T12:00:00Z
+39,Wireless Mouse,Logitech,Ergonomic wireless mouse with high precision.,1499.0,Accessories,45,['https://example.com/images/wireless_mouse.jpg'],TechStore,2025-01-01T12:00:00Z
+40,Coffee Maker,Nespresso,Compact coffee maker for quick and easy brewing.,7999.0,Kitchen,22,['https://example.com/images/coffee_maker.jpg'],BrewWorld,2025-01-01T12:00:00Z
+41,Smartphone,Apple,iPhone 14 with A15 Bionic chip and 128GB storage.,79999.0,Electronics,10,['https://example.com/images/iphone14.jpg'],TechStore,2025-01-01T12:00:00Z
+42,Wireless Keyboard,Logitech,Compact wireless keyboard with long battery life.,2499.0,Accessories,50,['https://example.com/images/wireless_keyboard.jpg'],OfficeTech,2025-01-01T12:00:00Z
+43,Digital Watch,Casio,Water-resistant digital watch with alarm and stopwatch.,1999.0,Wearables,30,['https://example.com/images/digital_watch.jpg'],WatchWorld,2025-01-01T12:00:00Z
+44,Microwave Oven,IFB,20L convection microwave oven with multiple cooking modes.,10999.0,Home Appliances,15,['https://example.com/images/microwave_oven.jpg'],HomeEssentials,2025-01-01T12:00:00Z
+45,Office Chair,Godrej,Ergonomic office chair with lumbar support.,7499.0,Furniture,20,['https://example.com/images/office_chair.jpg'],FurniMart,2025-01-01T12:00:00Z
+46,Electric Scooter,Ola,Electric scooter with a range of 100 km per charge.,84999.0,Automotive,8,['https://example.com/images/electric_scooter.jpg'],GreenWheels,2025-01-01T12:00:00Z
+47,Bookshelf,Ikea,Stylish wooden bookshelf with 5 shelves.,5999.0,Furniture,25,['https://example.com/images/bookshelf.jpg'],HomeDecor,2025-01-01T12:00:00Z
+48,Action Camera,GoPro,Waterproof action camera with 4K video recording.,29999.0,Electronics,12,['https://example.com/images/action_camera.jpg'],CameraStore,2025-01-01T12:00:00Z
+49,Treadmill,Fitkit,Motorized treadmill with LCD display and heart rate monitor.,34999.0,Fitness,10,['https://example.com/images/treadmill.jpg'],FitnessPro,2025-01-01T12:00:00Z
+50,Wireless Mouse,HP,Sleek wireless mouse with adjustable DPI settings.,1299.0,Accessories,60,['https://example.com/images/wireless_mouse.jpg'],TechMart,2025-01-01T12:00:00Z
+51,Kitchen Mixer,Bosch,High-performance kitchen mixer with multiple speed settings.,4999.0,Kitchen,35,['https://example.com/images/kitchen_mixer.jpg'],KitchenGear,2025-01-01T12:00:00Z
+52,Men's Sneakers,Adidas,Lightweight and comfortable sneakers for men.,3999.0,Footwear,25,['https://example.com/images/mens_sneakers.jpg'],ShoeStore,2025-01-01T12:00:00Z
+53,Smart Doorbell,Ring,Wi-Fi-enabled doorbell with HD video and two-way audio.,9999.0,Home Security,20,['https://example.com/images/smart_doorbell.jpg'],SecureHome,2025-01-01T12:00:00Z
+54,Electric Blanket,Sunbeam,Heated electric blanket with adjustable temperature settings.,2999.0,Home Appliances,40,['https://example.com/images/electric_blanket.jpg'],CozyLiving,2025-01-01T12:00:00Z
+55,Water Bottle,Hydro Flask,Insulated stainless steel water bottle with 1L capacity.,1999.0,Fitness,100,['https://example.com/images/water_bottle.jpg'],WellnessStore,2025-01-01T12:00:00Z
+56,Graphic Tablet,Wacom,Professional graphic tablet with pressure sensitivity.,19999.0,Electronics,15,['https://example.com/images/graphic_tablet.jpg'],ArtistGear,2025-01-01T12:00:00Z
+57,Men's Watch,Fossil,Classic analog watch with a leather strap.,5999.0,Accessories,30,['https://example.com/images/mens_watch.jpg'],TimeZone,2025-01-01T12:00:00Z
+58,LED Desk Lamp,Philips,Energy-efficient LED desk lamp with adjustable brightness.,2499.0,Home Decor,50,['https://example.com/images/led_desk_lamp.jpg'],LightWorld,2025-01-01T12:00:00Z
+59,VR Headset,Oculus,Immersive VR headset with a high-resolution display.,29999.0,Electronics,8,['https://example.com/images/vr_headset.jpg'],Gamer's Paradise,2025-01-01T12:00:00Z
+60,Fitness Tracker,Fitbit,Wearable fitness tracker with sleep monitoring.,7999.0,Wearables,20,['https://example.com/images/fitness_tracker.jpg'],FitnessGear,2025-01-01T12:00:00Z
+61,Gaming Laptop,ASUS,"ASUS ROG Strix G15 with AMD Ryzen 9, 16GB RAM, and RTX 3060.",129999.0,Electronics,10,['https://example.com/images/gaming_laptop.jpg'],GameTech,2025-01-01T12:00:00Z
+62,Electric Kettle,Prestige,1.5L stainless steel electric kettle with auto shut-off.,1999.0,Kitchen,40,['https://example.com/images/electric_kettle.jpg'],KitchenWorld,2025-01-01T12:00:00Z
+63,Bluetooth Speaker,JBL,Portable JBL speaker with 12-hour battery life.,4999.0,Audio,30,['https://example.com/images/bluetooth_speaker.jpg'],SoundHub,2025-01-01T12:00:00Z
+64,Yoga Mat,Decathlon,Eco-friendly yoga mat with anti-slip surface.,999.0,Fitness,50,['https://example.com/images/yoga_mat.jpg'],FitnessGear,2025-01-01T12:00:00Z
+65,Wireless Earbuds,Sony,Noise-canceling wireless earbuds with 24-hour battery life.,8999.0,Audio,25,['https://example.com/images/wireless_earbuds.jpg'],AudioTech,2025-01-01T12:00:00Z
+66,Air Purifier,Dyson,High-efficiency air purifier with HEPA filter.,24999.0,Home Appliances,12,['https://example.com/images/air_purifier.jpg'],CleanAir,2025-01-01T12:00:00Z
+67,Running Shoes,Nike,Lightweight and durable running shoes for men.,4999.0,Footwear,20,['https://example.com/images/running_shoes.jpg'],ShoeWorld,2025-01-01T12:00:00Z
+68,4K Smart TV,Samsung,55-inch 4K Ultra HD Smart TV with HDR support.,69999.0,Electronics,8,['https://example.com/images/smart_tv.jpg'],HomeTech,2025-01-01T12:00:00Z
+69,Laptop Backpack,Wildcraft,Water-resistant laptop backpack with multiple compartments.,1999.0,Accessories,35,['https://example.com/images/laptop_backpack.jpg'],BagZone,2025-01-01T12:00:00Z
+70,Gaming Chair,GreenSoul,Ergonomic gaming chair with adjustable armrests.,14999.0,Furniture,15,['https://example.com/images/gaming_chair.jpg'],FurniWorld,2025-01-01T12:00:00Z
+71,Action Figure,Marvel,Collectible Spider-Man action figure with detailed design.,2999.0,Toys,50,['https://example.com/images/action_figure.jpg'],ToyStore,2025-01-01T12:00:00Z
+72,Electric Toothbrush,Oral-B,Rechargeable electric toothbrush with multiple modes.,3499.0,Personal Care,40,['https://example.com/images/electric_toothbrush.jpg'],CareHub,2025-01-01T12:00:00Z
+73,Smart Thermostat,Nest,Wi-Fi-enabled smart thermostat with energy-saving features.,14999.0,Home Automation,10,['https://example.com/images/smart_thermostat.jpg'],SmartHome,2025-01-01T12:00:00Z
+74,DSLR Camera,Canon,Canon EOS 1500D with 24.1MP and Wi-Fi connectivity.,35999.0,Electronics,10,['https://example.com/images/dslr_camera.jpg'],PhotoWorld,2025-01-01T12:00:00Z
+75,Robot Vacuum,iRobot,Smart robot vacuum cleaner with automatic dirt disposal.,44999.0,Home Appliances,5,['https://example.com/images/robot_vacuum.jpg'],CleanBot,2025-01-01T12:00:00Z
+76,Coffee Maker,Nespresso,Compact coffee maker with one-touch brewing system.,9999.0,Kitchen,25,['https://example.com/images/coffee_maker.jpg'],KitchenEssentials,2025-01-01T12:00:00Z
+77,Fitness Tracker,Fitbit,Fitness tracker with heart rate monitor and sleep tracking.,6999.0,Wearables,20,['https://example.com/images/fitness_tracker.jpg'],HealthTech,2025-01-01T12:00:00Z
+78,Noise-Canceling Headphones,Bose,Over-ear headphones with advanced noise cancellation.,24999.0,Audio,10,['https://example.com/images/noise_canceling_headphones.jpg'],AudioWorld,2025-01-01T12:00:00Z
+79,Electric Grill,Philips,Smokeless indoor electric grill with non-stick surface.,7499.0,Kitchen,18,['https://example.com/images/electric_grill.jpg'],GrillMaster,2025-01-01T12:00:00Z
+80,Portable Power Bank,Anker,"10,000mAh portable power bank with fast charging.",2499.0,Accessories,50,['https://example.com/images/power_bank.jpg'],TechStore,2025-01-01T12:00:00Z

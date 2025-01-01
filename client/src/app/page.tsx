@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { clearUser } from "./redux/features/userSlice";
 import ProductsList from "@/components/ProductsList";
+import RecommendList from "@/components/RecommendList";
 import Link from "next/link";
 import HelpChat from "@/components/HelpChat";
 import HelpButton from "@/components/HelpButton";
@@ -30,7 +31,8 @@ export default function Home() {
   return (
     <main>
        <h1>Welcome to the Home Page!</h1>
-       <ProductsList />
+       {/* <ProductsList /> */}
+       <RecommendList />
        <Link href="/cart">Go to Cart</Link>
        <br/>
        <Link href="/profile">Profile</Link>
