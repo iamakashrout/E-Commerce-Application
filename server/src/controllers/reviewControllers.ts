@@ -7,10 +7,10 @@ import Product from "../models/productSchema";
 // give product review
 export const addReview = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { productId } = req.params;
-        const { user, rating, reviewText } = req.body;
+        // const { productId } = req.params;
+        const { user, orderId, productId, rating, reviewText } = req.body;
 
-        if (!user || !productId || !rating) {
+        if (!user || !orderId || !productId || !rating) {
             res.status(400).json({ success: false, error: 'Please fill all mandatory fields.' });
             return;
         }
@@ -21,14 +21,15 @@ export const addReview = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const existingReview = await Review.findOne({ user: user, productId: productId });
+        const existingReview = await Review.findOne({ user: user, productId: productId, orderId: orderId });
         if (existingReview) {
-            res.status(400).json({ success: false, error: 'User has already reviewed this product.' });
+            res.status(400).json({ success: false, error: 'User has already reviewed this product order.' });
             return;
         }
 
         const newReview = new Review({
             user,
+            orderId,
             productId,
             rating,
             reviewText,
@@ -73,9 +74,9 @@ export const getProductReviews = async (req: Request, res: Response): Promise<vo
 // get review of a product by a user
 export const getUserReview = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { productId, user } = req.params;
+        const { orderId, productId } = req.params;
 
-        const userReview = await Review.findOne({ productId, user });
+        const userReview = await Review.findOne({ orderId, productId });
         if (!userReview) {
             res.status(200).json({ success: true, data:{"rating": 0, "reviewText": ""} });
             return;

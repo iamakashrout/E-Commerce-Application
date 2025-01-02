@@ -74,10 +74,10 @@ export default function OrderDetailsPage() {
                             <p>Quantity: {item.quantity}</p>
                             <p>Price: {item.price}</p>
                             <button
-                                onClick={() => router.push(`/review?productId=${item.productId}`)}
+                                onClick={() => router.push(`/review?orderId=${orderId}&productId=${item.productId}`)}
                                 style={{ marginBottom: '10px' }}
                             >
-                                View Details
+                                Add Review
                             </button>
                         </div>
                     ))}

@@ -17,6 +17,7 @@ interface Product {
 
 export default function AddReviewPage() {
     const searchParams = useSearchParams();
+    const orderId = searchParams.get('orderId');
     const productId = searchParams.get('productId');
     const token = useSelector((data: RootState) => data.userState.token);
     const user = useSelector((data: RootState) => data.userState.userEmail);
@@ -29,7 +30,7 @@ export default function AddReviewPage() {
 
     const fetchReview = async () => {
         try {
-            const response = await apiClient.get(`/review/getUserReview/${productId}/${user}`, {
+            const response = await apiClient.get(`/review/getUserReview/${orderId}/${productId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -57,6 +58,7 @@ export default function AddReviewPage() {
                 });
 
                 if (response.data.success) {
+                    console.log(response.data);
                     setProductDetails(response.data.data);
                 } else {
                     console.error('Failed to fetch product details:', response.data.error);
@@ -73,14 +75,16 @@ export default function AddReviewPage() {
     }, []);
 
     const handleSubmitReview = async () => {
+        console.log(user, orderId, productId, rating, review);
         try {
             const response = await apiClient.post(
-                `/review/addReview/${productId}`,
+                `/review/addReview`,
                 {
                     user,
+                    orderId,
                     productId,
-                    reviewText: review,
                     rating,
+                    reviewText: review,
                 },
                 {
                     headers: {
@@ -115,7 +119,7 @@ export default function AddReviewPage() {
                         <img src={productDetails.imageUrl} alt={productDetails.name} style={{ width: '200px' }} />
                     )}
                     <div>
-                        {prevRating !== 0 ? (
+                        {(prevRating !== 0) ? (
                             <div>
                                 <h4>{prevRating} Stars</h4>
                                 <p>{prevReview}</p>

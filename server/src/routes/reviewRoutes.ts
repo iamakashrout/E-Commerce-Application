@@ -4,8 +4,8 @@ import { verifyToken } from "../middleware/auth";
 
 const router = express.Router();
 
-router.post("/addReview/:productId", verifyToken, addReview);
+router.post("/addReview", verifyToken, addReview);
 router.get("/getProductReviews/:productId", verifyToken, getProductReviews);
-router.get("/getUserReview/:productId/:user", verifyToken, getUserReview);
+router.get("/getUserReview/:orderId/:productId", verifyToken, getUserReview);
 
 export default router;
