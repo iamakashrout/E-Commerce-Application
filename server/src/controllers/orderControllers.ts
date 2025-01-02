@@ -41,12 +41,6 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
         // Save the order to the database
         const savedOrder = await newOrder.save();
 
-        // Respond with the saved order
-        res.status(201).json({
-            success: true,
-            message: 'Order placed successfully.',
-            data: savedOrder,
-        });
 
         for (const product of products) {
             const currProd = await Product.findOne({ id: product.productId });
@@ -58,20 +52,22 @@ export const placeOrder = async (req: Request, res: Response): Promise<void> => 
             await currProd.save();
         }
 
-        const cart = await Cart.findOne({user}); // update cart
-        if(cart){
-            for (const product of products) {
-                const itemIndex = cart.items.findIndex((item) => item.productId === product.productId);
-                if (itemIndex > -1) {
-                    if (product.quantity && cart.items[itemIndex].quantity > product.quantity) {
-                      cart.items[itemIndex].quantity -= product.quantity;
-                    } else {
-                      cart.items.splice(itemIndex, 1);
-                    }
-                  } 
-            }
-            await cart.save();
-        }
+        await Cart.findOneAndUpdate(
+            { user }, // filter
+            {
+                $pull: { 
+                    items: { productId: { $in: products.map(( p: any ) => p.productId) } } // remove products
+                }
+            },
+            { new: true, upsert: false }
+        );
+
+        // Respond with the saved order
+        res.status(201).json({
+            success: true,
+            message: 'Order placed successfully.',
+            data: savedOrder,
+        });
 
     } catch (error) {
         console.error("Error placing order:", error);
@@ -150,7 +146,7 @@ export const cancelOrder = async (req: Request, res: Response): Promise<void> =>
 // Stripe payment gateway
 export const paymentGateway = async (req: Request, res: Response): Promise<void> => {
     try {
-        const {products, orderId}=req.body;
+        const {products}=req.body;
         const lineItems=products.map((product: any)=>({
             price_data: {
                 currency: "usd",
@@ -168,8 +164,8 @@ export const paymentGateway = async (req: Request, res: Response): Promise<void>
             payment_method_types: ["card"],
             line_items: lineItems,
             mode: "payment",
-            success_url: `http://localhost:3000/orderDetails?orderId=${orderId}`,
-            cancel_url: "http://localhost:3000/"
+            success_url: "http://localhost:3000/paymentStatus?status=True",
+            cancel_url: "http://localhost:3000/paymentStatus?status=False"
         });
 
         res.status(200).json({success:true, id: session.id});

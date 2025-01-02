@@ -5,16 +5,18 @@ import { Address } from '@/types/address';
 import { Total } from '@/types/order';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import apiClient from '@/utils/axiosInstance';
 import { loadStripe } from '@stripe/stripe-js';
+import { setOrder } from '../redux/features/orderSlice';
 
 export default function CheckoutPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const items = searchParams.get('items');
     const selectedItems = items ? JSON.parse(items) : [];
+    const dispatch = useDispatch();
     const token = useSelector((data: RootState) => data.userState.token);
     const user = useSelector((data: RootState) => data.userState.userEmail);
 
@@ -35,7 +37,7 @@ export default function CheckoutPage() {
                 if (response.data.success) {
                     setSavedAddresses(response.data.data.addresses || []);
                     // console.log('Addresses:', savedAddresses);
-                    console.log(response.data.data.addresses);
+                    // console.log(response.data.data.addresses);
                 } else {
                     console.error('Failed to fetch addresses:', response.data.error);
                 }
@@ -48,6 +50,10 @@ export default function CheckoutPage() {
     }, []);
 
     const handleConfirmOrder = async () => {
+        if (!user) {
+            alert('User could not be validated.');
+            return;
+        }
         if (!address) {
             alert('Please select or provide a valid address.');
             return;
@@ -76,62 +82,38 @@ export default function CheckoutPage() {
                 grandTotal,
             } as Total,
         };
-        console.log(orderPayload);
+        console.log('order payload', orderPayload);
 
         try {
-            const response = await apiClient.post(`/order/placeOrder`, orderPayload, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+
+            dispatch(setOrder(orderPayload));
+            const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+
+            const stripeResponse = await apiClient.post(`/order/paymentGateway`,
+                orderPayload,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            const session = stripeResponse.data;
+
+            const result = stripe?.redirectToCheckout({
+                sessionId: session.id
             });
 
-            if (response.data.success) {
-                const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
-
-                const stripePayload = {
-                    orderId: response.data.data.orderId,
-                    user,
-                    products: selectedItems.map((item: CartItem) => ({
-                        productId: item.productId,
-                        quantity: item.quantity,
-                        name: item.name,
-                        price: item.price,
-                    })),
-                    paymentMode,
-                    address,
-                    total: {
-                        subtotal,
-                        tax,
-                        shipping,
-                        discount,
-                        grandTotal,
-                    } as Total,
-                };
-
-                const stripeResponse = await apiClient.post(`/order/paymentGateway`, 
-                    stripePayload,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
-
-                const session = stripeResponse.data;
-
-                const result = stripe?.redirectToCheckout({
-                    sessionId: session.id
-                });
-
-                if ((await result)?.error) {
-                    console.error('Error during checkout redirect:', (await result)?.error.message);
-                    alert(`Error: ${(await result)?.error.message}`);
-                }
-
-            } else {
-                console.error('Failed to place order:', response.data.error);
-                alert('Failed to place order. Please try again.');
+            if ((await result)?.error) {
+                console.error('Error during checkout redirect:', (await result)?.error.message);
+                alert(`Error: ${(await result)?.error.message}`);
             }
+            else {
+                console.log('Payment gateway called:', result);
+                alert('Redirecting to payment gateway...');
+            }
+
+            // router.push(`/paymentStatus?status=True`);
         } catch (err: any) {
             console.error('Order error:', err);
             alert('An error occurred while placing the order.');

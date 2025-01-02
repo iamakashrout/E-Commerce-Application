@@ -6,6 +6,6 @@ export interface Product {
     price: number;
     category: string;
     stock: number;
-    images?: string[];
+    images: string[];
     sellerName: string;
 }

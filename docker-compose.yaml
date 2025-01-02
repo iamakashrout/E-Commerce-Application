@@ -1,0 +1,19 @@
+services:
+
+  backend:
+    build: server
+    ports:
+      - "5000:5000"
+    networks:
+      - ecommerce
+
+  frontend:
+    build: client
+    ports:
+      - "3000:3000"
+    networks:
+      - ecommerce
+
+networks:
+  ecommerce:
+    driver: bridge 
