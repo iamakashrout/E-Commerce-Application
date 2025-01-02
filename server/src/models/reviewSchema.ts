@@ -5,6 +5,7 @@ export interface IReview extends Document {
   user: string;
   orderId: string;
   productId: string;
+  quantity: number;
   rating: number;
   reviewText?: string;
   createdAt: Date;
@@ -15,6 +16,7 @@ const ReviewSchema: Schema = new mongoose.Schema({
   user: { type: String, required: true },
   orderId: { type: String, required: true },
   productId: { type: String, required: true },
+  quantity: { type: Number, required: true },
   rating: { type: Number, required: true, min: 1, max: 5 },
   reviewText: { type: String },
   createdAt: { type: Date, default: Date.now },

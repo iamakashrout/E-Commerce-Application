@@ -19,6 +19,7 @@ export default function AddReviewPage() {
     const searchParams = useSearchParams();
     const orderId = searchParams.get('orderId');
     const productId = searchParams.get('productId');
+    const quantity = searchParams.get('quantity');
     const token = useSelector((data: RootState) => data.userState.token);
     const user = useSelector((data: RootState) => data.userState.userEmail);
 
@@ -75,7 +76,7 @@ export default function AddReviewPage() {
     }, []);
 
     const handleSubmitReview = async () => {
-        console.log(user, orderId, productId, rating, review);
+        console.log(user, orderId, productId, quantity, rating, review);
         try {
             const response = await apiClient.post(
                 `/review/addReview`,
@@ -83,6 +84,7 @@ export default function AddReviewPage() {
                     user,
                     orderId,
                     productId,
+                    quantity,
                     rating,
                     reviewText: review,
                 },

@@ -8,9 +8,9 @@ import Product from "../models/productSchema";
 export const addReview = async (req: Request, res: Response): Promise<void> => {
     try {
         // const { productId } = req.params;
-        const { user, orderId, productId, rating, reviewText } = req.body;
+        const { user, orderId, productId, quantity, rating, reviewText } = req.body;
 
-        if (!user || !orderId || !productId || !rating) {
+        if (!user || !orderId || !productId || !quantity || !rating) {
             res.status(400).json({ success: false, error: 'Please fill all mandatory fields.' });
             return;
         }
@@ -31,6 +31,7 @@ export const addReview = async (req: Request, res: Response): Promise<void> => {
             user,
             orderId,
             productId,
+            quantity,
             rating,
             reviewText,
         });
