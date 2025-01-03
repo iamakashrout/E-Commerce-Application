@@ -20,7 +20,7 @@ export const getNotifications = async (req: Request, res: Response) => {
   try {
     const chats = await Message.aggregate([
       { $match: { receiverId: userId, isRead: false } },
-      { $group: { _id: "$chatRoomId", count: { $sum: 1 } } },
+      { $group: { _id: "$chatRoomId", senderId: { $first: "$senderId" }, count: { $sum: 1 } } },
     ]);
     res.json({ success: true, data: chats });
   } catch (err) {

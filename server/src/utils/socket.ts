@@ -29,6 +29,7 @@ const socket = (io: Server) => {
                 // Emit notification to the receiver
                 io.emit(`notification-${receiverId}`, {
                     chatRoomId,
+                    senderId,
                     count: 1, // Increment by 1 for this chat
                 });
             } catch (err) {
@@ -37,10 +38,11 @@ const socket = (io: Server) => {
         });
 
          // Mark messages as read
-         socket.on('markRead', async ({ chatRoomId, userId }) => {
+         socket.on('markRead', async ({ chatRoomId, userId, senderId }) => {
             try {
                 io.emit(`notification-${userId}`, {
                     chatRoomId,
+                    senderId,
                     count: 0, // Reset count for this chat
                 });
             } catch (err) {

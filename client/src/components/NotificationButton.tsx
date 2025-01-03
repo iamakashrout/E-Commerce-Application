@@ -8,12 +8,12 @@ const socket = io(socketURL);
 
 interface ChatNotification {
     _id: string;
+    senderId: string;
     count: number;
 }
 
 interface NotificationsProps {
     userId: string;
-    // onChatOpen: (chatRoomId: string, receiverId: string) => void;
 }
 
 export default function NotificationsButton({ userId }: NotificationsProps) {
@@ -39,13 +39,15 @@ export default function NotificationsButton({ userId }: NotificationsProps) {
             setNotifications((prev) => {
                 const existing = prev.find((n) => n._id === data.chatRoomId);
                 if (existing) {
-                    return prev.map((n) =>
-                        n._id === data.chatRoomId 
-                            ? { ...n, count: data.count === 0 ? 0 : n.count + data.count } 
-                            : n
-                    );
+                    return data.count === 0
+                        ? prev.filter((n) => n._id !== data.chatRoomId) // Remove the item if count is 0
+                        : prev.map((n) =>
+                            n._id === data.chatRoomId
+                                ? { ...n, count: n.count + data.count } // Increment count if count is non-zero
+                                : n
+                        );
                 }
-                return [...prev, {_id: data.chatRoomId, count: data.count}];
+                return [...prev, { _id: data.chatRoomId, senderId: data.senderId, count: data.count }];
             });
         });
 
@@ -54,43 +56,58 @@ export default function NotificationsButton({ userId }: NotificationsProps) {
         };
     }, []);
 
-    const handleChatOpen = async (chatRoomId: string, receiverId: string) => {
+    const handleChatOpen = async (chatRoomId: string, receiverId: string, senderId: string) => {
         try {
-            const response = await apiClient.post(`/messages/markRead` ,{chatRoomId, userId: receiverId});
+            const response = await apiClient.post(`/messages/markRead`, { chatRoomId, userId: receiverId });
             console.log('read', response.data);
         } catch (err) {
             console.error('Error marking as read:', err);
         }
-        // onChatOpen(chatRoomId, receiverId);
-        console.log('notifs', notifications);
-        socket.emit('markRead', { chatRoomId, userId });
+        socket.emit('markRead', { chatRoomId, userId, senderId });
     };
 
     return (
         <div className="relative">
             <button
                 onClick={() => setShowList(!showList)}
-                className="relative p-2 bg-blue-500 text-white rounded-full"
+                className="absolute top-0 right-0 p-2 bg-blue-500 text-white rounded-full"
             >
-                🔔 {notifications.reduce((sum, n) => sum + n.count, 0)}
+                Notifications {notifications.reduce((sum, n) => sum + n.count, 0)}
             </button>
 
             {showList && (
-                <div className="absolute right-0 mt-2 w-64 bg-white border shadow-lg rounded-md z-10">
-                    {notifications.length > 0 ? (
-                        notifications.map((notif, index) => (
-                            <div
-                                key={index}
-                                className="p-2 border-b flex justify-between cursor-pointer hover:bg-gray-100"
-                                onClick={() => handleChatOpen(notif._id, userId)}
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-20">
+                    <div className="bg-white w-80 rounded-md shadow-lg">
+                        <div className="flex justify-between items-center p-4 border-b">
+                            <h3 className="text-lg font-semibold text-black">Notifications</h3>
+                            <button
+                                onClick={() => setShowList(false)}
+                                className="text-gray-500 hover:text-gray-800"
                             >
-                                <span className="text-black">Chat {notif._id}</span>
-                                <span className="text-red-500">{notif.count}</span>
-                            </div>
-                        ))
-                    ) : (
-                        <div className="p-2 text-center">No notifications</div>
-                    )}
+                                ✖
+                            </button>
+                        </div>
+                        <div className="p-4 max-h-80 overflow-y-auto text-black">
+                            {notifications.length > 0 ? (
+                                notifications.map((notif, index) => (
+                                    <div key={index} className="p-2 border-b cursor-pointer">
+                                        <div className="flex justify-between hover:bg-gray-100">
+                                            <span className="text-black">Chat {notif._id}</span>
+                                            <span className="text-red-500">{notif.count}</span>
+                                        </div>
+                                        <button
+                                            onClick={() => handleChatOpen(notif._id, userId, notif.senderId)}
+                                            className="block mt-2 text-blue-500"
+                                        >
+                                            Mark as Read
+                                        </button>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="p-2 text-center">No notifications</div>
+                            )}
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
