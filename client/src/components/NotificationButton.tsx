@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import apiClient from '@/utils/axiosInstance';
 import socketURL from '@/utils/socketInstance';
+import ChatBox from './ChatBox';
 
 const socket = io(socketURL);
 
@@ -19,6 +20,9 @@ interface NotificationsProps {
 export default function NotificationsButton({ userId }: NotificationsProps) {
     const [notifications, setNotifications] = useState<ChatNotification[]>([]);
     const [showList, setShowList] = useState(false);
+    const [isChatOpen, setIsChatOpen] = useState(false);
+    const [chatRoom, setChatRoom] = useState<string | null>(null);
+    const [receiverId, setReceiverId] = useState<string | null>(null);
 
     useEffect(() => {
         // Fetch initial unread messages count
@@ -36,19 +40,19 @@ export default function NotificationsButton({ userId }: NotificationsProps) {
 
         // Listen for live notifications
         socket.on(`notification-${userId}`, (data) => {
-            setNotifications((prev) => {
-                const existing = prev.find((n) => n._id === data.chatRoomId);
-                if (existing) {
-                    return data.count === 0
-                        ? prev.filter((n) => n._id !== data.chatRoomId) // Remove the item if count is 0
-                        : prev.map((n) =>
-                            n._id === data.chatRoomId
-                                ? { ...n, count: n.count + data.count } // Increment count if count is non-zero
-                                : n
-                        );
-                }
-                return [...prev, { _id: data.chatRoomId, senderId: data.senderId, count: data.count }];
-            });
+                setNotifications((prev) => {
+                    const existing = prev.find((n) => n._id === data.chatRoomId);
+                    if (existing) {
+                        return data.count === 0
+                            ? prev.filter((n) => n._id !== data.chatRoomId) // Remove the item if count is 0
+                            : prev.map((n) =>
+                                n._id === data.chatRoomId
+                                    ? { ...n, count: n.count + data.count } // Increment count if count is non-zero
+                                    : n
+                            );
+                    }
+                    return [...prev, { _id: data.chatRoomId, senderId: data.senderId, count: data.count }];
+                });
         });
 
         return () => {
@@ -60,6 +64,20 @@ export default function NotificationsButton({ userId }: NotificationsProps) {
         try {
             const response = await apiClient.post(`/messages/markRead`, { chatRoomId, userId: receiverId });
             console.log('read', response.data);
+            setChatRoom(chatRoomId);
+            setReceiverId(senderId);
+            setIsChatOpen(true);
+        } catch (err) {
+            console.error('Error marking as read:', err);
+        }
+        socket.emit('markRead', { chatRoomId, userId, senderId });
+    };
+
+    const handleCloseChat = async (chatRoomId: string, receiverId: string, senderId: string) => {
+        try {
+            const response = await apiClient.post(`/messages/markRead`, { chatRoomId, userId: receiverId });
+            console.log('closed', response.data);
+            setIsChatOpen(false);
         } catch (err) {
             console.error('Error marking as read:', err);
         }
@@ -68,12 +86,22 @@ export default function NotificationsButton({ userId }: NotificationsProps) {
 
     return (
         <div className="relative">
-            <button
+            {!showList ? (
+                <button
                 onClick={() => setShowList(!showList)}
                 className="absolute top-0 right-0 p-2 bg-blue-500 text-white rounded-full"
             >
                 Notifications {notifications.reduce((sum, n) => sum + n.count, 0)}
             </button>
+            ) : (
+                <button
+                onClick={() => setShowList(!showList)}
+                className="absolute top-0 right-0 p-2 bg-blue-500 text-white rounded-full"
+            >
+                Notifications
+            </button>
+            )}
+            
 
             {showList && (
                 <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-20">
@@ -102,12 +130,16 @@ export default function NotificationsButton({ userId }: NotificationsProps) {
                                             Mark as Read
                                         </button>
                                     </div>
+                                    
                                 ))
                             ) : (
                                 <div className="p-2 text-center">No notifications</div>
                             )}
                         </div>
                     </div>
+                    {isChatOpen && receiverId && chatRoom && <ChatBox chatRoomId={chatRoom}
+                                                            userId={userId}
+                                                            receiverId={receiverId} onClose={()=>handleCloseChat(chatRoom, userId, receiverId)} />}
                 </div>
             )}
         </div>
