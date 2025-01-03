@@ -5,15 +5,17 @@ import { useEffect, useState } from 'react';
 import apiClient from '@/utils/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
+import { Product } from '@/types/product';
+import ChatBox from '@/components/ChatBox';
 
-interface Product {
-    productId: string;
-    name: string;
-    description: string;
-    price: number;
-    quantity: number;
-    imageUrl?: string;
-}
+// interface Product {
+//     productId: string;
+//     name: string;
+//     description: string;
+//     price: number;
+//     quantity: number;
+//     imageUrl?: string;
+// }
 
 export default function AddReviewPage() {
     const searchParams = useSearchParams();
@@ -28,6 +30,7 @@ export default function AddReviewPage() {
     const [prevRating, setPrevRating] = useState(0);
     const [review, setReview] = useState('');
     const [rating, setRating] = useState(0);
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
     const fetchReview = async () => {
         try {
@@ -116,15 +119,24 @@ export default function AddReviewPage() {
                     <h2>{productDetails.name}</h2>
                     <p>{productDetails.description}</p>
                     <p>Price: ${productDetails.price}</p>
-                    <p>Quantity: {productDetails.quantity}</p>
-                    {productDetails.imageUrl && (
-                        <img src={productDetails.imageUrl} alt={productDetails.name} style={{ width: '200px' }} />
+                    <p>Quantity: {quantity}</p>
+                    {productDetails.images.length !== 0 && (
+                        <div className="flex flex-wrap gap-4">
+                            {productDetails.images.map((imgUrl, index) => (
+                                <img
+                                    key={index}
+                                    src={imgUrl}
+                                    alt={productDetails.name}
+                                    className="w-48 h-auto object-cover"
+                                />
+                            ))}
+                        </div>
                     )}
                     <div>
                         {(prevRating !== 0) ? (
                             <div>
-                                <h4>{prevRating} Stars</h4>
-                                <p>{prevReview}</p>
+                                <h4>Rating: {prevRating} Stars</h4>
+                                <p>Review: {prevReview}</p>
                             </div>
                         ) : (
                             <div>
@@ -153,6 +165,13 @@ export default function AddReviewPage() {
                             </div>
                         )}
                     </div>
+                    <button
+                        onClick={() => setIsChatOpen(true)}
+                        className="mt-6 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                    >
+                        Contact Seller
+                    </button>
+                    {isChatOpen && <ChatBox onClose={() => setIsChatOpen(false)} />}
                 </div>
             ) : (
                 <p>Loading product details...</p>

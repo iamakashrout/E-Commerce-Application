@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import apiClient from "@/utils/axiosInstance";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
+import ChatBox from "@/components/ChatBox";
 
 interface SalesDataPopupProps {
     productId: string;
@@ -12,6 +13,7 @@ export default function SalesData ({ productId, onClose }: SalesDataPopupProps) 
     const token = useSelector((data: RootState) => data.sellerState.token);
     const [salesData, setSalesData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [activeChat, setActiveChat] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchSalesData = async () => {
@@ -58,6 +60,7 @@ export default function SalesData ({ productId, onClose }: SalesDataPopupProps) 
                                     <th className="border border-gray-300 p-2">Quantity</th>
                                     <th className="border border-gray-300 p-2">Unit Price</th>
                                     <th className="border border-gray-300 p-2">Total</th>
+                                    <th className="border border-gray-300 p-2">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -67,6 +70,14 @@ export default function SalesData ({ productId, onClose }: SalesDataPopupProps) 
                                         <td className="border border-gray-300 p-2">{sale.quantity}</td>
                                         <td className="border border-gray-300 p-2">${sale.unitPrice}</td>
                                         <td className="border border-gray-300 p-2">${sale.total}</td>
+                                        <td className="border border-gray-300 p-2">
+                                            <button
+                                                onClick={() => setActiveChat(sale.orderId)}
+                                                className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                                            >
+                                                Messages
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -88,6 +99,13 @@ export default function SalesData ({ productId, onClose }: SalesDataPopupProps) 
                 >
                     Close
                 </button>
+
+                 {/* Render ChatBox if activeChat is set */}
+                 {activeChat && (
+                    <ChatBox
+                        onClose={() => setActiveChat(null)} // Close chatbox
+                    />
+                )}
             </div>
         </div>
     );

@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import {Order, SelectedProduct}  from '@/types/order';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import apiClient from '@/utils/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
@@ -77,7 +77,7 @@ export default function OrderDetailsPage() {
                                 onClick={() => router.push(`/review?orderId=${orderId}&productId=${item.productId}&quantity=${item.quantity}`)}
                                 style={{ marginBottom: '10px' }}
                             >
-                                Add Review
+                                View Details
                             </button>
                         </div>
                     ))}
