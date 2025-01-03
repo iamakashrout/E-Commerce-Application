@@ -9,6 +9,7 @@ import reviewRoutes from "./routes/reviewRoutes";
 import userRoutes from "./routes/userRoutes";
 import searchRoutes from "./routes/searchRoutes";
 import { connectToDatabase } from './mongo';
+
 import cors from 'cors';
 const app = express();
 const port = process.env.PORT || 5000;

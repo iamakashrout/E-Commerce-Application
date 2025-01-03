@@ -1,9 +1,10 @@
 import express from "express";
 
-import { searchProduct } from "../controllers/searchControllers";
-
+import { saveSearch, getSearches} from "../controllers/searchControllers";
+import { verifyToken } from "../middleware/auth";
 const router = express.Router();
 
-router.get("/searchProduct", searchProduct);
+router.post("/saveSearch", saveSearch);
+router.post("/getSearches", getSearches);
 
 export default router;
