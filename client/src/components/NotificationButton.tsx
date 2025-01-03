@@ -71,6 +71,7 @@ export default function NotificationsButton({ userId }: NotificationsProps) {
             console.error('Error marking as read:', err);
         }
         socket.emit('markRead', { chatRoomId, userId, senderId });
+        console.log(1, notifications);
     };
 
     const handleCloseChat = async (chatRoomId: string, receiverId: string, senderId: string) => {
@@ -82,6 +83,7 @@ export default function NotificationsButton({ userId }: NotificationsProps) {
             console.error('Error marking as read:', err);
         }
         socket.emit('markRead', { chatRoomId, userId, senderId });
+        console.log(2, notifications);
     };
 
     return (
@@ -120,14 +122,14 @@ export default function NotificationsButton({ userId }: NotificationsProps) {
                                 notifications.map((notif, index) => (
                                     <div key={index} className="p-2 border-b cursor-pointer">
                                         <div className="flex justify-between hover:bg-gray-100">
-                                            <span className="text-black">Chat {notif._id}</span>
+                                            <span className="text-black">{notif.senderId}</span>
                                             <span className="text-red-500">{notif.count}</span>
                                         </div>
                                         <button
                                             onClick={() => handleChatOpen(notif._id, userId, notif.senderId)}
                                             className="block mt-2 text-blue-500"
                                         >
-                                            Mark as Read
+                                            Open
                                         </button>
                                     </div>
                                     
