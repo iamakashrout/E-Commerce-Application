@@ -2,8 +2,9 @@
 import { useEffect, useRef, useState } from "react";
 import apiClient from "@/utils/axiosInstance";
 import { io } from "socket.io-client";
+import socketURL from "@/utils/socketInstance";
 
-const socket = io("http://localhost:5000");
+const socket = io(socketURL);
 
 interface ChatBoxProps {
     chatRoomId: string;

@@ -1,6 +1,5 @@
 import { Server, Socket } from 'socket.io';
 import Message from '../models/messageSchema';
-import ChatRoom from '../models/chatroomSchema';
 
 const socket = (io: Server) => {
     io.on('connection', (socket: Socket) => {
@@ -21,12 +20,31 @@ const socket = (io: Server) => {
                     senderId,
                     receiverId,
                     message,
+                    isRead: false,
                 });
 
                 // Emit the message to the room
                 io.to(chatRoomId).emit('message', newMessage);
+
+                // Emit notification to the receiver
+                io.emit(`notification-${receiverId}`, {
+                    chatRoomId,
+                    count: 1, // Increment by 1 for this chat
+                });
             } catch (err) {
                 console.error('Error sending message:', err);
+            }
+        });
+
+         // Mark messages as read
+         socket.on('markRead', async ({ chatRoomId, userId }) => {
+            try {
+                io.emit(`notification-${userId}`, {
+                    chatRoomId,
+                    count: 0, // Reset count for this chat
+                });
+            } catch (err) {
+                console.error('Error marking messages as read:', err);
             }
         });
 
