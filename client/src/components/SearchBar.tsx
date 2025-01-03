@@ -47,10 +47,11 @@ function SearchBar() {
 
         // Fetch suggestions from the backend
         try {
+            console.log("userId from Redux:", user);
             const response = await axios.post('http://localhost:5000/api/search/getSearches', {
-                params: { userId: user, query: lowerCase },
+                userId: user, 
+                query: lowerCase,
             });
-            console.log("user", user);
             console.log('Suggestions:', response.data.searches);
             setSuggestions(response.data.searches);
         } catch (error) {
