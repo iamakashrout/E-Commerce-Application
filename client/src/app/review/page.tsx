@@ -31,6 +31,7 @@ export default function AddReviewPage() {
     const [review, setReview] = useState('');
     const [rating, setRating] = useState(0);
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const [chatRoomId, setChatRoomId] = useState<string | null>(null);
 
     const fetchReview = async () => {
         try {
@@ -111,6 +112,30 @@ export default function AddReviewPage() {
         }
     };
 
+    const handleOpenChat = async () => {
+        try {
+            // Fetch or create chat room ID
+            const response = await apiClient.post('/chat/getOrCreateChatRoom', { buyerId: user, sellerId: productDetails!.sellerName });
+            if (response.data.success) {
+                setChatRoomId(response.data.chatRoomId);
+                setIsChatOpen(true);
+            } else {
+                alert('Failed to initialize chat room');
+            }
+        } catch (err) {
+            console.error('Error initializing chat room:', err);
+        }
+    };
+
+    const handleCloseChat = () => {
+        setIsChatOpen(false);
+    };
+
+    if(!user){
+        return <>User authentical failed!</>
+    }
+
+
     return (
         <div>
             <h1>Product Details</h1>
@@ -166,12 +191,14 @@ export default function AddReviewPage() {
                         )}
                     </div>
                     <button
-                        onClick={() => setIsChatOpen(true)}
+                        onClick={handleOpenChat}
                         className="mt-6 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
                     >
                         Contact Seller
                     </button>
-                    {isChatOpen && <ChatBox onClose={() => setIsChatOpen(false)} />}
+                    {isChatOpen && chatRoomId && <ChatBox chatRoomId={chatRoomId}
+                    userId={user}
+                    receiverId={productDetails.sellerName} onClose={handleCloseChat} />}
                 </div>
             ) : (
                 <p>Loading product details...</p>
