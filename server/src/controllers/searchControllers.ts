@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 const Redis = require('ioredis');
 const redis = new Redis({
-    host: 'redis-14791.c239.us-east-1-2.ec2.redns.redis-cloud.com:14791',
+    host: 'redis-14791.c239.us-east-1-2.ec2.redns.redis-cloud.com',
     port: 14791,
     password: 'DBzw2Y1E0yVNIq4iccVH9VywlYWQA1TS',
 });
