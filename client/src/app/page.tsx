@@ -8,6 +8,7 @@ import ProductsList from "@/components/ProductsList";
 import Link from "next/link";
 import HelpChat from "@/components/HelpChat";
 import HelpButton from "@/components/HelpButton";
+import SearchBar from "@/components/SearchBar";
 
 export default function Home() {
   const router = useRouter();
@@ -30,6 +31,7 @@ export default function Home() {
   return (
     <main>
        <h1>Welcome to the Home Page!</h1>
+       <SearchBar />
        <ProductsList />
        <Link href="/cart">Go to Cart</Link>
        <br/>
