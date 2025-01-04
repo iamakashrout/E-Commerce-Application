@@ -1,39 +1,61 @@
-'use client'
+'use client';
 
 import { RootState } from "@/app/redux/store";
-import { CartItem } from "@/types/cart";
 import { Product } from "@/types/product";
 import apiClient from "@/utils/axiosInstance";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import SearchBar from "./SearchBar";  
 
 export default function ProductsList() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [recommendations, setRecommendations] = useState<Product[]>([]);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
   const token = useSelector((data: RootState) => data.userState.token);
   const user = useSelector((data: RootState) => data.userState.userEmail);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await apiClient.get('/products/getAllProducts', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log('Products: ', response.data);
-        if (response.data.success) {
-          setProducts(response.data.data);
-        }
-        else {
-          console.error('Failed to fetch products:', response.data.error);
-        }
-      } catch (err: any) {
-        console.error("Fetch error:", err);
+  // Fetch products from backend
+  const fetchProducts = async () => {
+    try {
+      const response = await apiClient.get('/products/getAllProducts', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('Products: ', response.data);
+      if (response.data.success) {
+        setProducts(response.data.data);
+      } else {
+        console.error('Failed to fetch products:', response.data.error);
       }
+    } catch (err: any) {
+      console.error("Fetch error:", err);
     }
+  };
 
+  // Fetch recommendations from Flask API
+  const fetchRecommendations = async () => {
+    try {
+      const response = await apiClient.get('http://localhost:5000/recommendations', {
+        params: {
+          item_name: "sample_item_name", // Replace with a dynamic item name if needed
+          top_n: 4,
+        },
+      });
+      console.log('Recommendations: ', response.data);
+      if (response.data.success) {
+        setRecommendations(response.data.recommendations);
+      } else {
+        console.error('Failed to fetch recommendations:', response.data.message);
+      }
+    } catch (err: any) {
+      console.error("Recommendations fetch error:", err);
+    }
+  };
+
+  useEffect(() => {
     fetchProducts();
+    // fetchRecommendations(); // Fetch recommendations when the component mounts
   }, []);
 
   const handleQuantityChange = (productId: string, value: number) => {
@@ -51,7 +73,6 @@ export default function ProductsList() {
     }
 
     try {
-      // console.log('Added to cart', productId, quantities[productId]);
       const response = await apiClient.post(
         '/cart/addToCart',
         {
@@ -79,13 +100,13 @@ export default function ProductsList() {
     }
   };
 
-
   return (
     <div>
       <h1>Products List</h1>
+      <SearchBar />
       <div>
         {products.length === 0 ? (
-          <p>Loading products...</p> // Display loading message if products are still being fetched
+          <p>Loading products...</p>
         ) : (
           products.map((product: Product, index: number) => (
             <div key={index}>
@@ -105,6 +126,21 @@ export default function ProductsList() {
                 />
                 <button onClick={() => handleAddToCart(product.id, product.name, product.price)}>Add to Cart</button>
               </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      <h1>Recommendations</h1>
+      <div>
+        {recommendations.length === 0 ? (
+          <p>Loading recommendations...</p>
+        ) : (
+          recommendations.map((rec: Product, index: number) => (
+            <div key={index}>
+              <h2>{rec.name}</h2>
+              <p>${rec.price}</p>
+              <p>Stock: {rec.stock}</p>
             </div>
           ))
         )}
