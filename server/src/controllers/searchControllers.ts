@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 const dotenv = require('dotenv');
 dotenv.config();
-
 import redis from '../redis/redisClient';
+
 export const saveSearch = async (req: Request, res: Response): Promise<void> => {
     const { userId, query } = req.body; 
     if (!userId || !query) {

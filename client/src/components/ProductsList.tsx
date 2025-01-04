@@ -5,6 +5,7 @@ import { Product } from "@/types/product";
 import apiClient from "@/utils/axiosInstance";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import SearchBar from "./SearchBar";  
 
 export default function ProductsList() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -102,6 +103,7 @@ export default function ProductsList() {
   return (
     <div>
       <h1>Products List</h1>
+      <SearchBar />
       <div>
         {products.length === 0 ? (
           <p>Loading products...</p>
