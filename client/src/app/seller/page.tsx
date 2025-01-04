@@ -6,10 +6,12 @@ import { RootState } from "../redux/store";
 import { useEffect, useState } from "react";
 import { clearSeller } from "../redux/features/sellerSlice";
 import SellerDetails from "./components/SellerDetails";
+import NotificationsButton from "@/components/NotificationButton";
 
 export default function SellerPage () {
     const router = useRouter();
     const isAuth = useSelector((data: RootState) => data.sellerState.isAuthenticated);
+    const sellerName = useSelector((data: RootState) => data.sellerState.sellerName);
   
     const dispatch = useDispatch();
   
@@ -19,13 +21,14 @@ export default function SellerPage () {
       }
     }, [isAuth, router]);
   
-    if (!isAuth) {
+    if (!isAuth || !sellerName) {
       return null; // Prevent rendering while redirecting
     }
     
     return (
       <main>
          <h1>Welcome to the Seller Page!</h1>
+         <NotificationsButton userId={sellerName} />
          <SellerDetails />
          <button onClick={()=>dispatch(clearSeller())}>LOG OUT</button>
       </main>

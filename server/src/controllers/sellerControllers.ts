@@ -225,6 +225,7 @@ export const getProductSales = async (
 
       return {
         orderId: order.orderId,
+        buyer: order.user,
         quantity: productDetails.quantity,
         unitPrice: productDetails.price,
         total: productDetails.quantity * productDetails.price,

@@ -6,6 +6,8 @@ services:
       - "5000:5000"
     networks:
       - ecommerce
+    volumes:
+      - ./server/.env:/app/.env
 
   frontend:
     build: client
@@ -13,7 +15,9 @@ services:
       - "3000:3000"
     networks:
       - ecommerce
+    volumes:
+      - ./client/.env:/app/.env
 
 networks:
   ecommerce:
-    driver: bridge 
+    driver: bridge

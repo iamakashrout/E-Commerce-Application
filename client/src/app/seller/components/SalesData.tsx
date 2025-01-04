@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import apiClient from "@/utils/axiosInstance";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
+import ChatBox from "@/components/ChatBox";
 
 interface SalesDataPopupProps {
     productId: string;
@@ -10,8 +11,12 @@ interface SalesDataPopupProps {
 
 export default function SalesData ({ productId, onClose }: SalesDataPopupProps) {
     const token = useSelector((data: RootState) => data.sellerState.token);
+    const sellerName = useSelector((data: RootState) => data.sellerState.sellerName);
     const [salesData, setSalesData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [isChatOpen, setIsChatOpen] = useState(false);
+    const [chatRoomId, setChatRoomId] = useState<string | null>(null);
+    const [receiver, setReceiver] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchSalesData = async () => {
@@ -22,6 +27,7 @@ export default function SalesData ({ productId, onClose }: SalesDataPopupProps) 
                     },
                 });
                 if (response.data.success) {
+                    console.log(response.data.data);
                     setSalesData(response.data.data);
                 } else {
                     alert("Failed to fetch sales data.");
@@ -43,6 +49,30 @@ export default function SalesData ({ productId, onClose }: SalesDataPopupProps) 
         return { totalUnits, totalPrice };
     };
 
+    const handleOpenChat = async (buyer: string) => {
+        try {
+            // Fetch or create chat room ID
+            const response = await apiClient.post('/chat/getOrCreateChatRoom', { buyerId: buyer, sellerId: sellerName });
+            if (response.data.success) {
+                setChatRoomId(response.data.chatRoomId);
+                setReceiver(buyer);
+                setIsChatOpen(true);
+            } else {
+                alert('Failed to initialize chat room');
+            }
+        } catch (err) {
+            console.error('Error initializing chat room:', err);
+        }
+    };
+
+    const handleCloseChat = () => {
+        setIsChatOpen(false);
+    };
+    
+    if(!sellerName){
+        return <p>Seller authentication failed!</p>
+    }
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl text-black"> {/* Added text-black here */}
@@ -58,6 +88,7 @@ export default function SalesData ({ productId, onClose }: SalesDataPopupProps) 
                                     <th className="border border-gray-300 p-2">Quantity</th>
                                     <th className="border border-gray-300 p-2">Unit Price</th>
                                     <th className="border border-gray-300 p-2">Total</th>
+                                    <th className="border border-gray-300 p-2">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -67,6 +98,14 @@ export default function SalesData ({ productId, onClose }: SalesDataPopupProps) 
                                         <td className="border border-gray-300 p-2">{sale.quantity}</td>
                                         <td className="border border-gray-300 p-2">${sale.unitPrice}</td>
                                         <td className="border border-gray-300 p-2">${sale.total}</td>
+                                        <td className="border border-gray-300 p-2">
+                                            <button
+                                                onClick={()=>handleOpenChat(sale.buyer)}
+                                                className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                                            >
+                                                Messages
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -88,6 +127,15 @@ export default function SalesData ({ productId, onClose }: SalesDataPopupProps) 
                 >
                     Close
                 </button>
+
+                 {/* Render ChatBox if activeChat is set */}
+                 {isChatOpen && chatRoomId && receiver &&  (
+                    <ChatBox
+                    chatRoomId={chatRoomId}
+                    userId={sellerName}
+                    receiverId={receiver} onClose={handleCloseChat}
+                    />
+                )}
             </div>
         </div>
     );

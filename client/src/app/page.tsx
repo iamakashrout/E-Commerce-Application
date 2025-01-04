@@ -8,11 +8,12 @@ import ProductsList from "@/components/ProductsList";
 import Link from "next/link";
 import HelpChat from "@/components/HelpChat";
 import HelpButton from "@/components/HelpButton";
+import NotificationsButton from "@/components/NotificationButton";
 
 export default function Home() {
   const router = useRouter();
   const isAuth = useSelector((data: RootState) => data.userState.isAuthenticated);
-
+  const user = useSelector((data: RootState) => data.userState.userEmail);
   const dispatch = useDispatch();
 
   const [showPopup, setShowPopup] = useState(false);
@@ -23,13 +24,14 @@ export default function Home() {
     }
   }, [isAuth, router]);
 
-  if (!isAuth) {
+  if (!isAuth || !user) {
     return null; // Prevent rendering while redirecting
   }
   
   return (
     <main>
        <h1>Welcome to the Home Page!</h1>
+       <NotificationsButton userId={user} />
        <ProductsList />
        <Link href="/cart">Go to Cart</Link>
        <br/>
