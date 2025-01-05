@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const redisClient = createClient({
-  url: process.env.REDIS,
+  url: process.env.REDIS_URL,
 });
 
 (async () => {
@@ -19,14 +19,3 @@ const redisClient = createClient({
 redisClient.on('error', (err) => console.error('Redis error:', err));
 
 export default redisClient;
-
-
-// import Redis from 'ioredis';
-
-// const redis = new Redis({
-//     host: process.env.REDIS_URL,
-//     port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : undefined,
-//     password: process.env.REDIS_PASSWORD,
-// });
-
-// export default redis;

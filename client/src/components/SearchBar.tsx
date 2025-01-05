@@ -1,179 +1,214 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import apiClient from '@/utils/axiosInstance';
+// 'use client'
+// import React, { useState, useEffect } from 'react';
+// import apiClient from '@/utils/axiosInstance';
+// import { Product } from '@/types/product';
 
+// interface SearchBarProps {
+//   userId: string;
+//   onSearch: (query: string) => void;
+//   products: Product[];
+// }
+
+// export default function SearchBar({ userId, onSearch, products }: SearchBarProps) {
+//   const [query, setQuery] = useState<string>('');
+//   const [suggestions, setSuggestions] = useState<string[]>([]);
+//   const [productSuggestions, setProductSuggestions] = useState<string[]>([]);
+
+//   // Fetch suggestions
+//   useEffect(() => {
+//     const fetchSuggestions = async () => {
+//       if (!query) {
+//         setSuggestions([]);
+//         setProductSuggestions([]);
+//         return;
+//       }
+//       try {
+//         const { data } = await apiClient.get('/search/getPastSearches', { params: {userId, query}});
+//         console.log(data);
+//         setSuggestions(data);
+//       } catch (err) {
+//         console.error('Error fetching suggestions:', err);
+//       }
+
+//       // Filter product suggestions
+//     const productMatches = products
+//     .filter((product) =>
+//       product.name.toLowerCase().startsWith(query.toLowerCase())
+//     )
+//     .slice(0, 5) // Get top 5 matches
+//     .map((product) => product.name);
+
+//     setProductSuggestions(productMatches);
+//     };
+
+//     const debounceFetch = setTimeout(fetchSuggestions, 300);
+//     return () => clearTimeout(debounceFetch); // Debounce API calls
+//   }, [query, userId, products]);
+
+//   // Store search term on selection
+//   const handleSearchSelect = async (searchTerm: string) => {
+//     setSuggestions([]);
+//     if(searchTerm.length > 0){
+//         try {
+//             const response = await apiClient.post('/search/storeSearch', {userId, searchTerm});
+//             console.log(response);
+//         } catch (err) {
+//           console.error('Error storing search term:', err);
+//         }
+//     }
+//     onSearch(searchTerm);
+//     setQuery('');
+//   };
+
+//   return (
+//     <div className="relative w-full max-w-md mx-auto">
+//       <div className="flex items-center border border-gray-300 rounded-lg shadow-sm p-2 bg-white">
+//         <input
+//           className="flex-grow px-4 py-2 text-gray-700 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+//           type="text"
+//           value={query}
+//           onChange={(e) => setQuery(e.target.value)}
+//           placeholder="Search for products..."
+//         />
+//         <button
+//           onClick={() => handleSearchSelect(query)}
+//           className="px-4 py-2 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//         >
+//           Search
+//         </button>
+//       </div>
+
+//       {suggestions.length > 0 && (
+//         <ul className="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+//           {suggestions.map((suggestion, index) => (
+//             <li
+//               key={index}
+//               onClick={() => handleSearchSelect(suggestion)}
+//               className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+//             >
+//               {suggestion}
+//             </li>
+//           ))}
+//         </ul>
+//       )}
+
+//       {productSuggestions.length > 0 && (
+//         <ul className="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+//           {productSuggestions.map((suggestion, index) => (
+//             <li
+//               key={index}
+//               onClick={() => handleSearchSelect(suggestion)}
+//               className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+//             >
+//               {suggestion}
+//             </li>
+//           ))}
+//         </ul>
+//       )}
+//     </div>
+//   );
+// };
+
+
+
+
+
+'use client'
+import React, { useState, useEffect } from 'react';
+import apiClient from '@/utils/axiosInstance';
+import { Product } from '@/types/product';
+import { AiOutlineHistory } from 'react-icons/ai';
 interface SearchBarProps {
   userId: string;
+  onSearch: (query: string) => void;
+  products: Product[];
 }
 
-export default function SearchBar({ userId }: SearchBarProps) {
+export default function SearchBar({ userId, onSearch, products }: SearchBarProps) {
   const [query, setQuery] = useState<string>('');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [combinedSuggestions, setCombinedSuggestions] = useState<{ name: string; isCached: boolean }[]>([]);
 
   // Fetch suggestions
   useEffect(() => {
     const fetchSuggestions = async () => {
       if (!query) {
-        setSuggestions([]);
+        setCombinedSuggestions([]);
         return;
       }
-      setLoading(true);
       try {
-        const { data } = await apiClient.get('/search/getPastSearches', { params: {userId, query}});
-        setSuggestions(data);
+        const { data } = await apiClient.get('/search/getPastSearches', { params: { userId, query } });
+        console.log('Cached Suggestions:', data);
+
+        // Filter product suggestions
+        const productMatches = products
+          .filter((product) => product.name.toLowerCase().startsWith(query.toLowerCase()))
+          .map((product) => ({ name: product.name, isCached: false }));
+
+        // Combine and remove duplicates
+        const combined = [
+          ...data.map((item: string) => ({ name: item, isCached: true })),
+          ...productMatches.filter((product) => !data.includes(product.name)),
+        ];
+
+        setCombinedSuggestions(combined);
       } catch (err) {
         console.error('Error fetching suggestions:', err);
-      } finally {
-        setLoading(false);
       }
     };
 
     const debounceFetch = setTimeout(fetchSuggestions, 300);
     return () => clearTimeout(debounceFetch); // Debounce API calls
-  }, [query, userId]);
+  }, [query, userId, products]);
 
   // Store search term on selection
   const handleSearchSelect = async (searchTerm: string) => {
-    setQuery(searchTerm);
-    setSuggestions([]);
-    try {
-        const response = await apiClient.post('/search/storeSearch', {userId, searchTerm});
+    setCombinedSuggestions([]);
+    if (searchTerm.length > 0) {
+      try {
+        const response = await apiClient.post('/search/storeSearch', { userId, searchTerm });
         console.log(response);
-    } catch (err) {
-      console.error('Error storing search term:', err);
+      } catch (err) {
+        console.error('Error storing search term:', err);
+      }
     }
+    onSearch(searchTerm);
+    setQuery('');
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search for products..."
-      />
-      {loading && <p>Loading...</p>}
-      {suggestions.length > 0 ? (
-        <ul>
-          {suggestions.map((suggestion, index) => (
-            <li key={index}>
-              {suggestion}
+    <div className="relative w-full max-w-md mx-auto">
+      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm p-2 bg-white">
+        <input
+          className="flex-grow px-4 py-2 text-gray-700 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search for products..."
+        />
+        <button
+          onClick={() => handleSearchSelect(query)}
+          className="px-4 py-2 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Search
+        </button>
+      </div>
+
+      {combinedSuggestions.length > 0 && (
+        <ul className="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+          {combinedSuggestions.map((suggestion, index) => (
+            <li
+              key={index}
+              onClick={() => handleSearchSelect(suggestion.name)}
+              className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer flex items-center"
+            >
+              {suggestion.isCached && (
+                <AiOutlineHistory className="mr-2 text-gray-500" /> // History icon
+              )}
+              {suggestion.name}
             </li>
           ))}
         </ul>
-      ) : (
-        <p onClick={() => handleSearchSelect(query)}>{query}</p>
       )}
     </div>
   );
-};
-
-
-
-
-
-// import { RootState } from "@/app/redux/store";
-// import React, { useState } from 'react';
-// import axios from 'axios';
-// import TextField from '@mui/material/TextField';
-// import List from './List';
-// import { useSelector } from "react-redux";
-
-// function SearchBar() {
-//     const [inputText, setInputText] = useState('');
-//     const [savedSearches, setSavedSearches] = useState<string[]>([]);
-//     const [filteredProducts, setFilteredProducts] = useState([]);
-//     const [showOverlay, setShowOverlay] = useState(false);
-//     const user = useSelector((data: RootState) => data.userState.userEmail);
-
-//     const fetchSavedSearches = async () => {
-//         try {
-//             const response = await axios.post('http://localhost:5000/api/search/getSearches', {
-//                 userId: user,
-//             });
-//             setSavedSearches(response.data.searches || []);
-//         } catch (error) {
-//             console.error('Error fetching saved searches:', error);
-//         }
-//     };
-
-//     // const fetchFilteredProducts = async (query: string) => {
-//     //     try {
-//     //         const response = await axios.post('http://localhost:5000/api/products/filterProducts', {
-//     //             query,
-//     //         });
-//     //         setFilteredProducts(response.data.products || []);
-//     //     } catch (error) {
-//     //         console.error('Error fetching filtered products:', error);
-//     //     }
-//     // };
-
-//     const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-//         const query = e.target.value.toLowerCase();
-//         setInputText(query);
-//         // fetchFilteredProducts(query);
-//         setShowOverlay(true);
-//     };
-
-//     const handleFocus = () => {
-//         fetchSavedSearches(); // Fetch saved searches when search bar is focused
-//         setShowOverlay(true);
-//     };
-
-//     const handleBlur = () => {
-//         setTimeout(() => setShowOverlay(false), 150); // Delay to allow clicks on suggestions
-//     };
-
-//     const saveSearch = async () => {
-//         try {
-//             if (inputText.trim() !== '') {
-//                 await axios.post('http://localhost:5000/api/search/saveSearch', {
-//                     userId: user,
-//                     query: inputText,
-//                 });
-//             }
-//         } catch (error) {
-//             console.error('Error saving search:', error);
-//         }
-//     };
-
-//     return (
-//         <div className="main bg-white text-black">
-//             <h1>React Search</h1>
-//             <div className="search">
-//                 <TextField
-//                     id="outlined-basic"
-//                     onChange={inputHandler}
-//                     onFocus={handleFocus}
-//                     onBlur={handleBlur}
-//                     variant="outlined"
-//                     fullWidth
-//                     label="Search"
-//                     value={inputText}
-//                 />
-//                 {showOverlay && (
-//                     <div className="overlay">
-//                         <ul className="saved-searches">
-//                             {savedSearches.map((search, index) => (
-//                                 <li key={index} onClick={() => setInputText(search)}>
-//                                     {search}
-//                                 </li>
-//                             ))}
-//                         </ul>
-//                         <ul className="filtered-products">
-//                             {filteredProducts.map((product: any, index: number) => (
-//                                 <li key={index}>
-//                                     <strong>{product.name}</strong> - {product.category} - ${product.price}
-//                                 </li>
-//                             ))}
-//                         </ul>
-//                     </div>
-//                 )}
-//             </div>
-//             <List input={inputText} />
-//         </div>
-//     );
-// }
-
-// export default SearchBar;
+}
