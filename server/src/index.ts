@@ -16,7 +16,6 @@ import { connectToDatabase } from './utils/mongo';
 import socket from './utils/socket';
 import cors from 'cors';
 
-import cors from 'cors';
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
@@ -27,11 +26,12 @@ const io = new Server(server, {
 const port = process.env.PORT || 5000;
 // Middleware to parse JSON
 app.use(express.json());
+
 // Middleware to enable CORS
-// app.use(cors());
 app.use(cors({
   origin: "*",  
 }));
+
 // routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);

@@ -100,10 +100,14 @@ export default function ProductsList() {
     }
   };
 
+  if(!user){
+    return <p>User authentication failed!</p>
+  }
+
   return (
     <div>
       <h1>Products List</h1>
-      <SearchBar />
+      <SearchBar userId={user} />
       <div>
         {products.length === 0 ? (
           <p>Loading products...</p>
