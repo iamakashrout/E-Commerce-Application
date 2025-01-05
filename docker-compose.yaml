@@ -18,6 +18,15 @@ services:
     volumes:
       - ./client/.env:/app/.env
 
+  model:
+    build: model
+    ports:
+      - "8000:8000"
+    networks:
+      - ecommerce
+    environment:
+      - FLASK_ENV=development
+
 networks:
   ecommerce:
     driver: bridge
