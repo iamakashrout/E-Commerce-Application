@@ -44,7 +44,7 @@ export default function ReviewData({ productId, onClose }: ReviewDataPopupProps)
         setAnalyzing(true);
         try {
             const response = await flaskClient.post(
-                `/analyze-reviews`,
+                `/analyze_reviews`,
                 { reviews },
             );
             if (response.data.success) {

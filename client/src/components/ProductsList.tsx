@@ -134,37 +134,5 @@ export default function ProductsList() {
         )}
       </div>
     </div>
-    // <div>
-    //   <h1>Products List</h1>
-    //   <SearchBar userId={user} onSearch={handleSearch} products={products} />
-    //   <div>
-    //     {filteredProducts.length === 0 ? (
-    //       <p>Loading products...</p>
-    //     ) : (
-    //       filteredProducts.map((product: Product, index: number) => (
-    //         <div key={index}>
-    //           <h2>{product.name}</h2>
-    //           <p>{product.company}</p>
-    //           <p>${product.price}</p>
-    //           <p>{product.category}</p>
-    //           <p>Stock: {product.stock}</p>
-    //           <div>
-    //             <label htmlFor={`quantity-${product.id}`}>Quantity: </label>
-    //             <input
-    //               id={`quantity-${product.id}`}
-    //               type="number"
-    //               min="0"
-    //               max={product.stock}
-    //               value={quantities[product.id] || 0}
-    //               onChange={(e) => handleQuantityChange(product.id, Number(e.target.value))}
-    //               style={{ color: 'black' }}
-    //             />
-    //             <button onClick={() => handleAddToCart(product.id, product.name, product.price)}>Add to Cart</button>
-    //           </div>
-    //         </div>
-    //       ))
-    //     )}
-    //   </div>
-    // </div>
   );
 }
