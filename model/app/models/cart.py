@@ -1,15 +1,15 @@
 from app.utils.db import db
 
 class CartItem:
-    def __init__(self, product_id, quantity, name, price):
-        self.product_id = product_id
+    def __init__(self, productId, quantity, name, price):
+        self.productId = productId
         self.quantity = quantity
         self.name = name
         self.price = price
 
 class Cart:
-    def __init__(self, user_id, items):
-        self.user_id = user_id
+    def __init__(self, user, items):
+        self.user = user
         self.items = items
 
     @staticmethod
