@@ -29,11 +29,6 @@ export default function ProductsList() {
           Authorization: `Bearer ${token}`,
         },
       });
-      // const response = await apiClient.get('/products/getAllProducts', {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
       console.log('Products: ', response.data);
       if (response.data.success) {
         setProducts(response.data.data);
