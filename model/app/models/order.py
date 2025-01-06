@@ -1,6 +1,6 @@
 from app.utils.db import db
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Schema for Selected Product
 class SelectedProduct:
@@ -16,7 +16,7 @@ class Order:
         self.orderId = str(uuid.uuid4())  # Generates a unique order ID
         self.user = user
         self.products = [SelectedProduct(**product) for product in products]
-        self.orderDate = datetime.utcnow()  # Timestamp for the order date
+        self.orderDate = datetime.now(timezone.utc)  # Timestamp for the order date
         self.status = "Pending"  # Default status
         self.paymentMode = paymentMode
         self.address = address
