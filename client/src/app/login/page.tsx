@@ -19,7 +19,7 @@ export default function LoginPage() {
 
         {isRegistering ? (
           // <RegisterForm />
-          <RegisterWithOTP/>
+          <RegisterForm/>
         ) : (
           <LoginForm />
         )}

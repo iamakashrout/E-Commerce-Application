@@ -34,12 +34,12 @@ def get_recommendations(user_id):
         # get recommendations according to similarity
         recommendations = get_similarity(products, product_embeddings, user_embeddings)
 
-        response = {
-            "user_products": unique_product_list,
-            "recommendations": recommendations,
-        }
+        # response = {
+        #     "user_products": unique_product_list,
+        #     "recommendations": recommendations,
+        # }
 
-        return jsonify({"success": True, "data": response})
+        return jsonify({"success": True, "data": recommendations})
     except Exception as e:
         print(f"Error fetching data: {e}")
         return {"error": "Error fetching recommendations"}
@@ -85,6 +85,10 @@ def get_similarity(products, product_embeddings, user_embeddings):
                 "category": product.get("category", ""),
                 "company": product.get("company", ""),
                 "description": product.get("description", ""),
+                "price": product.get("price", 0),
+                "stock": product.get("stock", 0),
+                "images": product.get("images", []),
+                "sellerName": product.get("sellerName", ""),
                 "similarity": float(similarity)
             })
 

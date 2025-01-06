@@ -6,6 +6,7 @@ import apiClient from "@/utils/axiosInstance";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import SearchBar from "./SearchBar";  
+import flaskClient from "@/utils/flaskInstance";
 
 export default function ProductsList() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -13,15 +14,26 @@ export default function ProductsList() {
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
   const token = useSelector((data: RootState) => data.userState.token);
   const user = useSelector((data: RootState) => data.userState.userEmail);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   // Fetch products from backend
   const fetchProducts = async () => {
     try {
-      const response = await apiClient.get('/products/getAllProducts', {
+      const response = selectedCategory === 'recommended' ? 
+      await flaskClient.get(`/get_recommendations/${user}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }): await apiClient.get('/products/getAllProducts', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      // const response = await apiClient.get('/products/getAllProducts', {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
       console.log('Products: ', response.data);
       if (response.data.success) {
         setProducts(response.data.data);
@@ -36,7 +48,7 @@ export default function ProductsList() {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [selectedCategory]);
 
   const handleQuantityChange = (productId: string, value: number) => {
     setQuantities((prev) => ({
@@ -92,6 +104,10 @@ export default function ProductsList() {
     setFilteredProducts(filtered);
   };
 
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(event.target.value); // Change selected category
+  };
+
   if(!user){
     return <p className="text-center text-red-500 text-lg font-semibold">User authentication failed!</p>;
   }
@@ -99,6 +115,19 @@ export default function ProductsList() {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6 text-center text-white-800">Products List</h1>
+      {/* Dropdown for selecting product category */}
+      <div className="mb-4">
+        {/* <label htmlFor="category" className="text-white-800 mr-2">Select Category:</label> */}
+        <select
+          id="category"
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          className="p-2 border rounded text-black"
+        >
+          <option value="all">All Products</option>
+          <option value="recommended">Recommended Products</option>
+        </select>
+      </div>
       <SearchBar userId={user} onSearch={handleSearch} products={products} />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.length === 0 ? (
