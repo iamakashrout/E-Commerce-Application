@@ -3,6 +3,7 @@
 import { useState } from "react";
 import LoginForm from "../../components/LoginForm";
 import RegisterForm from "../../components/RegisterForm";
+import RegisterWithOTP from "@/components/RegisterFormWithOTP";
 
 export default function LoginPage() {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -17,7 +18,8 @@ export default function LoginPage() {
         </h1>
 
         {isRegistering ? (
-          <RegisterForm />
+          // <RegisterForm />
+          <RegisterWithOTP/>
         ) : (
           <LoginForm />
         )}
