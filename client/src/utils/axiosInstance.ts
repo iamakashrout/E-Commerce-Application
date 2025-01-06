@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:5000/api", // Backend base URL
+  baseURL: "http://localhost:5000/api",
   timeout: 5000, // Timeout
   headers: {
     "Access-Control-Allow-Origin": "*",
