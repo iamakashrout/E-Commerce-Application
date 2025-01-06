@@ -1,5 +1,6 @@
 import { RootState } from "@/app/redux/store";
 import apiClient from "@/utils/axiosInstance";
+import flaskClient from "@/utils/flaskInstance";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -12,6 +13,8 @@ export default function ReviewData({ productId, onClose }: ReviewDataPopupProps)
     const token = useSelector((data: RootState) => data.sellerState.token);
     const [reviews, setReviews] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [analysis, setAnalysis] = useState<any | null>(null);
+    const [analyzing, setAnalyzing] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -37,6 +40,26 @@ export default function ReviewData({ productId, onClose }: ReviewDataPopupProps)
         fetchReviews();
     }, [productId]);
 
+    const handleAnalyze = async () => {
+        setAnalyzing(true);
+        try {
+            const response = await flaskClient.post(
+                `/analyze-reviews`,
+                { reviews },
+            );
+            if (response.data.success) {
+                setAnalysis(response.data.data);
+            } else {
+                alert("Failed to analyze reviews.");
+            }
+        } catch (error) {
+            console.error("Error analyzing reviews:", error);
+            alert("Error analyzing reviews.");
+        } finally {
+            setAnalyzing(false);
+        }
+    };
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg w-4/5 max-w-4xl">
@@ -44,6 +67,7 @@ export default function ReviewData({ productId, onClose }: ReviewDataPopupProps)
                 {loading ? (
                     <p>Loading reviews...</p>
                 ) : (
+                    <>
                     <table className="w-full table-auto border-collapse text-black">
                         <thead>
                             <tr>
@@ -73,6 +97,27 @@ export default function ReviewData({ productId, onClose }: ReviewDataPopupProps)
                             )}
                         </tbody>
                     </table>
+                    <div className="mt-4 text-center">
+                            <button
+                                onClick={handleAnalyze}
+                                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                                disabled={analyzing}
+                            >
+                                {analyzing ? "Analyzing..." : "Analyze Reviews"}
+                            </button>
+                        </div>
+                        {analysis && (
+                            <div className="mt-4 bg-gray-100 p-4 rounded-md text-black">
+                                <h3 className="font-semibold text-black">Analysis</h3>
+                                <p><strong>Total Reviews:</strong> {analysis.total_reviews}</p>
+                                <p><strong>Average Rating:</strong> {analysis.average_rating.toFixed(2)}</p>
+                                <p>
+                                    <strong>Sentiment Analysis:</strong> {analysis.positive} Positive, {analysis.neutral} Neutral, {analysis.negative} Negative
+                                </p>
+                                <p><strong>Summary:</strong> {analysis.textual_summary}</p>
+                            </div>
+                        )}
+                    </>
                 )}
                 <div className="mt-4 text-center">
                     <button
