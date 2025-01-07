@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import apiClient from '@/utils/axiosInstance';
 import { Product } from '@/types/product';
 import { AiOutlineHistory } from 'react-icons/ai';
+import { BsMic, BsMicMute } from 'react-icons/bs';
 interface SearchBarProps {
   userId: string;
   onSearch: (query: string) => void;
@@ -12,6 +13,7 @@ interface SearchBarProps {
 export default function SearchBar({ userId, onSearch, products }: SearchBarProps) {
   const [query, setQuery] = useState<string>('');
   const [combinedSuggestions, setCombinedSuggestions] = useState<{ name: string; isCached: boolean }[]>([]);
+  const [isListening, setIsListening] = useState<boolean>(false);
 
   // Fetch suggestions
   useEffect(() => {
@@ -60,6 +62,62 @@ export default function SearchBar({ userId, onSearch, products }: SearchBarProps
     setQuery('');
   };
 
+  const handleVoiceSearch = () => {
+    // Check if SpeechRecognition is available in the current browser
+    const SpeechRecognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+  
+    if (!SpeechRecognition) {
+      console.error('Web Speech API is not supported in this browser.');
+      return;
+    }
+  
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+  
+    // Event Handlers
+    recognition.onstart = () => {
+      console.log('Speech recognition started.');
+      setIsListening(true); // Update state to indicate the mic is active
+    };
+  
+    recognition.onend = () => {
+      console.log('Speech recognition ended.');
+      setIsListening(false); // Update state to indicate the mic is inactive
+    };
+  
+    recognition.onresult = (event: Event) => {
+      const speechQuery = (event as any).results[0][0].transcript;
+      console.log('Recognized speech:', speechQuery);
+      setQuery(speechQuery);
+      handleSearchSelect(speechQuery); // Pass the query for further processing
+    };
+  
+    recognition.onerror = (event: Event) => {
+      const error = (event as any).error;
+      console.error('Speech recognition error:', error);
+  
+      if (error !== 'aborted') {
+        setIsListening(false); // Reset state if an actual error occurs
+      }
+  
+      recognition.stop(); // Ensure the microphone is stopped
+    };
+  
+    // Toggle Microphone
+    if (isListening) {
+      console.log('Stopping speech recognition.');
+      recognition.stop(); // Stop the microphone
+    } else {
+      console.log('Starting speech recognition.');
+      recognition.start(); // Start the microphone
+    }
+  };
+  
+  
+  
   return (
     <div className="relative w-full max-w-md mx-auto">
       <div className="flex items-center border border-gray-300 rounded-lg shadow-sm p-2 bg-white">
@@ -75,6 +133,12 @@ export default function SearchBar({ userId, onSearch, products }: SearchBarProps
           className="px-4 py-2 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           Search
+        </button>
+        <button
+          onClick={handleVoiceSearch}
+          className="ml-2 p-2 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none"
+        >
+          {isListening ? <BsMicMute className="text-red-500" /> : <BsMic className="text-gray-600" />}
         </button>
       </div>
 
