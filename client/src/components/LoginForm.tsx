@@ -5,6 +5,7 @@ import apiClient from "@/utils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/app/redux/features/userSlice";
 import { useRouter } from "next/navigation";
+import ForgotPassword from "./ForgotPassword";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -34,6 +36,7 @@ export default function LoginForm() {
   };
 
   return (
+    <>
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
       <div>
         <label htmlFor="email" className="block mb-1">
@@ -69,7 +72,18 @@ export default function LoginForm() {
       >
         Login
       </button>
+      <button
+          type="button"
+          onClick={() => setShowForgotPassword(true)}
+          className="text-blue-500 hover:underline text-sm mt-2"
+        >
+          Forgot Password?
+        </button>
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </form>
+    {showForgotPassword && (
+      <ForgotPassword onClose={() => setShowForgotPassword(false)} />
+    )}
+    </>
   );
 }

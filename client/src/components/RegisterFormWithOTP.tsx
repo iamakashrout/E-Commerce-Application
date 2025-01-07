@@ -1,118 +1,162 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+"use client";
 
-function RegisterWithOTP() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    phone: '',
-  });
-  const [otp, setOtp] = useState('');
-  const [isOtpSent, setIsOtpSent] = useState(false);
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
+import { useState } from "react";
+import apiClient from "@/utils/axiosInstance";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/app/redux/features/userSlice";
+import { useRouter } from "next/navigation";
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+export default function RegisterForm() {
+  const router = useRouter();
 
-  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [error, setError] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const handleGenerateOtp = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError(""); // Reset previous error
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', formData);
-      setMessage(response.data.message);
-      setIsOtpSent(true); // Show OTP input
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        setMessage(error.response.data?.error || 'Error occurred during registration.');
-      } else {
-        setMessage('Error occurred during registration.');
-      }
-    } finally {
-      setLoading(false);
+      const response = await apiClient.post("/auth/register", {
+        name,
+        email,
+        password,
+        phone,
+      });
+
+      console.log("OTP Sent:", response.data);
+      setOtpSent(true);
+      alert("OTP sent successfully!");
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Registration failed. Please try again.");
+      console.error("Registration error:", err);
     }
   };
 
-  const handleVerifyOTP = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError("");
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/verifyOTP', {
-        ...formData,
+      const response = await apiClient.post("/auth/verifyOtp", {
+        name,
+        email,
+        password,
+        phone,
         otp,
       });
-      setMessage(response.data.message);
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        setMessage(error.response.data?.error || 'Error occurred during OTP verification.');
-      } else {
-        setMessage('Error occurred during OTP verification.');
-      }
-    } finally {
-      setLoading(false);
+
+      console.log("Registration successful:", response.data);
+      const { token, user } = response.data;
+      dispatch(setUser({ userEmail: user.email, token: token }));
+      alert("Registration successful!");
+      router.push("/");
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Registration failed. Please try again.");
+      console.error("Registration error:", err);
     }
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      {!isOtpSent ? (
-        <form onSubmit={handleRegister}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleInputChange}
-            required
-          />
-          <input
-            type="text"
-            name="phone"
-            placeholder="Phone (optional)"
-            value={formData.phone}
-            onChange={handleInputChange}
-          />
-          <button type="submit" disabled={loading}>
-            {loading ? 'Sending OTP...' : 'Register'}
+    <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+      <div>
+        <label htmlFor="name" className="block mb-1">
+          Name
+        </label>
+        <input
+          id="name"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter your name"
+          className="w-full border px-3 py-2 rounded-md"
+          required
+        />
+      </div>
+
+      <div>
+        <label htmlFor="email" className="block mb-1">
+          Email
+        </label>
+        <input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter email"
+          className="w-full border px-3 py-2 rounded-md"
+          required
+        />
+      </div>
+
+      <div>
+        <label htmlFor="password" className="block mb-1">
+          Password
+        </label>
+        <input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Enter password"
+          className="w-full border px-3 py-2 rounded-md"
+          required
+        />
+      </div>
+
+      <div>
+        <label htmlFor="phone" className="block mb-1">
+          Phone
+        </label>
+        <input
+          id="phone"
+          type="text"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="Enter phone number"
+          className="w-full border px-3 py-2 rounded-md"
+        />
+      </div>
+
+      {otpSent ? (
+        <>
+          <div>
+            <label htmlFor="otp" className="block mb-1">
+              OTP
+            </label>
+            <input
+              id="otp"
+              type="text"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              placeholder="Enter OTP"
+              className="w-full border px-3 py-2 rounded-md"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          >
+            Register
           </button>
-        </form>
+        </>
       ) : (
-        <form onSubmit={handleVerifyOTP}>
-          <input
-            type="text"
-            placeholder="Enter OTP"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            required
-          />
-          <button type="submit" disabled={loading}>
-            {loading ? 'Verifying...' : 'Verify OTP'}
-          </button>
-        </form>
+        <button
+          type="button"
+          onClick={handleGenerateOtp}
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+        >
+          Generate OTP
+        </button>
       )}
-      {message && <p>{message}</p>}
-    </div>
+
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+    </form>
   );
 }
-
-export default RegisterWithOTP;

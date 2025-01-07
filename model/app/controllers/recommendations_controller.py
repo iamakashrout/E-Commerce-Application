@@ -29,7 +29,7 @@ def get_recommendations(user_id):
             product_embeddings[pid] for pid in user_product_ids if pid in product_embeddings
         ])
         if user_embeddings.size == 0:
-            return jsonify({"success": True, "data": "No user recommendations available"})
+            return jsonify({"success": True, "data": []})
         
         # get recommendations according to similarity
         recommendations = get_similarity(products, product_embeddings, user_embeddings)

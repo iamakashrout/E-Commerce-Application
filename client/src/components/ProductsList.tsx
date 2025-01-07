@@ -15,6 +15,7 @@ export default function ProductsList() {
   const token = useSelector((data: RootState) => data.userState.token);
   const user = useSelector((data: RootState) => data.userState.userEmail);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [loading, setLoading] = useState(true);
 
   // Fetch products from backend
   const fetchProducts = async () => {
@@ -33,6 +34,7 @@ export default function ProductsList() {
       if (response.data.success) {
         setProducts(response.data.data);
         setFilteredProducts(response.data.data);
+        setLoading(false);
       } else {
         console.error('Failed to fetch products:', response.data.error);
       }
@@ -100,6 +102,7 @@ export default function ProductsList() {
   };
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setLoading(true);
     setSelectedCategory(event.target.value); // Change selected category
   };
 
@@ -124,9 +127,12 @@ export default function ProductsList() {
         </select>
       </div>
       <SearchBar userId={user} onSearch={handleSearch} products={products} />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {loading ? (
+        <p>Loading products...</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.length === 0 ? (
-          <p className="col-span-full text-center text-gray-500">Loading products...</p>
+          <p className="col-span-full text-center text-gray-500">No products found!</p>
         ) : (
           filteredProducts.map((product: Product, index: number) => (
             <div key={index} className="border rounded-lg p-4 shadow-md hover:shadow-lg transition">
@@ -157,6 +163,7 @@ export default function ProductsList() {
           ))
         )}
       </div>
+      )}
     </div>
   );
 }
