@@ -9,6 +9,7 @@ import Link from "next/link";
 import HelpChat from "@/components/HelpChat";
 import HelpButton from "@/components/HelpButton";
 import NotificationsButton from "@/components/NotificationButton";
+import "@/styles/globals.css";
 
 export default function Home() {
   const router = useRouter();
