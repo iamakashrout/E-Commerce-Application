@@ -121,33 +121,53 @@ export default function CheckoutPage() {
     };
 
     return (
-        <div>
-            <h1>Order Summary</h1>
-            <div>
-                <h2>Selected Items</h2>
+        <div className="container mx-auto p-6 bg-[#fce78c] min-h-screen">
+            {/* Order Summary Header */}
+            <h1 className="text-5xl font-bold mb-8 text-center text-[#4cd7d0]">Order Summary</h1>
+    
+            {/* Selected Items Section */}
+            <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h2 className="text-2xl font-semibold mb-4 text-[#4cd7d0]">Selected Items</h2>
                 {selectedItems.map((item: CartItem, index: number) => (
-                    <div key={index}>
-                        <h3>{item.name}</h3>
-                        <p>Quantity: {item.quantity}</p>
-                        <p>Price: {item.price}</p>
+                    <div
+                        key={index}
+                        className="border-b border-gray-300 py-4 flex justify-between items-center"
+                    >
+                        <div>
+                            <h3 className="text-lg font-medium">{item.name}</h3>
+                            <p className="text-md text-gray-600">Quantity: {item.quantity}</p>
+                            <p className="text-md text-gray-600">Price: ₹{item.price}</p>
+                        </div>
                     </div>
                 ))}
             </div>
-            <div>
-                <label>
-                    Payment Mode:
-                    <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} style={{ color: 'black' }}>
+    
+            {/* Payment Mode Section */}
+            <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h2 className="text-2xl font-semibold mb-4 text-[#4cd7d0]">Payment Mode</h2>
+                <label className="block text-gray-700 font-medium">
+                    <span className="block mb-2">Choose Payment Mode:</span>
+                    <select
+                        value={paymentMode}
+                        onChange={(e) => setPaymentMode(e.target.value)}
+                        className="w-full p-2 border border-gray-300 rounded-md text-gray-700"
+                    >
                         <option value="COD">Cash on Delivery</option>
                         <option value="Online">Online Payment</option>
                     </select>
                 </label>
             </div>
-            <div>
-                <h2>Select Address</h2>
+    
+            {/* Address Selection Section */}
+            <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h2 className="text-2xl font-semibold mb-4 text-[#4cd7d0]">Select Address</h2>
                 {savedAddresses.length > 0 ? (
                     <div>
                         {savedAddresses.map((savedAddress, index) => (
-                            <div key={index}>
+                            <div
+                                key={index}
+                                className="flex items-center mb-4 gap-2"
+                            >
                                 <input
                                     type="radio"
                                     id={`address-${index}`}
@@ -157,11 +177,17 @@ export default function CheckoutPage() {
                                         setAddress(savedAddress.address);
                                         setIsManualAddress(false);
                                     }}
+                                    className="w-4 h-4"
                                 />
-                                <label htmlFor={`address-${index}`}>{savedAddress.name}</label>
+                                <label
+                                    htmlFor={`address-${index}`}
+                                    className="text-gray-700"
+                                >
+                                    {savedAddress.name}
+                                </label>
                             </div>
                         ))}
-                        <div>
+                        <div className="flex items-center mb-4 gap-2">
                             <input
                                 type="radio"
                                 id="manual-address"
@@ -171,22 +197,39 @@ export default function CheckoutPage() {
                                     setAddress('');
                                     setIsManualAddress(true);
                                 }}
+                                className="w-4 h-4"
                             />
-                            <label htmlFor="manual-address">Enter a new address</label>
+                            <label
+                                htmlFor="manual-address"
+                                className="text-gray-700"
+                            >
+                                Enter a new address
+                            </label>
                         </div>
                     </div>
                 ) : (
-                    <p>No saved addresses found. Please enter a new address.</p>
+                    <p className="text-gray-600 text-md">No saved addresses found. Please enter a new address.</p>
                 )}
                 {isManualAddress && (
                     <textarea
                         placeholder="Enter your address"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
+                        className="w-full p-2 border border-gray-300 rounded-md mt-2"
                     />
                 )}
             </div>
-            <button onClick={handleConfirmOrder}>Confirm Order</button>
+    
+            {/* Confirm Order Button */}
+            <div className="text-center">
+                <button
+                    onClick={handleConfirmOrder}
+                    className="bg-[#4cd7d0] text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-[#37bfb7] transition"
+                >
+                    Confirm Order
+                </button>
+            </div>
         </div>
     );
+    
 }
