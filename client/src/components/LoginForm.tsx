@@ -39,7 +39,7 @@ export default function LoginForm() {
     <>
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
       <div>
-        <label htmlFor="email" className="block mb-1">
+        <label htmlFor="email" className="block mb-1 font-bold">
           Email
         </label>
         <input
@@ -53,7 +53,7 @@ export default function LoginForm() {
         />
       </div>
       <div>
-        <label htmlFor="password" className="block mb-1">
+        <label htmlFor="password" className="block mb-1 font-bold">
           Password
         </label>
         <input
@@ -68,7 +68,7 @@ export default function LoginForm() {
       </div>
       <button
         type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+        className="bg-custom-pink text-white px-4 py-2 rounded-md hover:bg-custom-lavender font-bold"
       >
         Login
       </button>

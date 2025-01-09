@@ -23,7 +23,6 @@ export default function ForgotPassword({ onClose }: ForgotPasswordPopupProps) {
       setMessage(response.data.message || "OTP sent to your email.");
       setStep(2); // Move to OTP input step
     } catch (err: any) {
-      console.log('error', err);
       setError(err.response?.data?.message || "Failed to send OTP. Please try again.");
     }
   };
@@ -37,7 +36,7 @@ export default function ForgotPassword({ onClose }: ForgotPasswordPopupProps) {
         otp,
         newPassword,
       });
-      alert('Password changed successfully!');
+      alert("Password changed successfully!");
       onClose(); // Close popup on success
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to reset password. Please try again.");
@@ -46,11 +45,11 @@ export default function ForgotPassword({ onClose }: ForgotPasswordPopupProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-10 rounded-lg shadow-xl w-full max-w-md lg:max-w-lg xl:max-w-xl text-black">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Forgot Password</h2>
+      <div className="bg-custom-light-teal p-8 rounded-lg shadow-lg w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl text-black">
+        <h2 className="text-2xl font-semibold mb-4 text-center">Forgot Password</h2>
         {step === 1 && (
           <>
-            <label htmlFor="email" className="block text-lg font-medium mb-2">
+            <label htmlFor="email" className="block text-sm font-medium mb-2 font-bold">
               Enter your email
             </label>
             <input
@@ -59,12 +58,12 @@ export default function ForgotPassword({ onClose }: ForgotPasswordPopupProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter email"
-              className="w-full border px-4 py-3 rounded-lg mb-6 text-lg"
+              className="w-full border px-4 py-3 rounded-lg mb-4 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
             <button
               onClick={handleGenerateOtp}
-              className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 w-full text-lg font-medium"
+              className="bg-custom-pink text-white px-4 py-3 rounded-lg hover:bg-custom-lavender w-full text-base font-medium transition duration-200"
             >
               Generate OTP
             </button>
@@ -72,7 +71,7 @@ export default function ForgotPassword({ onClose }: ForgotPasswordPopupProps) {
         )}
         {step === 2 && (
           <>
-            <label htmlFor="otp" className="block text-lg font-medium mb-2">
+            <label htmlFor="otp" className="block text-sm font-medium mb-2 font-bold">
               Enter OTP
             </label>
             <input
@@ -81,10 +80,10 @@ export default function ForgotPassword({ onClose }: ForgotPasswordPopupProps) {
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
               placeholder="Enter OTP"
-              className="w-full border px-4 py-3 rounded-lg mb-6 text-lg"
+              className="w-full border px-4 py-3 rounded-lg mb-4 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
-            <label htmlFor="newPassword" className="block text-lg font-medium mb-2">
+            <label htmlFor="newPassword" className="block text-sm font-medium mb-2 font-bold">
               Enter New Password
             </label>
             <input
@@ -93,25 +92,25 @@ export default function ForgotPassword({ onClose }: ForgotPasswordPopupProps) {
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="Enter new password"
-              className="w-full border px-4 py-3 rounded-lg mb-6 text-lg"
+              className="w-full border px-4 py-3 rounded-lg mb-4 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
             <button
               onClick={handleResetPassword}
-              className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 w-full text-lg font-medium"
+              className="bg-custom-pink text-white px-4 py-3 rounded-lg hover:bg-custom-lavender w-full text-base font-medium transition duration-200"
             >
               Save
             </button>
           </>
         )}
-        {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
-        {message && <p className="text-green-500 text-sm mt-4">{message}</p>}
+        {error && <p className="text-red-500 text-sm mt-4 text-center">{error}</p>}
+        {message && <p className="text-green-500 text-sm mt-4 text-center">{message}</p>}
         <button
           onClick={(e) => {
             e.stopPropagation();
             onClose();
           }}
-          className="text-gray-500 mt-6 hover:text-gray-800 text-lg font-medium"
+          className="text-gray-500 mt-6 hover:text-gray-800 text-sm font-medium w-full text-center transition duration-200"
         >
           Close
         </button>

@@ -42,7 +42,7 @@ export default function RegisterForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
       <div>
-        <label htmlFor="name" className="block mb-1">
+        <label htmlFor="name" className="block mb-1 font-bold">
           Name
         </label>
         <input
@@ -57,7 +57,7 @@ export default function RegisterForm() {
       </div>
 
       <div>
-        <label htmlFor="email" className="block mb-1">
+        <label htmlFor="email" className="block mb-1 font-bold">
           Email
         </label>
         <input
@@ -72,7 +72,7 @@ export default function RegisterForm() {
       </div>
 
       <div>
-        <label htmlFor="password" className="block mb-1">
+        <label htmlFor="password" className="block mb-1 font-bold">
           Password
         </label>
         <input
@@ -87,7 +87,7 @@ export default function RegisterForm() {
       </div>
 
       <div>
-        <label htmlFor="phone" className="block mb-1">
+        <label htmlFor="phone" className="block mb-1 font-bold">
           Phone
         </label>
         <input
@@ -102,7 +102,7 @@ export default function RegisterForm() {
 
       <button
         type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 font-bold"
       >
         Register
       </button>
