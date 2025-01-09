@@ -130,7 +130,7 @@ export default function SearchBar({ userId, onSearch, products }: SearchBarProps
         />
         <button
           onClick={() => handleSearchSelect(query)}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-4 py-2 bg-[#4cd7d0] hover:bg-[#a4e8e0] text-black rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           Search
         </button>
