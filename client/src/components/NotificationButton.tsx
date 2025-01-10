@@ -91,14 +91,14 @@ export default function NotificationsButton({ userId }: NotificationsProps) {
             {!showList ? (
                 <button
                 onClick={() => setShowList(!showList)}
-                className="absolute top-0 right-0 p-2 bg-blue-500 text-white rounded-full"
+                className="py-2 px-4 bg-custom-notif text-white rounded font-bold hover:bg-custom-notif-dark transition duration-300"
             >
                 Notifications {notifications.reduce((sum, n) => sum + n.count, 0)}
             </button>
             ) : (
                 <button
                 onClick={() => setShowList(!showList)}
-                className="absolute top-0 right-0 p-2 bg-blue-500 text-white rounded-full"
+                className="py-2 px-4 bg-custom-notif text-white rounded font-bold hover:bg-custom-notif-dark transition duration-300"
             >
                 Notifications
             </button>
@@ -107,12 +107,12 @@ export default function NotificationsButton({ userId }: NotificationsProps) {
 
             {showList && (
                 <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-20">
-                    <div className="bg-white w-80 rounded-md shadow-lg">
-                        <div className="flex justify-between items-center p-4 border-b">
-                            <h3 className="text-lg font-semibold text-black">Notifications</h3>
+                    <div className="bg-custom-light-teal w-1/4 rounded-md shadow-lg">
+                        <div className="flex justify-between items-center p-4 border-b border-black">
+                            <h3 className="text-lg font-bold text-black">Notifications</h3>
                             <button
                                 onClick={() => setShowList(false)}
-                                className="text-gray-500 hover:text-gray-800"
+                                className="text-gray-600 hover:text-gray-800"
                             >
                                 ✖
                             </button>
@@ -120,14 +120,14 @@ export default function NotificationsButton({ userId }: NotificationsProps) {
                         <div className="p-4 max-h-80 overflow-y-auto text-black">
                             {notifications.length > 0 ? (
                                 notifications.map((notif, index) => (
-                                    <div key={index} className="p-2 border-b cursor-pointer">
-                                        <div className="flex justify-between hover:bg-gray-100">
-                                            <span className="text-black">{notif.senderId}</span>
-                                            <span className="text-red-500">{notif.count}</span>
+                                    <div key={index} className="p-4 border-b cursor-pointer transition-all hover:bg-custom-light-teal rounded-md">
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-black font-medium">{notif.senderId}</span>
+                                            <span className="text-white font-bold bg-red-500 px-2 py-1 rounded-full text-sm">{notif.count}</span>
                                         </div>
                                         <button
                                             onClick={() => handleChatOpen(notif._id, userId, notif.senderId)}
-                                            className="block mt-2 text-blue-500"
+                                            className="block mt-3 text-blue-700 font-semibold hover:underline hover:text-black transition-colors"
                                         >
                                             Open
                                         </button>

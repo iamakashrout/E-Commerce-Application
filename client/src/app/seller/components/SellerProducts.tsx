@@ -115,7 +115,7 @@ export default function SellerProducts({ sellerName, refreshCount }: SellerProdu
 
     return (
         <div className="p-6 min-h-screen">
-            <h1 className="text-2xl font-bold mb-6 text-gray-800">Products List</h1>
+            <h1 className="text-4xl font-bold mb-6 text-center text-black">Products List</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {products.map((product) => (
                     <ProductCard

@@ -26,6 +26,8 @@ export default {
         "custom-green": "#6cd74c" /* Bright natural green */,
         "custom-peach": "#f8d0b4" /* Subtle peach for warmth */,
         "custom-grey": "#e0e0e0" /* Neutral light grey */,
+        "custom-notif": "#f59e0b",
+        "custom-notif-dark": "#d97706",
       },
       fontFamily: {
         sketch: ["'Londrina Sketch'", "cursive"],

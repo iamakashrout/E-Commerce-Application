@@ -25,10 +25,25 @@ export default function SellerDetails() {
 
     return (
         <div>
-            <h1>{sellerName}</h1>
-            <h3>{sellerEmail}</h3>
+            <div className="px-8 py-4">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-lg font-bold text-gray-700 mb-2">
+                            Seller Name: <span className="text-gray-800">{sellerName}</span>
+                        </h1>
+                        <h3 className="text-sm font-bold text-gray-600">
+                            Email: <span className="text-gray-700">{sellerEmail}</span>
+                        </h3>
+                    </div>
+                    <button
+                        className="px-4 py-2 bg-custom-pink text-white rounded shadow hover:bg-custom-lavender focus:outline-none focus:ring focus:ring-blue-300 font-bold transition duration-300"
+                        onClick={handleOpenPopup}
+                    >
+                        Add Product
+                    </button>
+                </div>
+            </div>
             <SellerProducts sellerName={sellerName}  refreshCount={refreshCount} />
-            <button onClick={handleOpenPopup}>Add Product</button>
             {isPopupOpen && <AddProduct onClose={handleClosePopup} onProductAdded={refreshProducts}  />}
         </div>
     )

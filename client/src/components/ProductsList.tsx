@@ -132,7 +132,7 @@ export default function ProductsList() {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-5xl font-bold mb-6 text-center text-[#4cd7d0]">Products List</h1>
+      <h1 className="text-4xl font-bold mb-6 text-center text-black">Products List</h1>
       <div className="mb-4 flex justify-center rounded">
         <select
           id="category"
@@ -210,7 +210,7 @@ export default function ProductsList() {
                     />
                     <button
                       onClick={() => handleAddToCart(product.id, product.name, product.price)}
-                      className="px-2 py-2 bg-[#4cd7d0] hover:bg-[#a4e8e0] text-white rounded transition"
+                      className="px-2 py-2 bg-custom-pink hover:bg-custom-lavender text-white rounded transition"
                     >
                       Add to Cart
                     </button>
