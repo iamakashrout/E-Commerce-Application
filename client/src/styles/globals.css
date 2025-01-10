@@ -1,5 +1,25 @@
 /* Global styles for the entire app */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url('https://fonts.googleapis.com/css2?family=Londrina+Sketch&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+
 body {
     font-family: "Raleway", serif;
     margin: 0;
