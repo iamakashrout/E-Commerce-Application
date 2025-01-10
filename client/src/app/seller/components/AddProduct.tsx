@@ -124,13 +124,13 @@ export default function AddProduct({ onClose, onProductAdded }: AddProductPopupP
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-xl font-semibold mb-4">Add Product</h2>
+      <div className="bg-custom-light-teal p-6 rounded-lg shadow-lg w-1/2">
+        <h2 className="text-xl font-bold mb-4">Add Product</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Row 1: ID and Name */}
           <div className="flex space-x-4">
             <div className="flex-1">
-              <label className="block text-gray-700 font-medium mb-1">ID</label>
+              <label className="block text-gray-700 font-bold mb-1">ID</label>
               <input
                 type="text"
                 name="id"
@@ -141,7 +141,7 @@ export default function AddProduct({ onClose, onProductAdded }: AddProductPopupP
               {errors.id && <p className="text-red-500 text-sm">{errors.id}</p>}
             </div>
             <div className="flex-1">
-              <label className="block text-gray-700 font-medium mb-1">Name</label>
+              <label className="block text-gray-700 font-bold mb-1">Name</label>
               <input
                 type="text"
                 name="name"
@@ -155,7 +155,7 @@ export default function AddProduct({ onClose, onProductAdded }: AddProductPopupP
           {/* Row 2: Company and Price */}
           <div className="flex space-x-4">
             <div className="flex-1">
-              <label className="block text-gray-700 font-medium mb-1">Company</label>
+              <label className="block text-gray-700 font-bold mb-1">Company</label>
               <input
                 type="text"
                 name="company"
@@ -166,7 +166,7 @@ export default function AddProduct({ onClose, onProductAdded }: AddProductPopupP
               {errors.company && <p className="text-red-500 text-sm">{errors.company}</p>}
             </div>
             <div className="flex-1">
-              <label className="block text-gray-700 font-medium mb-1">Price</label>
+              <label className="block text-gray-700 font-bold mb-1">Price</label>
               <input
                 type="number"
                 name="price"
@@ -180,7 +180,7 @@ export default function AddProduct({ onClose, onProductAdded }: AddProductPopupP
           {/* Row 3: Category and Stock */}
           <div className="flex space-x-4">
             <div className="flex-1">
-              <label className="block text-gray-700 font-medium mb-1">Category</label>
+              <label className="block text-gray-700 font-bold mb-1">Category</label>
               <input
                 type="text"
                 name="category"
@@ -191,7 +191,7 @@ export default function AddProduct({ onClose, onProductAdded }: AddProductPopupP
               {errors.category && <p className="text-red-500 text-sm">{errors.category}</p>}
             </div>
             <div className="flex-1">
-              <label className="block text-gray-700 font-medium mb-1">Stock</label>
+              <label className="block text-gray-700 font-bold mb-1">Stock</label>
               <input
                 type="number"
                 name="stock"
@@ -204,7 +204,7 @@ export default function AddProduct({ onClose, onProductAdded }: AddProductPopupP
           </div>
           {/* Row 4: Description (full-width) */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Description</label>
+            <label className="block text-gray-700 font-bold mb-1">Description</label>
             <textarea
               name="description"
               value={productDetails.description}
@@ -216,7 +216,7 @@ export default function AddProduct({ onClose, onProductAdded }: AddProductPopupP
           </div>
           {/* Image Upload Section */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Images</label>
+            <label className="block text-gray-700 font-bold mb-1">Images</label>
             <input
               type="file"
               accept="image/*"
@@ -229,7 +229,7 @@ export default function AddProduct({ onClose, onProductAdded }: AddProductPopupP
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="flex items-center space-x-2 bg-gray-100 p-2 rounded-md"
+                  className="flex items-center space-x-2 bg-custom-background p-2 rounded-md"
                 >
                   <p className="truncate max-w-[150px] text-black" title={image.name}>
                     {image.name}
@@ -251,13 +251,13 @@ export default function AddProduct({ onClose, onProductAdded }: AddProductPopupP
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
+              className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+              className="px-4 py-2 bg-custom-pink text-white rounded-md hover:bg-custom-lavender transition font-bold"
             >
               Add Product
             </button>
