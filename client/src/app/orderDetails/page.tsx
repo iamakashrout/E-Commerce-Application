@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import apiClient from '@/utils/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
+import "@/styles/globals.css";
 
 export default function OrderDetailsPage() {
     const router =useRouter();
