@@ -27,6 +27,10 @@ export default {
         "custom-peach": "#f8d0b4" /* Subtle peach for warmth */,
         "custom-grey": "#e0e0e0" /* Neutral light grey */,
       },
+      fontFamily: {
+        sketch: ["'Londrina Sketch'", "cursive"],
+        raleway: ["'Raleway'", "serif"],
+      },
     },
   },
   plugins: [],

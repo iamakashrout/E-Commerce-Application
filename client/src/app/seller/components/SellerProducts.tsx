@@ -8,7 +8,8 @@ import { useSelector } from "react-redux";
 import EditProduct from "./EditProduct";
 import SalesData from "./SalesData";
 import ReviewData from "./ReviewData";
-
+import ProductCard from "./ProductCard";
+import "@/styles/globals.css";
 
 interface SellerProductsProps {
     sellerName: string;
@@ -113,70 +114,23 @@ export default function SellerProducts({ sellerName, refreshCount }: SellerProdu
     };
 
     return (
-        <div>
-            <h1 className="text-xl font-bold mb-4">Products List</h1>
-            <ul className="space-y-6 w-full">
+        <div className="p-6 min-h-screen">
+            <h1 className="text-2xl font-bold mb-6 text-gray-800">Products List</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {products.map((product) => (
-                    <li key={product.id} className="border rounded-lg p-4 shadow-md w-full flex justify-between items-center">
-                        {/* Text Information */}
-                        <div className="flex-1">
-                            <h2 className="text-lg font-semibold">{product.name}</h2>
-                            <p className="text-white-700">Category: {product.category}</p>
-                            <p className="text-white-700">Company: {product.company}</p>
-                            <p className="text-white-700">Price: ${product.price}</p>
-                            <p className="text-white-700">Stock: {product.stock}</p>
-
-                            {/* Action Buttons */}
-                            <div className="mt-4 flex space-x-2">
-                                <button
-                                    onClick={() => handleViewSales(product.id)}
-                                    className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
-                                >
-                                    View Sales
-                                </button>
-                                <button
-                                    onClick={() => handleViewReviews(product.id)}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
-                                >
-                                    View Reviews
-                                </button>
-                                <button
-                                    onClick={() => handleEditProduct(product)}
-                                    className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition"
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    onClick={() => handleDeleteProduct(product.id)}
-                                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Product Images */}
-                        {product.images.length > 0 ? (
-                            <div className="ml-4 mt-3 flex space-x-2 overflow-x-auto">
-                                {product.images.map((image, index) => (
-                                    <img
-                                        key={index}
-                                        src={image}
-                                        alt={`${product.name} - ${index + 1}`}
-                                        className="w-32 h-32 object-cover rounded-lg" // Adjust the image size as needed
-                                    />
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-gray-500 italic mt-2">No images available</p>
-                        )}
-                    </li>
+                    <ProductCard
+                        key={product.id}
+                        product={product}
+                        onViewSales={handleViewSales}
+                        onViewReviews={handleViewReviews}
+                        onEdit={handleEditProduct}
+                        onDelete={handleDeleteProduct}
+                    />
                 ))}
-            </ul>
+            </div>
+
             {isReviewsPopupOpen && currentProductId && (
-                <ReviewData
-                    productId={currentProductId} onClose={handleCloseReviewsPopup}
-                />
+                <ReviewData productId={currentProductId} onClose={handleCloseReviewsPopup} />
             )}
 
             {isSalesPopupOpen && currentProductId && (
@@ -187,5 +141,5 @@ export default function SellerProducts({ sellerName, refreshCount }: SellerProdu
                 <EditProduct product={editProduct} onClose={handleCloseEditPopup} />
             )}
         </div>
-    );
+    );
 }
