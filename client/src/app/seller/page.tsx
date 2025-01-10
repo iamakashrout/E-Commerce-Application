@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { clearSeller } from "../redux/features/sellerSlice";
 import SellerDetails from "./components/SellerDetails";
 import NotificationsButton from "@/components/NotificationButton";
+import "@/styles/globals.css";
 
 export default function SellerPage () {
     const router = useRouter();

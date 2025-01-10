@@ -2,6 +2,7 @@
 import SellerLogin from "@/app/seller/components/SellerLogin";
 import SellerRegister from "@/app/seller/components/SellerRegister";
 import { useState } from "react";
+import "@/styles/globals.css";
 
 export default function SellerLoginPage () {
     const [isRegistering, setIsRegistering] = useState(false);
@@ -9,8 +10,8 @@ export default function SellerLoginPage () {
       const toggleForm = () => setIsRegistering(!isRegistering);
     
       return (
-        <main className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-          <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <main className="flex flex-col items-center justify-center min-h-screen">
+          <div className="bg-custom-light-teal p-8 rounded-lg shadow-md w-full max-w-md">
             <h1 className="text-2xl font-bold mb-6 text-center">
               {isRegistering ? "Register" : "Login"}
             </h1>
