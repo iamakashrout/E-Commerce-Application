@@ -75,33 +75,33 @@ export default function SalesData ({ productId, onClose }: SalesDataPopupProps) 
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl text-black"> {/* Added text-black here */}
+            <div className="bg-custom-light-teal p-6 rounded-lg shadow-lg w-full max-w-2xl text-black"> {/* Added text-black here */}
                 <h2 className="text-xl font-semibold mb-4">Sales Data</h2>
                 {loading ? (
                     <p>Loading sales data...</p>
                 ) : (
                     <>
-                        <table className="w-full border-collapse border border-gray-300">
+                        <table className="w-full border-collapse border border-black">
                             <thead>
                                 <tr className="bg-gray-100">
-                                    <th className="border border-gray-300 p-2">Order ID</th>
-                                    <th className="border border-gray-300 p-2">Quantity</th>
-                                    <th className="border border-gray-300 p-2">Unit Price</th>
-                                    <th className="border border-gray-300 p-2">Total</th>
-                                    <th className="border border-gray-300 p-2">Actions</th>
+                                    <th className="border border-black p-2">Order ID</th>
+                                    <th className="border border-black p-2">Quantity</th>
+                                    <th className="border border-black p-2">Unit Price</th>
+                                    <th className="border border-black p-2">Total</th>
+                                    <th className="border border-black p-2">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {salesData.map((sale) => (
                                     <tr key={sale.orderId}>
-                                        <td className="border border-gray-300 p-2">{sale.orderId}</td>
-                                        <td className="border border-gray-300 p-2">{sale.quantity}</td>
-                                        <td className="border border-gray-300 p-2">${sale.unitPrice}</td>
-                                        <td className="border border-gray-300 p-2">${sale.total}</td>
-                                        <td className="border border-gray-300 p-2">
+                                        <td className="border border-black p-2">{sale.orderId}</td>
+                                        <td className="border border-black p-2">{sale.quantity}</td>
+                                        <td className="border border-black p-2">${sale.unitPrice}</td>
+                                        <td className="border border-black p-2">${sale.total}</td>
+                                        <td className="border border-black p-2">
                                             <button
                                                 onClick={()=>handleOpenChat(sale.buyer)}
-                                                className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                                                className="px-3 py-1 bg-custom-pink text-white rounded-md hover:bg-custom-lavender transition"
                                             >
                                                 Messages
                                             </button>
@@ -123,7 +123,7 @@ export default function SalesData ({ productId, onClose }: SalesDataPopupProps) 
                 )}
                 <button
                     onClick={onClose}
-                    className="mt-4 px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
+                    className="mt-4 px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition"
                 >
                     Close
                 </button>

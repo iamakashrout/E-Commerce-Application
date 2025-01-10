@@ -61,30 +61,30 @@ export default function ReviewData({ productId, onClose }: ReviewDataPopupProps)
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-lg w-4/5 max-w-4xl">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-custom-light-teal p-6 rounded-lg w-4/5 max-w-4xl">
                 <h2 className="text-xl font-semibold mb-4 text-black">Reviews</h2>
                 {loading ? (
                     <p>Loading reviews...</p>
                 ) : (
                     <>
-                    <table className="w-full table-auto border-collapse text-black">
+                    <table className="w-full table-auto border-collapse border border-black text-black">
                         <thead>
                             <tr>
-                                <th className="border-b p-2 text-left">User</th>
-                                <th className="border-b p-2 text-left">Quantity</th>
-                                <th className="border-b p-2 text-left">Rating</th>
-                                <th className="border-b p-2 text-left">Review</th>
+                                <th className="border border-black p-2 text-left">User</th>
+                                <th className="border border-black p-2 text-left">Quantity</th>
+                                <th className="border border-black p-2 text-left">Rating</th>
+                                <th className="border border-black p-2 text-left">Review</th>
                             </tr>
                         </thead>
                         <tbody>
                             {reviews.length > 0 ? (
                                 reviews.map((review, index) => (
                                     <tr key={index} className="border-b">
-                                        <td className="p-2">{review.user}</td>
-                                        <td className="p-2">{review.quantity}</td>
-                                        <td className="p-2">{review.rating}</td>
-                                        <td className="p-2">{review.reviewText}</td>
+                                        <td className="border border-black p-2">{review.user}</td>
+                                        <td className="border border-black p-2">{review.quantity}</td>
+                                        <td className="border border-black p-2">{review.rating}</td>
+                                        <td className="border border-black p-2">{review.reviewText}</td>
 
                                     </tr>
                                 ))
@@ -100,15 +100,15 @@ export default function ReviewData({ productId, onClose }: ReviewDataPopupProps)
                     <div className="mt-4 text-center">
                             <button
                                 onClick={handleAnalyze}
-                                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                                className="px-4 py-2 bg-custom-pink text-white rounded-md hover:bg-custom-lavender transition font-bold"
                                 disabled={analyzing}
                             >
                                 {analyzing ? "Analyzing..." : "Analyze Reviews"}
                             </button>
                         </div>
                         {analysis && (
-                            <div className="mt-4 bg-gray-100 p-4 rounded-md text-black">
-                                <h3 className="font-semibold text-black">Analysis</h3>
+                            <div className="mt-4 bg-custom-background p-4 rounded-md text-black">
+                                <h3 className="font-bold text-black">Analysis: </h3>
                                 <p><strong>Total Reviews:</strong> {analysis.total_reviews}</p>
                                 <p><strong>Average Rating:</strong> {analysis.average_rating.toFixed(2)}</p>
                                 <p>
@@ -122,7 +122,7 @@ export default function ReviewData({ productId, onClose }: ReviewDataPopupProps)
                 <div className="mt-4 text-center">
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition"
+                        className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition"
                     >
                         Close
                     </button>
