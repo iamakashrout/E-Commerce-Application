@@ -60,9 +60,9 @@ export default function OrderDetailsPage() {
 
     return (
         <div>
-            <h1>Order Details</h1>
+            <h1 className="text-5xl font-bold mb-8 mt-8 text-center text-black">Order Details</h1>
             {orderDetails ? (
-                <div>
+                <div className="bg-custom-light-teal p-6 rounded-lg shadow-md mb-6 w-full max-w-md mx-auto mt-24 flex flex-col justify-center items-center">
                     <h2>Order ID: {orderDetails.orderId}</h2>
                     <p>Total: {orderDetails?.total?.grandTotal}</p>
                     <p>Payment Mode: {orderDetails.paymentMode}</p>

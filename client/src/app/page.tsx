@@ -10,6 +10,7 @@ import HelpChat from "@/components/HelpChat";
 import HelpButton from "@/components/HelpButton";
 import NotificationsButton from "@/components/NotificationButton";
 import "@/styles/globals.css";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
   const router = useRouter();
@@ -31,14 +32,14 @@ export default function Home() {
   
   return (
     <main>
-       <h1>Welcome to the Home Page!</h1>
-       <NotificationsButton userId={user} />
+       <Navbar/>
+       {/* <NotificationsButton userId={user} /> */}
        <ProductsList />
-       <Link href="/cart">Go to Cart</Link>
+       {/* <Link href="/cart">Go to Cart</Link> */}
        <br/>
-       <Link href="/profile">Profile</Link>
+       {/* <Link href="/profile">Profile</Link> */}
        <br/>
-       <button onClick={()=>dispatch(clearUser())}>LOG OUT</button>
+       {/* <button onClick={()=>dispatch(clearUser())}>LOG OUT</button> */}
       {/* Helpline Popup */}
       {showPopup ? (<HelpChat onClose={() => setShowPopup(false)} />):  <HelpButton onClick={() => setShowPopup(true)} />}
     </main>
