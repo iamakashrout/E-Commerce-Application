@@ -7,6 +7,7 @@ import apiClient from '@/utils/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import "@/styles/globals.css";
+import Navbar from "@/components/Navbar";
 
 export default function OrderDetailsPage() {
     const router =useRouter();
@@ -60,6 +61,7 @@ export default function OrderDetailsPage() {
 
     return (
         <div>
+            <Navbar/>
             <h1 className="text-5xl font-bold mb-8 mt-8 text-center text-black">Order Details</h1>
             {orderDetails ? (
                 <div className="bg-custom-light-teal p-6 rounded-lg shadow-md mb-6 w-full max-w-md mx-auto mt-24 flex flex-col justify-center items-center">

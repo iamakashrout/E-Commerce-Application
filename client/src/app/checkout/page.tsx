@@ -11,6 +11,7 @@ import apiClient from '@/utils/axiosInstance';
 import { loadStripe } from '@stripe/stripe-js';
 import { setOrder } from '../redux/features/orderSlice';
 import "@/styles/globals.css";
+import Navbar from "@/components/Navbar";
 
 export default function CheckoutPage() {
     const router = useRouter();
@@ -159,6 +160,8 @@ export default function CheckoutPage() {
     };
 
     return (
+        <div>
+            <Navbar/>
         <div className="container mx-auto p-6 bg-[#fbf5c4] min-h-screen">
             {/* Order Summary Header */}
             <h1 className="text-5xl font-bold mb-8 text-center text-black">Order Summary</h1>
@@ -282,6 +285,7 @@ export default function CheckoutPage() {
                     Confirm Order
                 </button>
             </div>
+        </div>
         </div>
     );
     
