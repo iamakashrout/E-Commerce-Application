@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import apiClient from '@/utils/axiosInstance';
 import { Product } from '@/types/product';
+import Navbar from '@/components/Navbar';
 
 export default function CartPage() {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -105,36 +106,89 @@ export default function CartPage() {
     };
 
     return (
+        <>
+        <Navbar/>
+        <div className="p-5">
+        <h1 className="text-center text-3xl font-bold mb-5">Cart Items</h1>
         <div>
-            <h1>Cart Items</h1>
-            <div>
-                {cartItems?.length === 0 ? (
-                    <p>Cart is empty!</p>
-                ) : (
-                    cartItems?.map((item: CartItem, index: number) =>  {
-                        const product = products.find((prod) => prod.id === item.productId);
-                        const imageUrl = product?.images?.[0]; // Get the first image URL
-                        return (
-                            <div key={index}>
-                                <input
-                                    type="checkbox"
-                                    checked={selectedItems.some((selected) => selected.productId === item.productId)}
-                                    onChange={() => handleSelectItem(item)}
-                                />
-                                {imageUrl && <img src={imageUrl} alt={item.name} style={{ width: '100px' }} />}
-                                <h2>{item.name}</h2>
-                                <p>Quantity: {item.quantity}</p>
-                                <p>Price: {item.price}</p>
-                                <p>Net: {item.price*item.quantity}</p>
-                                <button onClick={() => handleRemoveItem(item)}>Remove</button>
+            {cartItems?.length === 0 ? (
+                <p className="text-center text-gray-600">Cart is empty!</p>
+            ) : (
+                cartItems?.map((item: CartItem, index: number) => {
+                    const product = products.find((prod) => prod.id === item.productId);
+                    const imageUrl = product?.images?.[0]; // Get the first image URL
+                    return (
+                        <div
+                            key={index}
+                            className="flex bg-custom-light-teal items-center justify-between border border-black rounded-lg p-4 mb-4"
+                        >
+                            {/* Product Info */}
+                            <div className="flex-1 mr-5">
+                                <div className="flex items-center mb-3">
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedItems.some(
+                                            (selected) => selected.productId === item.productId
+                                        )}
+                                        onChange={() => handleSelectItem(item)}
+                                        className="mr-3"
+                                    />
+                                    <h2 className="text-lg font-bold">{item.name}</h2>
+                                </div>
+                                <p className="text-gray-700 mb-1 font-semibold">Quantity: {item.quantity}</p>
+                                <p className="text-gray-700 mb-1 font-semibold">
+                                    Price: ${item.price.toFixed(2)}
+                                </p>
+                                <p className="text-gray-800 mb-3 font-bold">
+                                    Net: ${(item.price * item.quantity).toFixed(2)}
+                                </p>
+                                <button
+                                    onClick={() => handleRemoveItem(item)}
+                                    className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 transition font-bold"
+                                >
+                                    Remove
+                                </button>
                             </div>
-                        );
-                    })
-                )}
-            </div>
-            <button onClick={(e)=>handleCheckout()} disabled={selectedItems.length === 0}>
+
+                            {/* Product Image */}
+                            {imageUrl && (
+                                <img
+                                    src={imageUrl}
+                                    alt={item.name}
+                                    className="w-40 h-40 object-cover rounded-lg"
+                                />
+                            )}
+                        </div>
+                    );
+                })
+            )}
+        </div>
+
+        {/* Total Amount */}
+        <div className="flex mt-4 text-2xl font-bold">
+            <p>
+                Total: $
+                {selectedItems
+                    .reduce((total, item) => total + item.price * item.quantity, 0)
+                    .toFixed(2)}
+            </p>
+        </div>
+
+        {/* Checkout Button */}
+        <div className="text-center mt-5">
+            <button
+                onClick={(e) => handleCheckout()}
+                disabled={selectedItems.length === 0}
+                className={`py-2 px-5 rounded-lg font-bold text-white transition ${
+                    selectedItems.length > 0
+                        ? 'bg-green-500 hover:bg-green-600'
+                        : 'bg-gray-300 cursor-not-allowed'
+                }`}
+            >
                 Proceed to Checkout
             </button>
         </div>
+    </div>
+    </>
     );
 }
