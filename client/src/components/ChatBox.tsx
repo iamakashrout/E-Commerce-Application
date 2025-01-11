@@ -65,7 +65,7 @@ export default function ChatBox({ chatRoomId, userId, receiverId, onClose }: Cha
 
     return (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-lg w-96 p-4 text-black">
+            <div className="bg-custom-light-teal rounded-lg shadow-lg w-[32rem] h-[28rem] p-4 text-black">
                 <div className="flex justify-between items-center">
                     <h3 className="text-lg font-bold">Chat Box</h3>
                     <button
@@ -75,25 +75,24 @@ export default function ChatBox({ chatRoomId, userId, receiverId, onClose }: Cha
                         ×
                     </button>
                 </div>
-                <div className="mt-4 border rounded-md h-64 overflow-y-auto p-2">
+                <div className="mt-4 border border-black rounded-md h-80 overflow-y-auto p-2">
                     {messages.map((msg, index) => (
                         <div
                             key={index}
-                            className={`flex ${
-                                msg.senderId === userId ? "justify-end" : "justify-start"
-                            } mb-2`}
+                            className={`flex ${msg.senderId === userId ? "justify-end" : "justify-start"
+                                } mb-2`}
                         >
                             <div
-                                className={`rounded-md p-2 max-w-xs ${
-                                    msg.senderId === userId
-                                        ? "bg-blue-500 text-white"
-                                        : "bg-gray-200 text-black"
-                                }`}
+                                className={`rounded-md p-2 max-w-xs ${msg.senderId === userId
+                                        ? "bg-custom-yellow text-black"
+                                        : "bg-custom-background text-black"
+                                    }`}
                             >
-                                <strong className="block text-sm">
+                                <strong className="block text-xs">
                                     {msg.senderId === userId ? "You" : receiverId}
                                 </strong>
-                                <p className="text-sm">{msg.message}</p>
+                                <p className="text-base">{msg.message}</p>
+
                             </div>
                         </div>
                     ))}
@@ -109,7 +108,7 @@ export default function ChatBox({ chatRoomId, userId, receiverId, onClose }: Cha
                     />
                     <button
                         onClick={handleSendMessage}
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-600"
+                        className="bg-custom-pink text-white px-4 py-2 rounded-md ml-2 hover:bg-custom-lavender font-bold"
                     >
                         Send
                     </button>

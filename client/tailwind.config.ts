@@ -28,6 +28,8 @@ export default {
         "custom-grey": "#e0e0e0" /* Neutral light grey */,
         "custom-notif": "#f59e0b",
         "custom-notif-dark": "#d97706",
+        "custom-lighter-teal": "#e9fbf9",
+        "custom-help-green": "#9be79d",
       },
       fontFamily: {
         sketch: ["'Londrina Sketch'", "cursive"],
