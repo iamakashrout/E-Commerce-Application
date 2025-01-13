@@ -78,7 +78,7 @@ export default function OrderDetailsPage() {
                                 {orderDetails?.products?.map((item: SelectedProduct, index: number) => (
                                     <div key={index} className="text-lg">
                                         <p>
-                                            {index + 1}. <span className="font-bold">{item.price}</span>
+                                            {index + 1}. <span className="font-bold">{item.price} x {item.quantity} = {item.price*item.quantity}</span>
                                         </p>
                                     </div>
                                 ))}
@@ -108,16 +108,8 @@ export default function OrderDetailsPage() {
                     <div className="w-full">
                         <h3 className="font-bold text-lg mb-4">Items:</h3>
                         {orderDetails?.products?.map((item: SelectedProduct, index: number) => (
-                            
+
                             <div key={index} className="mb-6 text-lg flex items-start">
-                                {/* Display product image if available */}
-                                {item.images && item.images.length > 0 && (
-                                    <img
-                                        src={item.images[0]} // Assuming the first image is to be displayed
-                                        alt={item.name}
-                                        className="w-16 h-16 object-cover mr-4"
-                                    />
-                                )}
                                 <div>
                                     <p>{item.name}</p>
                                     <p>Quantity: {item.quantity}</p>

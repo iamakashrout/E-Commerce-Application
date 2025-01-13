@@ -7,6 +7,8 @@ import apiClient from "@/utils/axiosInstance";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default function OrderHistory() {
 
@@ -80,10 +82,24 @@ export default function OrderHistory() {
 
     return (
         <div>
-            <h2>
+            {/* <h2>
                 <span className="font-bold text-xl">Order History</span>
                 <button className="bg-custom-lavender rounded-full px-4 py-1" onClick={toggleExpand} style={{ marginLeft: "10px" }}>
                     {isExpanded ? "Hide" : "Show"}
+                </button>
+            </h2> */}
+            <h2 className="flex items-center">
+                <span className="font-bold text-xl">Order History</span>
+                <button
+                    className="bg-custom-lavender rounded-full px-2 flex items-center justify-center"
+                    onClick={toggleExpand}
+                    style={{ marginLeft: "10px" }}
+                >
+                    {isExpanded ? (
+                        <ExpandLessIcon style={{ fontSize: "16px" }} />
+                    ) : (
+                        <ExpandMoreIcon style={{ fontSize: "16px" }} />
+                    )}
                 </button>
             </h2>
             <br></br>

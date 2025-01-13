@@ -6,6 +6,8 @@ import apiClient from "@/utils/axiosInstance";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Trash2 } from 'lucide-react';
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default function AddressList() {
     const user = useSelector((data: RootState) => data.userState.userEmail);
@@ -100,16 +102,21 @@ export default function AddressList() {
 
     return (
         <div className="text-left">
-            <h2>
+            <h2 className="flex items-center">
                 <span className="font-bold text-xl">Saved Addresses</span>
                 <button
-                    className="bg-custom-lavender rounded-full px-4 py-1"
+                    className="bg-custom-lavender rounded-full px-2 flex items-center justify-center"
                     onClick={toggleExpand}
                     style={{ marginLeft: "10px" }}
                 >
-                    {isExpanded ? "Hide" : "Show"}
+                    {isExpanded ? (
+                        <ExpandLessIcon style={{ fontSize: "16px" }} />
+                    ) : (
+                        <ExpandMoreIcon style={{ fontSize: "16px" }} />
+                    )}
                 </button>
             </h2>
+
             <br></br>
             {isExpanded && (
                 <>
@@ -124,7 +131,7 @@ export default function AddressList() {
                                                 <span className="font-bold ml-2">{add.name}</span>
                                             </h3>
                                             <button
-                                                className="bg-red-500 rounded-full px-2 py-1 flex items-center justify-center"
+                                                className="bg-red-500 rounded-full px-3 py-2 flex items-center justify-center"
                                                 onClick={() => deleteAddress(index)}
                                                 style={{ marginLeft: "10px" }}
                                             >
