@@ -33,7 +33,13 @@ export default function Home() {
   return (
     <main>
        <Navbar/>
+       {/* <NotificationsButton userId={user} /> */}
        <ProductsList />
+       {/* <Link href="/cart">Go to Cart</Link> */}
+       <br/>
+       {/* <Link href="/profile">Profile</Link> */}
+       <br/>
+       {/* <button onClick={()=>dispatch(clearUser())}>LOG OUT</button> */}
       {/* Helpline Popup */}
       {showPopup ? (<HelpChat onClose={() => setShowPopup(false)} />):  <HelpButton onClick={() => setShowPopup(true)} />}
     </main>

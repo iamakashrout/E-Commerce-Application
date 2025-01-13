@@ -2,6 +2,7 @@
 
 import { RootState } from "@/app/redux/store";
 import { Order } from "@/types/order";
+import { Address } from "@/types/address";
 import apiClient from "@/utils/axiosInstance";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -59,32 +60,59 @@ export default function OrderHistory() {
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
+    function formatMongoDate(mongoDate: Date, options?: Intl.DateTimeFormatOptions): string {
+        const date = new Date(mongoDate);
+        const defaultOptions: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true, // Use 12-hour format
+        };
+
+        // Merge options if provided
+        const formatOptions = { ...defaultOptions, ...options };
+
+        return date.toLocaleString(undefined, formatOptions); // Auto-detect locale
+    }
 
     return (
         <div>
             <h2>
-                Order History
-                <button onClick={toggleExpand} style={{ marginLeft: "10px" }}>
+                <span className="font-bold text-xl">Order History</span>
+                <button className="bg-custom-lavender rounded-full px-4 py-1" onClick={toggleExpand} style={{ marginLeft: "10px" }}>
                     {isExpanded ? "Hide" : "Show"}
                 </button>
             </h2>
+            <br></br>
             {isExpanded && (
                 <div>
                     {orders.length > 0 ? (
                         <div>
-                                {orders.map((o, index) => (
-                                    <div key={index}>
-                                        <h3>
-                                            {index + 1} {o.orderId}
-                                            <button onClick={()=>handleClick(o.orderId)} style={{ marginLeft: "10px" }}>
-                                                Details
-                                            </button>
-                                        </h3>
-                                        <p>{o.orderDate.toString()}</p>
-                                        <p>{o.total.grandTotal}</p>
-                                        <p>{o.status}</p>
-                                    </div>
-                                ))}
+                            {orders.map((o, index) => (
+                                <div key={index}>
+                                    <h3>
+                                        {index + 1}. <span className="font-bold">Order Number: </span>{o.orderId}
+                                        
+                                    </h3>
+                                    {/* <p><span className="font-bold">Order Date: </span>{o.orderDate.toLocaleDateString('en-CA')}</p> */}
+                                    <p><span className="font-bold">Order Date: </span>{formatMongoDate(o.orderDate)}</p>
+                                    <p>
+                                        <span className="font-bold">Total: </span>{o.total.grandTotal}
+                                        &nbsp;|&nbsp;
+                                        <span className="font-bold">Status: </span>{o.status}
+                                    </p>
+                                    <p><span className="font-bold">Address: </span>{o.address}</p>
+                                    <br></br>
+                                    <button className="bg-custom-light-pink rounded-full px-9 py-1" onClick={() => handleClick(o.orderId)} style={{ marginLeft: "10px" }}>
+                                            Details
+                                        </button>
+                                        <br></br>
+                                    <br></br>
+                                </div>
+                            ))}
                         </div>
                     ) : (
                         <p>No past orders</p>
