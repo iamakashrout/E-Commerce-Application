@@ -5,6 +5,9 @@ import { Address } from "@/types/address";
 import apiClient from "@/utils/axiosInstance";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Trash2 } from 'lucide-react';
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default function AddressList() {
     const user = useSelector((data: RootState) => data.userState.userEmail);
@@ -69,7 +72,7 @@ export default function AddressList() {
         } catch (err: any) {
             console.error('Error adding address:', err);
         }
-        
+
     };
 
     const deleteAddress = async (index: number) => {
@@ -95,67 +98,91 @@ export default function AddressList() {
             console.error('Error removing address:', err);
         }
     };
-    
+
 
     return (
-        <div>
-            <h2>
-                Saved Addresses
-                <button onClick={toggleExpand} style={{ marginLeft: "10px" }}>
-                    {isExpanded ? "Hide" : "Show"}
+        <div className="text-left">
+            <h2 className="flex items-center">
+                <span className="font-bold text-xl">Saved Addresses</span>
+                <button
+                    className="bg-custom-teal rounded-full px-2 flex items-center justify-center"
+                    onClick={toggleExpand}
+                    style={{ marginLeft: "10px" }}
+                >
+                    {isExpanded ? (
+                        <ExpandLessIcon style={{ fontSize: "16px" }} />
+                    ) : (
+                        <ExpandMoreIcon style={{ fontSize: "16px" }} />
+                    )}
                 </button>
             </h2>
+
+            <br></br>
             {isExpanded && (
                 <>
-                <div>
-                    {addresses.length > 0 ? (
-                        <div>
+                    <div>
+                        {addresses.length > 0 ? (
+                            <div>
                                 {addresses.map((add, index) => (
-                                    <div key={index}>
-                                        <h3>
-                                            {index + 1} {add.name}
-                                            <button onClick={() => deleteAddress(index)} style={{ marginLeft: "10px" }}>
-                                                Delete
+                                    <div key={index} className="flex flex-col mb-4">
+                                        <div className="flex items-center justify-between">
+                                            <h3 className="flex items-center">
+                                                <span>{index + 1}.</span>
+                                                <span className="font-bold ml-2">{add.name}</span>
+                                            </h3>
+                                            <button
+                                                className="bg-red-500 rounded-full px-3 py-2 flex items-center justify-center"
+                                                onClick={() => deleteAddress(index)}
+                                                style={{ marginLeft: "10px" }}
+                                            >
+                                                <Trash2 />
                                             </button>
-                                        </h3>
-                                        <p>{add.address}</p>
+                                        </div>
+                                        <p className="mt-1 ml-6">{add.address}</p>
                                     </div>
                                 ))}
+                            </div>
+                        ) : (
+                            <p>No saved addresses</p>
+                        )}
+                    </div>
+                    <br></br>
+                    <form onSubmit={addAddress}>
+                        <h3 className="font-bold text-lg">Add New Address</h3>
+                        <div>
+                            <label>
+                                Name:
+                                <input
+                                    className="ml-8 rounded-full px-2"
+                                    type="text"
+                                    name="name"
+                                    value={newAddress.name}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter address name"
+                                    required
+                                    style={{ width: '200px', height: '40px' }}
+                                />
+
+                            </label>
                         </div>
-                    ) : (
-                        <p>No saved addresses</p>
-                    )}
-                </div>
-                <form onSubmit={addAddress}>
-                <h3>Add New Address</h3>
-                <div>
-                    <label>
-                        Name:
-                        <input
-                            type="text"
-                            name="name"
-                            value={newAddress.name}
-                            onChange={handleInputChange}
-                            placeholder="Enter address name"
-                            required
-                        />
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Address:
-                        <input
-                            type="text"
-                            name="address"
-                            value={newAddress.address}
-                            onChange={handleInputChange}
-                            placeholder="Enter address"
-                            required
-                        />
-                    </label>
-                </div>
-                <button type="submit">Add Address</button>
-            </form>
+                        <br></br>
+                        <div>
+                            <label>
+                                Address:
+                                <input className="ml-4 rounded-full px-2"
+                                    type="text"
+                                    name="address"
+                                    value={newAddress.address}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter address"
+                                    required
+                                    style={{ width: '200px', height: '40px' }}
+                                />
+                            </label>
+                        </div>
+                        <br></br>
+                        <button className="bg-custom-light-pink rounded-full px-4 py-1 ml-16" type="submit">Add Address</button>
+                    </form>
                 </>
             )}
         </div>
