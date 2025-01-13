@@ -4,6 +4,7 @@ import storage from "./storage";
 import userReducer from "./features/userSlice";
 import orderReducer from "./features/orderSlice";
 import sellerReducer from "./features/sellerSlice";
+import themeReducer from "./features/themeSlice";
 
 // Persist configuration for the userState, login needs to persist after refresh
 const persistUserConfig = {
@@ -21,15 +22,22 @@ const persistSellerConfig = {
     storage,
 }
 
+const persistThemeConfig = {
+    key: "themeState",
+    storage,
+}
+
 const persistedUserReducer = persistReducer(persistUserConfig, userReducer);
 const persistedOrderReducer = persistReducer(persistOrderConfig, orderReducer);
 const persistedSellerReducer = persistReducer(persistSellerConfig, sellerReducer);
+const persistedThemeReducer = persistReducer(persistThemeConfig, themeReducer);
 
 export const store = configureStore({
     reducer: {
         userState: persistedUserReducer,
         orderState: persistedOrderReducer,
         sellerState: persistedSellerReducer,
+        themeState: persistedThemeReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

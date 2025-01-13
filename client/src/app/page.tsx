@@ -31,7 +31,7 @@ export default function Home() {
   }
   
   return (
-    <main>
+    <main className="dark:bg-black">
        <Navbar/>
        <ProductsList />
        <br/>
