@@ -70,7 +70,7 @@ export default function PaymentStatus() {
       <div className="bg-custom-light-teal p-8 rounded-lg shadow-md mb-6 w-full max-w-3xl mx-auto mt-24 flex flex-col items-center">
       <h1 
   className={`text-3xl font-bold ${
-    paymentStatus === "succeeded" ? "text-green-600" : "text-red-500"
+    paymentStatus === "succeeded" ? "text-green-600" : "text-red-600"
   }`}
 >
   Status: Payment {paymentStatus === "succeeded" ? "Succeeded" : "Failed"}
@@ -78,10 +78,10 @@ export default function PaymentStatus() {
         <br></br>
         {paymentStatus === "succeeded" ? (
           <div>
-            <p className="text-lg">Thank you for your payment. Your transaction has been completed successfully.</p>
+            <p className="text-lg font-semibold">Thank you for your payment. Your transaction has been completed successfully.</p>
             <div className="flex justify-center mt-4">
               <button
-                className="px-4 py-2 bg-custom-lavender rounded-full"
+                className="px-4 py-2 bg-custom-pink rounded-full hover:bg-custom-lavender text-white font-bold transition duration-300"
                 onClick={() => router.push(`/orderDetails?orderId=${orderId}`)}
               >
                 View Order Details

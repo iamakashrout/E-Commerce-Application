@@ -132,13 +132,13 @@ export default function ProductsList() {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-4xl font-bold mb-6 text-center text-black">Products List</h1>
+      <h1 className="text-3xl font-bold mb-2 text-center text-black">Products List</h1>
       <div className="mb-4 flex justify-center rounded">
         <select
           id="category"
           value={selectedCategory}
           onChange={handleCategoryChange}
-          className="p-2 border rounded text-black bg-[#4cd7d0] hover:bg-[#a4e8e0] transition"
+          className="p-2 border rounded text-black font-semibold bg-[#4cd7d0] hover:bg-[#a4e8e0] transition"
         >
           <option value="all">All Products</option>
           <option value="recommended">Recommended Products</option>
@@ -146,7 +146,7 @@ export default function ProductsList() {
       </div>
       <div className="mb-6"><SearchBar userId={user} onSearch={handleSearch} products={products} /></div>
       {loading ? (
-        <p className="text-center text-[#4cd7d0]">Loading products...</p>
+        <p className="text-center font-bold text-[#4cd7d0] text-4xl">Loading products...</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredProducts.length === 0 ? (
@@ -173,7 +173,7 @@ export default function ProductsList() {
                         <img
                           src={product.images[currentImageIndex[product.id] || 0]}
                           alt={`${product.name}`}
-                          className="w-40 h-40 object-cover rounded-lg"
+                          className="w-48 h-48 object-cover rounded-lg"
                         />
                         {product.images.length > 1 && (
                           <button
@@ -192,11 +192,11 @@ export default function ProductsList() {
           {/* <p className="text-gray-500 italic mt-2"></p> */}
         </div>
                   )}
-                  <h2 className="text-xl font-semibold mb-2 text-[#e1c441]">{product.name}</h2>
-                  <p className="text-gray-600 mb-1">{product.company} Category: {product.category}</p>
-                  <p className="text-green-600 font-bold mb-1">${product.price} Stock: {product.stock}</p>
+                  <h2 className="text-xl font-bold mb-2 text-custom-purple">{product.name}</h2>
+                  <p className="text-gray-600 font-semibold mb-1">{product.company}, Category: {product.category}</p>
+                  <p className="text-green-600 font-bold mb-1">Price: ${product.price}, Stock: {product.stock}</p>
                   <div className="flex items-center space-x-3">
-                    <label htmlFor={`quantity-${product.id}`} className="text-gray-700">
+                    <label htmlFor={`quantity-${product.id}`} className="text-gray-700 font-semibold">
                       Quantity:
                     </label>
                     <input
@@ -210,7 +210,7 @@ export default function ProductsList() {
                     />
                     <button
                       onClick={() => handleAddToCart(product.id, product.name, product.price)}
-                      className="px-2 py-2 bg-custom-pink hover:bg-custom-lavender text-white rounded transition"
+                      className="px-2 py-2 bg-custom-pink hover:bg-custom-lavender text-white rounded transition font-bold"
                     >
                       Add to Cart
                     </button>

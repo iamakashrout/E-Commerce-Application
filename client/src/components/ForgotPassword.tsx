@@ -63,7 +63,7 @@ export default function ForgotPassword({ onClose }: ForgotPasswordPopupProps) {
             />
             <button
               onClick={handleGenerateOtp}
-              className="bg-custom-pink text-white px-4 py-3 rounded-lg hover:bg-custom-lavender w-full text-base font-medium transition duration-200"
+              className="bg-custom-pink text-white px-4 py-3 rounded-lg hover:bg-custom-lavender w-full text-base font-bold transition duration-200"
             >
               Generate OTP
             </button>
@@ -97,7 +97,7 @@ export default function ForgotPassword({ onClose }: ForgotPasswordPopupProps) {
             />
             <button
               onClick={handleResetPassword}
-              className="bg-custom-pink text-white px-4 py-3 rounded-lg hover:bg-custom-lavender w-full text-base font-medium transition duration-200"
+              className="bg-custom-pink text-white px-4 py-3 rounded-lg hover:bg-custom-lavender w-full text-base font-bold transition duration-200"
             >
               Save
             </button>

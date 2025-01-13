@@ -33,7 +33,7 @@ export default function SellerPage() {
     <main>
       <nav className="bg-custom-light-teal text-black shadow-md px-6 py-4">
         <div className="flex justify-between items-center max-w-7xl mx-auto">
-          <h1 className="text-2xl font-bold">Seller Dashboard</h1>
+          <h1 className="text-2xl font-bold text-custom-purple">SwiftShop Seller</h1>
           <div className="flex items-center gap-4">
             <NotificationsButton userId={sellerName} />
             <button

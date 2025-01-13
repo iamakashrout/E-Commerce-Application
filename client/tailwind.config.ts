@@ -30,6 +30,7 @@ export default {
         "custom-notif-dark": "#d97706",
         "custom-lighter-teal": "#e9fbf9",
         "custom-help-green": "#9be79d",
+        "custom-purple":"#9a3ed6",
       },
       fontFamily: {
         sketch: ["'Londrina Sketch'", "cursive"],

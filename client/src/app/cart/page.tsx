@@ -112,7 +112,7 @@ export default function CartPage() {
         <h1 className="text-center text-3xl font-bold mb-5">Cart Items</h1>
         <div>
             {cartItems?.length === 0 ? (
-                <p className="text-center text-gray-600">Cart is empty!</p>
+                <p className="text-center text-gray-800 text-2xl font-semibold">Cart is empty!</p>
             ) : (
                 cartItems?.map((item: CartItem, index: number) => {
                     const product = products.find((prod) => prod.id === item.productId);
