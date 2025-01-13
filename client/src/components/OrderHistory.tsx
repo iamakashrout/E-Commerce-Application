@@ -82,16 +82,10 @@ export default function OrderHistory() {
 
     return (
         <div>
-            {/* <h2>
-                <span className="font-bold text-xl">Order History</span>
-                <button className="bg-custom-lavender rounded-full px-4 py-1" onClick={toggleExpand} style={{ marginLeft: "10px" }}>
-                    {isExpanded ? "Hide" : "Show"}
-                </button>
-            </h2> */}
             <h2 className="flex items-center">
                 <span className="font-bold text-xl">Order History</span>
                 <button
-                    className="bg-custom-lavender rounded-full px-2 flex items-center justify-center"
+                    className="bg-custom-teal rounded-full px-2 flex items-center justify-center"
                     onClick={toggleExpand}
                     style={{ marginLeft: "10px" }}
                 >
