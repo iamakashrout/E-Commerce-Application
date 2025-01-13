@@ -123,12 +123,12 @@ export default function AddReviewPage() {
     }
 
     return (
-        <div>
+        <div className="dark:bg-black min-h-screen overflow-hidden">
             <Navbar />
             <div className="max-w-4xl mx-auto p-4">
-                <h1 className="text-3xl font-bold mb-6 text-center">Product Details</h1>
+                <h1 className="text-3xl font-bold mb-6 text-center dark:text-custom-teal">Product Details</h1>
                 {productDetails ? (
-                    <div className="bg-custom-light-teal shadow-md rounded-lg p-6">
+                    <div className="bg-custom-light-teal dark:bg-custom-teal shadow-md rounded-lg p-6">
                         <h2 className="text-2xl font-bold">{productDetails.name}</h2>
                         <p className="text-gray-700 mt-2">{productDetails.description}</p>
                         <p className="text-lg font-semibold mt-2">Price: ${productDetails.price}</p>

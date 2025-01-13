@@ -6,6 +6,9 @@ import { RootState } from "@/app/redux/store";
 import { clearUser } from "@/app/redux/features/userSlice";
 import NotificationsButton from "@/components/NotificationButton";
 import { toggleDarkMode } from "@/app/redux/features/themeSlice";
+import { FaSun, FaMoon } from 'react-icons/fa';
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 
 export default function Navbar() {
     const dispatch = useDispatch();
@@ -19,15 +22,24 @@ export default function Navbar() {
     };
 
     return (
-        <nav className="bg-custom-light-teal p-6 flex items-center justify-between">
+        <nav className="bg-custom-light-teal p-6 flex items-center justify-between dark:bg-custom-teal">
           <div className="text-3xl font-bold text-custom-purple">SwiftShop</div>
           <div className="flex items-center space-x-6">
-          <button
-      onClick={() => dispatch(toggleDarkMode())}
-      className="p-2 rounded bg-gray-300 dark:bg-gray-700 text-black dark:text-white"
-    >
-      {darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-    </button>
+          <>
+      <button
+        onClick={() => dispatch(toggleDarkMode())}
+        className="p-2 rounded text-black dark:text-white transition duration-200 ease-in-out"
+        data-tooltip-id="dark-mode-tooltip"
+        data-tooltip-content={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+      >
+        {darkMode ? (
+          <FaSun className="h-6 w-6 text-black" />
+        ) : (
+          <FaMoon className="h-6 w-6 text-black" />
+        )}
+      </button>
+      <Tooltip id="dark-mode-tooltip" place="top" />
+    </>
             <Link
               href="/"
               className="text-lg font-semibold text-gray-800 hover:text-gray-500 hover:font-bold transition duration-300"

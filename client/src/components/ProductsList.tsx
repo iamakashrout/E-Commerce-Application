@@ -132,7 +132,7 @@ export default function ProductsList() {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-2 text-center text-black">Products List</h1>
+      <h1 className="text-3xl font-bold mb-2 text-center text-black dark:text-custom-teal">Products List</h1>
       <div className="mb-4 flex justify-center rounded">
         <select
           id="category"
@@ -155,7 +155,7 @@ export default function ProductsList() {
             filteredProducts.map((product: Product) => (
               <div
                 key={product.id}
-                className="border rounded-lg p-4 shadow-md transition-transform transform bg-[#a4e8e0] hover:shadow-lg hover:scale-105 hover:-translate-y-2"
+                className="border rounded-lg p-4 shadow-md transition-transform transform bg-[#a4e8e0] dark:bg-custom-teal hover:shadow-lg hover:scale-105 hover:-translate-y-2"
               >
                 <div className="flex flex-col items-center">
                   {product.images.length > 0 ? (

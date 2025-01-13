@@ -65,9 +65,9 @@ export default function PaymentStatus() {
   }
 
   return (
-    <div>
+    <div className="dark:bg-black min-h-screen overflow-hidden">
       <Navbar />
-      <div className="bg-custom-light-teal p-8 rounded-lg shadow-md mb-6 w-full max-w-3xl mx-auto mt-24 flex flex-col items-center">
+      <div className="bg-custom-light-teal dark:bg-custom-teal p-8 rounded-lg shadow-md mb-6 w-full max-w-3xl mx-auto mt-24 flex flex-col items-center">
       <h1 
   className={`text-3xl font-bold ${
     paymentStatus === "succeeded" ? "text-green-600" : "text-red-600"

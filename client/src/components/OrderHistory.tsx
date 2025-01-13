@@ -89,7 +89,7 @@ export default function OrderHistory() {
             <h2 className="flex items-center">
                 <span className="font-bold text-xl">Order History</span>
                 <button
-                    className="bg-custom-teal rounded-full px-2 flex items-center justify-center"
+                    className="bg-custom-teal dark:bg-custom-light-teal rounded-full px-2 flex items-center justify-center"
                     onClick={toggleExpand}
                     style={{ marginLeft: "10px" }}
                 >

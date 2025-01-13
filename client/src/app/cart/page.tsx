@@ -106,13 +106,13 @@ export default function CartPage() {
     };
 
     return (
-        <>
+        <main className='dark:bg-black min-h-screen overflow-hidden'>
         <Navbar/>
         <div className="p-5">
-        <h1 className="text-center text-3xl font-bold mb-5">Cart Items</h1>
+        <h1 className="text-center text-3xl font-bold mb-5 dark:text-custom-teal">Cart Items</h1>
         <div>
             {cartItems?.length === 0 ? (
-                <p className="text-center text-gray-800 text-2xl font-semibold">Cart is empty!</p>
+                <p className="text-center text-gray-800 text-2xl font-semibold dark:text-custom-light-teal">Cart is empty!</p>
             ) : (
                 cartItems?.map((item: CartItem, index: number) => {
                     const product = products.find((prod) => prod.id === item.productId);
@@ -120,7 +120,7 @@ export default function CartPage() {
                     return (
                         <div
                             key={index}
-                            className="flex bg-custom-light-teal items-center justify-between border border-black rounded-lg p-4 mb-4"
+                            className="flex bg-custom-light-teal items-center justify-between border border-black rounded-lg p-4 mb-4 dark:bg-custom-teal"
                         >
                             {/* Product Info */}
                             <div className="flex-1 mr-5">
@@ -165,7 +165,7 @@ export default function CartPage() {
         </div>
 
         {/* Total Amount */}
-        <div className="flex mt-4 text-2xl font-bold">
+        <div className="flex mt-4 text-2xl font-bold dark:text-custom-teal">
             <p>
                 Total: $
                 {selectedItems
@@ -189,6 +189,6 @@ export default function CartPage() {
             </button>
         </div>
     </div>
-    </>
+    </main>
     );
 }

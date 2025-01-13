@@ -191,14 +191,14 @@ export default function CheckoutPage() {
     };
 
     return (
-        <div>
+        <main className='dark:bg-black min-h-screen overflow-hidden'>
             <Navbar/>
-        <div className="container mx-auto p-6 bg-[#fbf5c4] min-h-screen">
+        <div className="container mx-auto p-6">
             {/* Order Summary Header */}
-            <h1 className="text-3xl font-bold mb-8 text-center text-black">Order Summary</h1>
+            <h1 className="text-3xl font-bold mb-8 text-center text-black dark:text-custom-teal">Order Summary</h1>
     
             {/* Selected Items Section */}
-            <div className="bg-custom-light-teal p-6 rounded-lg shadow-md mb-6">
+            <div className="bg-custom-light-teal dark:bg-custom-teal p-6 rounded-lg shadow-md mb-6">
                 <h2 className="text-2xl font-bold mb-4 text-black">Selected Items</h2>
                 {selectedItems.map((item: CartItem, index: number) => {
                     const product = products.find((prod) => prod.id === item.productId);
@@ -235,7 +235,7 @@ export default function CheckoutPage() {
             </div>
     
             {/* Payment Mode Section */}
-            <div className="bg-custom-light-teal p-6 rounded-lg shadow-md mb-6">
+            <div className="bg-custom-light-teal dark:bg-custom-teal p-6 rounded-lg shadow-md mb-6">
                 <h2 className="text-2xl font-bold mb-4 text-black">Payment Mode</h2>
                 <label className="block text-gray-700 font-semibold">
                     <span className="block mb-2">Choose Payment Mode:</span>
@@ -251,7 +251,7 @@ export default function CheckoutPage() {
             </div>
     
             {/* Address Selection Section */}
-            <div className="bg-custom-light-teal p-6 rounded-lg shadow-md mb-6">
+            <div className="bg-custom-light-teal dark:bg-custom-teal p-6 rounded-lg shadow-md mb-6">
                 <h2 className="text-2xl font-bold mb-4 text-black">Select Address</h2>
                 {savedAddresses.length > 0 ? (
                     <div>
@@ -337,7 +337,7 @@ export default function CheckoutPage() {
                 </button>
             </div>
         </div>
-        </div>
+        </main>
     );
     
 }

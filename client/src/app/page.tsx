@@ -31,7 +31,7 @@ export default function Home() {
   }
   
   return (
-    <main className="dark:bg-black">
+    <main className="dark:bg-black min-h-screen overflow-hidden">
        <Navbar/>
        <ProductsList />
        <br/>

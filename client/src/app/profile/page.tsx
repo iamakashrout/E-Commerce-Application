@@ -8,6 +8,7 @@ import apiClient from "@/utils/axiosInstance";
 import AddressList from "@/components/AddressList";
 import OrderHistory from "@/components/OrderHistory";
 import Navbar from "@/components/Navbar";
+import "@/styles/globals.css";
 
 export default function ProfilePage() {
 
@@ -46,12 +47,12 @@ export default function ProfilePage() {
     }, []);
 
     return (
-        <div>
+        <main className="dark:bg-black min-h-screen overflow-hidden">
+            <Navbar/>
             { user ? (
                 <div>
-                    <Navbar/>
-                    <h1 className="text-3xl font-bold mb-8 mt-8 text-center text-black">Your Profile</h1>
-                    <div className="bg-custom-light-teal p-12 rounded-lg shadow-md mb-6 w-full max-w-3xl mx-auto mt-12 flex flex-col">
+                    <h1 className="text-3xl font-bold mb-8 mt-8 text-center text-black dark:text-custom-teal">Your Profile</h1>
+                    <div className="bg-custom-light-teal dark:bg-custom-teal p-12 rounded-lg shadow-md mb-6 w-full max-w-3xl mx-auto mt-12 flex flex-col">
                     <h1 className="font-bold text-2xl mb-4">{user.name}</h1>
                     <p className="text-xl mb-2"><span className="font-bold">Email:</span> <span>{user.email}</span></p>
                     <p className="text-xl mb-2"><span className="font-bold">Loyalty Points:</span> <span>{user.loyaltyPoints}</span></p>
@@ -64,6 +65,6 @@ export default function ProfilePage() {
             ) : (
                 <p>Loading user details...</p>
             )}
-        </div>
+        </main>
     )
 }

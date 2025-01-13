@@ -106,7 +106,7 @@ export default function AddressList() {
             <h2 className="flex items-center">
                 <span className="font-bold text-xl">Saved Addresses</span>
                 <button
-                    className="bg-custom-teal rounded-full px-2 flex items-center justify-center"
+                    className="bg-custom-teal dark:bg-custom-light-teal rounded-full px-2 flex items-center justify-center"
                     onClick={toggleExpand}
                     style={{ marginLeft: "10px" }}
                 >

@@ -30,7 +30,6 @@ export default function OrderDetailsPage() {
                     // console.log('response data data', response.data.data);
                     console.log(response.data);
                     setOrderDetails(response.data.data);
-                    console.log("order details: ", orderDetails);
                 } else {
                     console.error('Failed to fetch order details:', response.data.error);
                 }
@@ -94,11 +93,11 @@ export default function OrderDetailsPage() {
     }
 
     return (
-        <div>
+        <div className="dark:bg-black min-h-screen overflow-hidden">
             <Navbar />
-            <h1 className="text-3xl font-bold mb-8 mt-8 text-center text-black">Order Details</h1>
+            <h1 className="text-3xl font-bold mb-8 mt-8 text-center text-black dark:text-custom-teal">Order Details</h1>
             {orderDetails ? (
-                <div className="bg-custom-light-teal p-8 rounded-lg shadow-md mb-6 w-full max-w-3xl mx-auto mt-8 flex flex-col items-center">
+                <div className="bg-custom-light-teal dark:bg-custom-teal p-8 rounded-lg shadow-md mb-6 w-full max-w-3xl mx-auto mt-8 flex flex-col items-center">
                     <div className="w-full mb-6">
                         <h2 className="font-bold text-lg">Order ID:</h2>
                         <p className="text-base">{orderDetails.orderId}</p>
@@ -109,10 +108,10 @@ export default function OrderDetailsPage() {
                         <div className="w-1/2">
                             <h2 className="font-bold text-lg">Details:</h2>
                             <div className="text-lg">
-                                <p>Subtotal: ${orderDetails.total.subtotal}</p>
-                                <p>Tax: ${orderDetails.total.tax}</p>
-                                <p>Shipping: ${orderDetails.total.shipping}</p>
-                                <p>Discount: ${orderDetails.total.discount}</p>
+                                <p>Subtotal: ${orderDetails.total?.subtotal}</p>
+                                <p>Tax: ${orderDetails.total?.tax}</p>
+                                <p>Shipping: ${orderDetails.total?.shipping}</p>
+                                <p>Discount: ${orderDetails.total?.discount}</p>
                             </div>
                         </div>
 
