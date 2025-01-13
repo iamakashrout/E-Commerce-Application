@@ -49,7 +49,7 @@ export default function Navbar() {
     // );
     return (
         <nav className="bg-custom-light-teal p-6 flex items-center justify-between">
-          <div className="text-3xl font-bold text-custom-pink">SwiftShop</div>
+          <div className="text-3xl font-bold text-pink-500">SwiftShop</div>
           <div className="flex items-center space-x-6">
             <Link
               href="/"
