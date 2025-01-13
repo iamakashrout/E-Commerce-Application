@@ -96,10 +96,51 @@ export default function OrderDetailsPage() {
     return (
         <div>
             <Navbar />
-            <h1 className="text-5xl font-bold mb-8 mt-8 text-center text-black">Order Details</h1>
+            <h1 className="text-3xl font-bold mb-8 mt-8 text-center text-black">Order Details</h1>
             {orderDetails ? (
-                <div className="bg-custom-light-teal p-8 rounded-lg shadow-md mb-6 w-full max-w-3xl mx-auto mt-24 flex flex-col items-center">
-                    {/* ... (existing code for Order ID, Subtotal, Payment Mode, Date, and Address remains the same) */}
+                <div className="bg-custom-light-teal p-8 rounded-lg shadow-md mb-6 w-full max-w-3xl mx-auto mt-8 flex flex-col items-center">
+                    <div className="w-full mb-6">
+                        <h2 className="font-bold text-lg">Order ID:</h2>
+                        <p className="text-base">{orderDetails.orderId}</p>
+                    </div>
+                     {/* Wrap subtotal and payment mode in a flex container */}
+                     <div className="w-full flex justify-between mb-6">
+                        {/* subtotal section */}
+                        <div className="w-1/2">
+                            <h2 className="font-bold text-lg">Details:</h2>
+                            <div className="text-lg">
+                                {/* {orderDetails?.products?.map((item: SelectedProduct, index: number) => (
+                                    <div key={index} className="text-lg">
+                                        <p>
+                                            {index + 1}. <span className="font-bold">{item.price} x {item.quantity} = {item.price*item.quantity}</span>
+                                        </p>
+                                    </div>
+                                ))} */}
+                                <p>Subtotal: ${orderDetails.total.subtotal}</p>
+                                <p>Tax: ${orderDetails.total.tax}</p>
+                                <p>Shipping: ${orderDetails.total.shipping}</p>
+                                <p>Discount: ${orderDetails.total.discount}</p>
+                            </div>
+                        </div>
+
+                        {/* payment mode section */}
+                        <div className="w-1/2">
+                            <h2 className="font-bold text-lg">Payment Mode:</h2>
+                            <p className="text-lg">{orderDetails.paymentMode}</p>
+                            <p className="text-2xl font-extrabold text-green-600">
+                                Grand Total: ${orderDetails?.total?.grandTotal}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="w-full mb-6">
+                        <h2 className="font-bold text-lg">Date:</h2>
+                        <p className="text-lg">{formatMongoDate(orderDetails.orderDate)}</p>
+                    </div>
+                    <div className="w-full mb-6">
+                        <h2 className="font-bold text-lg">Address:</h2>
+                        <p className="text-lg">{orderDetails.address}</p>
+                    </div>
 
                     <div className="w-full">
                         <h3 className="font-bold text-lg mb-4">Items:</h3>
@@ -107,23 +148,24 @@ export default function OrderDetailsPage() {
                             const product = products.find((prod) => prod.id === item.productId);
                             const imageUrl = product?.images?.[0];
                             return (
-                                <div key={index} className="mb-6 text-lg flex items-start">
+                                <div key={index} className="mb-6 text-lg flex items-start border border-black rounded-lg p-4">
                                     <div className="flex-grow">
                                         <p className="font-semibold">{item.name}</p>
                                         <p>Quantity: {item.quantity}</p>
-                                        <p>Price: {item.price}</p>
+                                        <p>Price: ${item.price}</p>
+                                        <p>Net: ${item.price*item.quantity}</p>
                                         <button
                                             onClick={() =>
                                                 router.push(
                                                     `/review?orderId=${orderId}&productId=${item.productId}&quantity=${item.quantity}`
                                                 )
                                             }
-                                            className="font-bold text-blue-600 mt-2 text-md"
+                                            className="font-bold bg-custom-pink text-white mt-2 text-md hover:bg-custom-lavender rounded-full px-4 transition duration-300"
                                         >
                                             View Details
                                         </button>
                                     </div>
-                                    <div className="ml-4 mr-6 mb-4 w-32 h-32 relative flex-shrink-0">
+                                    <div className="ml-4 mr-6 mb-4 mt-2 w-32 h-32 relative flex-shrink-0">
                                         {imageUrl ? (
                                             <img
                                                 src={imageUrl}

@@ -50,11 +50,11 @@ export default function ProfilePage() {
             { user ? (
                 <div>
                     <Navbar/>
-                    <h1 className="text-5xl font-bold mb-8 mt-8 text-center text-black">Your Profile</h1>
-                    <div className="bg-custom-light-teal p-8 rounded-lg shadow-md mb-6 w-full max-w-3xl mx-auto mt-24 flex flex-col items-center">
-                    <h1 className="font-bold text-xl">{user.name}</h1>
-                    <p className="text-xl"><span className="font-bold">Email:</span> <span>{user.email}</span></p>
-                    <p className="text-xl"><span className="font-bold">Loyalty Points:</span> <span>{user.loyaltyPoints}</span></p>
+                    <h1 className="text-3xl font-bold mb-8 mt-8 text-center text-black">Your Profile</h1>
+                    <div className="bg-custom-light-teal p-12 rounded-lg shadow-md mb-6 w-full max-w-3xl mx-auto mt-12 flex flex-col">
+                    <h1 className="font-bold text-2xl mb-4">{user.name}</h1>
+                    <p className="text-xl mb-2"><span className="font-bold">Email:</span> <span>{user.email}</span></p>
+                    <p className="text-xl mb-2"><span className="font-bold">Loyalty Points:</span> <span>{user.loyaltyPoints}</span></p>
                     <br></br>
                     <div className="text-left"><AddressList/></div>
                     <br></br>

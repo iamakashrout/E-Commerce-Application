@@ -44,7 +44,11 @@ export default function OrderHistory() {
                             address: item.address,
                             total: item.total
                         };
-                    });
+                    }) .sort(
+                        (a: Order, b: Order) =>
+                            new Date(b.orderDate).getTime() -
+                            new Date(a.orderDate).getTime()
+                    ); // Sort orders by date (descending);
                     setOrders(data);
                 } else {
                     console.error('Failed to fetch orders:', response.data.error);
@@ -102,21 +106,21 @@ export default function OrderHistory() {
                     {orders.length > 0 ? (
                         <div>
                             {orders.map((o, index) => (
-                                <div key={index}>
-                                    <h3>
-                                        {index + 1}. <span className="font-bold">Order Number: </span>{o.orderId}
-                                        
-                                    </h3>
-                                    {/* <p><span className="font-bold">Order Date: </span>{o.orderDate.toLocaleDateString('en-CA')}</p> */}
+                                <div key={index} className="border border-black rounded-lg p-4 mb-4 shadow-sm flex justify-between items-center"
+                                >
+                                   <div>
+                                   <p>
+                                        <span className="font-bold">Order Number: </span>{o.orderId}
+                                    </p>
                                     <p><span className="font-bold">Order Date: </span>{formatMongoDate(o.orderDate)}</p>
                                     <p>
-                                        <span className="font-bold">Total: </span>{o.total.grandTotal}
+                                        <span className="font-bold">Total: </span>${o.total.grandTotal}
                                         &nbsp;|&nbsp;
                                         <span className="font-bold">Status: </span>{o.status}
                                     </p>
                                     <p><span className="font-bold">Address: </span>{o.address}</p>
-                                    <br></br>
-                                    <button className="bg-custom-light-pink rounded-full px-9 py-1" onClick={() => handleClick(o.orderId)} style={{ marginLeft: "10px" }}>
+                                   </div>
+                                    <button className="bg-custom-pink rounded-full px-9 py-1 ml-4 hover:bg-custom-lavender font-bold text-white transition duration-300" onClick={() => handleClick(o.orderId)}>
                                             Details
                                         </button>
                                         <br></br>

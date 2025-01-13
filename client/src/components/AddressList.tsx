@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { Trash2 } from 'lucide-react';
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Tooltip } from "@mui/material";
 
 export default function AddressList() {
     const user = useSelector((data: RootState) => data.userState.userEmail);
@@ -130,13 +131,16 @@ export default function AddressList() {
                                                 <span>{index + 1}.</span>
                                                 <span className="font-bold ml-2">{add.name}</span>
                                             </h3>
+                                            <Tooltip title="Delete address" arrow>
                                             <button
-                                                className="bg-red-500 rounded-full px-3 py-2 flex items-center justify-center"
+                                                className="text-red-500 hover:text-red-600 rounded-full px-3 py-2 flex items-center justify-center"
                                                 onClick={() => deleteAddress(index)}
                                                 style={{ marginLeft: "10px" }}
                                             >
                                                 <Trash2 />
                                             </button>
+                                            </Tooltip>
+                                            
                                         </div>
                                         <p className="mt-1 ml-6">{add.address}</p>
                                     </div>
@@ -148,40 +152,38 @@ export default function AddressList() {
                     </div>
                     <br></br>
                     <form onSubmit={addAddress}>
-                        <h3 className="font-bold text-lg">Add New Address</h3>
+                        <h3 className="font-bold text-lg mb-4">Add New Address</h3>
                         <div>
-                            <label>
+                            <label className="font-semibold">
                                 Name:
                                 <input
-                                    className="ml-8 rounded-full px-2"
+                                    className="ml-8 rounded px-2 w-[24rem] h-8"
                                     type="text"
                                     name="name"
                                     value={newAddress.name}
                                     onChange={handleInputChange}
                                     placeholder="Enter address name"
                                     required
-                                    style={{ width: '200px', height: '40px' }}
                                 />
 
                             </label>
                         </div>
                         <br></br>
                         <div>
-                            <label>
+                            <label className="font-semibold">
                                 Address:
-                                <input className="ml-4 rounded-full px-2"
+                                <input className="ml-4 rounded px-2 w-[36rem] h-8"
                                     type="text"
                                     name="address"
                                     value={newAddress.address}
                                     onChange={handleInputChange}
-                                    placeholder="Enter address"
+                                    placeholder="Enter address details"
                                     required
-                                    style={{ width: '200px', height: '40px' }}
                                 />
                             </label>
                         </div>
                         <br></br>
-                        <button className="bg-custom-light-pink rounded-full px-4 py-1 ml-16" type="submit">Add Address</button>
+                        <button className="bg-custom-pink rounded-full px-4 py-1 hover:bg-custom-lavender transition duration-300 text-white font-bold" type="submit">Add Address</button>
                     </form>
                 </>
             )}
