@@ -109,13 +109,6 @@ export default function OrderDetailsPage() {
                         <div className="w-1/2">
                             <h2 className="font-bold text-lg">Details:</h2>
                             <div className="text-lg">
-                                {/* {orderDetails?.products?.map((item: SelectedProduct, index: number) => (
-                                    <div key={index} className="text-lg">
-                                        <p>
-                                            {index + 1}. <span className="font-bold">{item.price} x {item.quantity} = {item.price*item.quantity}</span>
-                                        </p>
-                                    </div>
-                                ))} */}
                                 <p>Subtotal: ${orderDetails.total.subtotal}</p>
                                 <p>Tax: ${orderDetails.total.tax}</p>
                                 <p>Shipping: ${orderDetails.total.shipping}</p>
