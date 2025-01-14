@@ -71,35 +71,45 @@ Thank you for choosing **SwiftShop**! Happy shopping! 🛒✨
 
 ### ⚙️Installation and Setup
 
-1. Clone the Repository
+## 1. Clone the Repository
 
 ```git clone <your-forked-repo-link>```
 
-2. Using Docker (Recommended)
+## 2. Using Docker (Recommended)
 
-Make sure you have Docker installed and set up.
+Make sure you have Docker and Docker Compose installed and set up.
+1. Build and start the containers
+```docker-compose up --build```
 
-```docker-compose up```
+2. Access the services:
+- Frontend: http://localhost:3000
+- Backend: http://localhost:5000
+- Flask Server: http://localhost:8000
 
-3. Local Setup (Manual)
+3. Stop the containers
+```docker-compose down```
 
-If you prefer to set up the project manually:
+## 3. Local Setup (Manual)
 
 ## Backend Setup
 
-```cd server```
-```npm install```
-```npm run dev```
+- ```cd server```
+- ```npm install```
+- ```npm run dev```
 
 ## Frontend Setup
 
-```cd client```
-```npm install```
-```npm run dev```
+- ```cd client```
+- ```npm install```
+- ```npm run dev```
 
 ## Flask server Setup
 
-```cd model```
-```pip install -r requirements.txt```
-```python run.py```
+- ```cd model```
+- ```pip install -r requirements.txt```
+- ```python run.py```
+
+### See deployed site!
+
+
 
