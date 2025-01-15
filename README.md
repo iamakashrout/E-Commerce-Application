@@ -14,25 +14,27 @@ Welcome to **SwiftShop**, your one-stop e-commerce solution! SwiftShop offers a 
 - Rate products to help other customers make informed decisions.
 - View reviews (and summarized analysis of reviews) from other users for better insights.
 
-### 3. 📊 Summary of Sentiment of Users' Reviews
+### 3. Voice Search
+
+### 4. 📊 Summary of Sentiment of Users' Reviews
 - Using **NLTK Sentiment Intensity Analyzer Model** to summarize sentiments.
 
-### 4. 💬 Users Chat Directly with Sellers
+### 5. 💬 Users Chat Directly with Sellers
 - Real-time chat powered by **Websockets**.
 
-### 5. 📈 Detailed Sales Stats for Sellers
+### 6. 📈 Detailed Sales Stats for Sellers
 - Sellers can view in-depth statistics about their sales performance.
 
-### 6. ✉️ Email Verification through OTP
+### 7. ✉️ Email Verification through OTP
 - Secure email verification using **Nodemailer** and **Gmail**.
 
-### 7. 🔍 Caching of Past Searches
+### 8. 🔍 Caching of Past Searches
 - Past searches are cached and recommended as the user types a query.
 
-### 8. 🔗 Matching Search Queries with Products
+### 9. 🔗 Matching Search Queries with Products
 - Products are recommended dynamically as the user types (using **string matching**).
 
-### 9. 🤖 AI Chatbot
+### 10. 🤖 AI Chatbot
 - Powered by **Gemini Pro** with custom context tailored for e-commerce.
 
 ## 🛒 Customer Side Features
@@ -68,6 +70,38 @@ Welcome to **SwiftShop**, your one-stop e-commerce solution! SwiftShop offers a 
 ---
 
 Thank you for choosing **SwiftShop**! Happy shopping! 🛒✨
+
+### Customer Portal Features:
+
+<img width="1454" alt="Screenshot 2025-01-15 at 9 39 15 AM" src="https://github.com/user-attachments/assets/100c779a-be32-423e-86a1-af5514a0f9ca" />
+
+<img width="1456" alt="Screenshot 2025-01-15 at 9 40 38 AM" src="https://github.com/user-attachments/assets/4b45d9fe-493b-4fde-865e-20496514d384" />
+
+<img width="1446" alt="Screenshot 2025-01-15 at 9 41 30 AM" src="https://github.com/user-attachments/assets/c09aedd3-d5e4-40ae-83a7-fd78078924f0" />
+
+<img width="1453" alt="Screenshot 2025-01-15 at 9 43 01 AM" src="https://github.com/user-attachments/assets/6d0a0fe7-57c8-4d64-a081-6359057d768f" />
+
+<img width="1446" alt="Screenshot 2025-01-15 at 9 43 16 AM" src="https://github.com/user-attachments/assets/2c0e2fc3-6e57-4a62-a0f3-223b81d43393" />
+
+<img width="1449" alt="Screenshot 2025-01-15 at 9 44 00 AM" src="https://github.com/user-attachments/assets/2e7c2498-cc7a-40a1-b957-7ce89d8bd5ac" />
+
+<img width="1452" alt="Screenshot 2025-01-15 at 9 44 17 AM" src="https://github.com/user-attachments/assets/f02e2e59-cdf8-41d6-9590-432b92ed9a8f" />
+
+<img width="1458" alt="Screenshot 2025-01-15 at 9 44 45 AM" src="https://github.com/user-attachments/assets/3ea158ec-5e6c-4b7c-8e40-1d88d8780f73" />
+
+<img width="1461" alt="Screenshot 2025-01-15 at 9 45 28 AM" src="https://github.com/user-attachments/assets/afd8f978-edac-45e4-8cf7-2e003d674a4b" />
+
+### Seller Portal Features
+
+<img width="1449" alt="Screenshot 2025-01-15 at 9 48 00 AM" src="https://github.com/user-attachments/assets/d98a69a7-c220-414d-90e4-c3d3adca9a87" />
+
+<img width="1440" alt="Screenshot 2025-01-15 at 9 48 29 AM" src="https://github.com/user-attachments/assets/7cdac9c2-86bb-4da0-acf2-7f58458327a8" />
+
+<img width="1444" alt="Screenshot 2025-01-15 at 9 48 57 AM" src="https://github.com/user-attachments/assets/8c936b46-772f-455a-a0a2-dd3a11a0d7e8" />
+
+<img width="1440" alt="Screenshot 2025-01-15 at 9 49 48 AM" src="https://github.com/user-attachments/assets/b305720c-7f06-48ed-9ed8-22637461e46b" />
+
+<img width="1444" alt="Screenshot 2025-01-15 at 9 50 23 AM" src="https://github.com/user-attachments/assets/542bf100-768a-4a00-b267-4bf0469ae5b4" />
 
 ### ⚙️Installation and Setup
 
