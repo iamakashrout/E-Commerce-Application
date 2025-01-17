@@ -41,8 +41,8 @@ def get_recommendations(user_id):
 
         return jsonify({"success": True, "data": recommendations})
     except Exception as e:
-        print(f"Error fetching data: {e}")
-        return {"error": "Error fetching recommendations"}
+        print(f"Error fetching data: {e}", flush=True)
+        return jsonify({"success": False, "error": "Error fetching recommendations"}), 500
     
 
 
