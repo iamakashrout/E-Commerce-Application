@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import apiClient from "@/utils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/app/redux/features/userSlice";
@@ -22,14 +24,21 @@ export default function LoginForm() {
     setError(""); // Reset previous error
     try {
       const response = await apiClient.post("/auth/login", { email, password });
-
+      console.log('response', response);
       console.log("Login successful:", response.data);
       const { token, user } = response.data;
       dispatch(setUser({userEmail: user.email, token: token}));
-      alert("Login successful!");
+      toast.success("Login successful!", { autoClose: 2000 });
       router.push('/');
-      // if (onSuccess) onSuccess(response.data);
     } catch (err: any) {
+      if(err.status===400){
+        toast.error("Invalid credentials!", { autoClose: 2000 });
+        return;
+      }
+      if(err.status===409){
+        toast.error("User does not exist!", { autoClose: 2000 });
+        return;
+      }
       setError(err.response?.data?.message || "Login failed. Please try again.");
       console.error("Login error:", err);
     }
@@ -37,6 +46,7 @@ export default function LoginForm() {
 
   return (
     <>
+    <ToastContainer />
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
       <div>
         <label htmlFor="email" className="block mb-1 font-bold">

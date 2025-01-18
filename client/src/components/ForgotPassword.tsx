@@ -23,6 +23,10 @@ export default function ForgotPassword({ onClose }: ForgotPasswordPopupProps) {
       setMessage(response.data.message || "OTP sent to your email.");
       setStep(2); // Move to OTP input step
     } catch (err: any) {
+      if(err.status===409){
+        setError('User does not exist!');
+        return;
+      }
       setError(err.response?.data?.message || "Failed to send OTP. Please try again.");
     }
   };

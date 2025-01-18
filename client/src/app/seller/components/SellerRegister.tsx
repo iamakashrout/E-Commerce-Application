@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import apiClient from "@/utils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { setSeller } from "@/app/redux/features/sellerSlice";
@@ -29,7 +31,7 @@ export default function SellerRegister() {
       console.log("Registration successful:", response.data);
       const { token, seller } = response.data;
       dispatch(setSeller({sellerName: seller.name, sellerEmail: seller.email, token: token }));
-      alert("Registration successful!");
+      toast.success("Registration successful!", { autoClose: 2000 });
       router.push("/seller"); // Redirect to home page
     } catch (err: any) {
       setError(err.response?.data?.error || "Registration failed. Please try again.");
@@ -38,6 +40,8 @@ export default function SellerRegister() {
   };
 
   return (
+    <>
+    <ToastContainer />
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
       <div>
         <label htmlFor="name" className="block mb-1 font-bold">
@@ -92,5 +96,6 @@ export default function SellerRegister() {
       </button>
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </form>
+    </>
   );
 }

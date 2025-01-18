@@ -165,7 +165,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
     const user = await User.findOne({ email }); // find requested user from database
     if (!user) {
-      res.status(400).json({ msg: "User does not exist!" }); // user not found
+      res.status(409).json({ msg: "User does not exist!" }); // user not found
       return;
     }
 

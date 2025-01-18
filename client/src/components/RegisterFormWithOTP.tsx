@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import apiClient from "@/utils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/app/redux/features/userSlice";
@@ -32,7 +34,7 @@ export default function RegisterForm() {
 
       console.log("OTP Sent:", response.data);
       setOtpSent(true);
-      alert("OTP sent successfully!");
+      toast.success("OTP sent successfully!", { autoClose: 2000 });
     } catch (err: any) {
       setError(err.response?.data?.error || "Registration failed. Please try again.");
       console.error("Registration error:", err);
@@ -54,15 +56,21 @@ export default function RegisterForm() {
       console.log("Registration successful:", response.data);
       const { token, user } = response.data;
       dispatch(setUser({ userEmail: user.email, token: token }));
-      alert("Registration successful!");
+      toast.success("Registration successful!", { autoClose: 2000 });
       router.push("/");
     } catch (err: any) {
+      if(err.status===409){
+        toast.error("Invalid OTP!", { autoClose: 2000 });
+        return;
+      }
       setError(err.response?.data?.error || "Registration failed. Please try again.");
       console.error("Registration error:", err);
     }
   };
 
   return (
+    <>
+    <ToastContainer />
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
       <div>
         <label htmlFor="name" className="block mb-1 font-bold">
@@ -158,5 +166,6 @@ export default function RegisterForm() {
 
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </form>
+    </>
   );
 }

@@ -70,7 +70,7 @@ export const sellerLogin = async (
     const { email, password } = req.body;
     const seller = await Seller.findOne({ email }); // find requested seller from database
     if (!seller) {
-      res.status(400).json({ msg: "Seller does not exist!" }); // seller not found
+      res.status(409).json({ msg: "Seller does not exist!" }); // seller not found
       return;
     }
 

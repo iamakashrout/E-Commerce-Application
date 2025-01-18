@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import apiClient from "@/utils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { setSeller } from "@/app/redux/features/sellerSlice";
@@ -24,16 +26,26 @@ export default function LoginForm() {
       console.log("Login successful:", response.data);
       const { token, seller } = response.data;
       dispatch(setSeller({sellerName: seller.name, sellerEmail: seller.email, token: token}));
-      alert("Login successful!");
+      toast.success("Login successful!", { autoClose: 2000 });
       router.push('/seller');
       // if (onSuccess) onSuccess(response.data);
     } catch (err: any) {
+      if(err.status===400){
+        toast.error("Invalid credentials!", { autoClose: 2000 });
+        return;
+      }
+      if(err.status===409){
+        toast.error("Seller does not exist!", { autoClose: 2000 });
+        return;
+      }
       setError(err.response?.data?.message || "Login failed. Please try again.");
       console.error("Login error:", err);
     }
   };
 
   return (
+    <>
+    <ToastContainer />
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
       <div>
         <label htmlFor="email" className="block mb-1 font-bold">
@@ -71,5 +83,6 @@ export default function LoginForm() {
       </button>
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </form>
+    </>
   );
 }
