@@ -4,7 +4,7 @@ from .utils.db import db
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)  # Enable CORS
+    CORS(app, resources={r"/*": {"origins": "*"}})
 
     app.db = db # DB connection
 
