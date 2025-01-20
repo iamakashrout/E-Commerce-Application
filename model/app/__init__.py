@@ -17,5 +17,9 @@ def create_app():
     @app.route('/')
     def home():
         return jsonify({"message": "Welcome to the Flask App! The server is running."})
+    
+    @app.route('/hello', methods=['GET'])
+    def hello():
+        return {'data': 'hello'}
 
     return app
