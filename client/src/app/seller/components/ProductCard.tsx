@@ -9,6 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import "@/styles/globals.css";
+import Image from "next/image";
 
 
 interface ProductCardProps {
@@ -39,12 +40,16 @@ export default function ProductCard({
                         className="h-80"
                     >
                         {product.images.map((image, index) => (
-                            <img
+                            <div className="h-80 mx-auto">
+                            <Image
                                 key={index}
                                 src={image}
                                 alt={`${product.name} - ${index + 1}`}
-                                className="object-cover h-80 mx-auto"
+                                className="object-cover"
+                                width={320} // Match height of `h-80` (80 * 4 = 320px for Tailwind)
+                                height={320} // Adjust width proportionally or as needed
                             />
+                        </div>
                         ))}
                     </Carousel>
                 ) : (

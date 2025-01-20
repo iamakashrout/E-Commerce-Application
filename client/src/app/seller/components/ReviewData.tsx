@@ -1,4 +1,6 @@
 import { RootState } from "@/app/redux/store";
+import { Analysis } from "@/types/analysis";
+import { Review } from "@/types/review";
 import apiClient from "@/utils/axiosInstance";
 import flaskClient from "@/utils/flaskInstance";
 import { useEffect, useState } from "react";
@@ -11,9 +13,9 @@ interface ReviewDataPopupProps {
 
 export default function ReviewData({ productId, onClose }: ReviewDataPopupProps) {
     const token = useSelector((data: RootState) => data.sellerState.token);
-    const [reviews, setReviews] = useState<any[]>([]);
+    const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [analysis, setAnalysis] = useState<any | null>(null);
+    const [analysis, setAnalysis] = useState<Analysis | null>(null);
     const [analyzing, setAnalyzing] = useState<boolean>(false);
 
     useEffect(() => {
@@ -38,7 +40,7 @@ export default function ReviewData({ productId, onClose }: ReviewDataPopupProps)
         };
 
         fetchReviews();
-    }, [productId]);
+    }, [productId, token]);
 
     const handleAnalyze = async () => {
         setAnalyzing(true);
