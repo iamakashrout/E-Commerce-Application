@@ -9,11 +9,10 @@ def create_app():
     app.db = db # DB connection
 
     # Import and register blueprints
-    from .routes import review_routes, recommendation_routes
-    CORS(review_routes)
-    CORS(recommendation_routes)
+    from .routes import review_routes, recommendation_routes, hello_routes
     app.register_blueprint(review_routes)
     app.register_blueprint(recommendation_routes)
+    app.register_blueprint(hello_routes)
 
     # Home route
     @app.route('/')
