@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import "@/styles/globals.css";
 import Navbar from "@/components/Navbar";
+import Image from 'next/image';
 
 export default function OrderDetailsPage() {
     const router = useRouter();
@@ -33,13 +34,17 @@ export default function OrderDetailsPage() {
                 } else {
                     console.error('Failed to fetch order details:', response.data.error);
                 }
-            } catch (err: any) {
-                console.error('Fetch error:', err);
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    console.error('Fetch error:', err.message);
+                } else {
+                    console.error('An unknown error occurred:', err);
+                }
             }
         };
 
         if (orderId) fetchOrderDetails();
-    }, []);
+    }, [orderId, token]);
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -63,8 +68,12 @@ export default function OrderDetailsPage() {
                     console.log('fetched products', fetchedProducts);
                     setProducts(fetchedProducts.filter((product) => product !== null));
                 }
-            } catch (err: any) {
-                console.log('Error fetching product details: ', err);
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    console.error('Error fetching product details: ', err.message);
+                } else {
+                    console.error('An unknown error occurred:', err);
+                }
             }
         };
 
@@ -159,11 +168,12 @@ export default function OrderDetailsPage() {
                                     </div>
                                     <div className="ml-4 mr-6 mb-4 mt-2 w-32 h-32 relative flex-shrink-0">
                                         {imageUrl ? (
-                                            <img
-                                                src={imageUrl}
-                                                alt={item.name}
-                                                className="rounded-md w-full h-full object-cover"
-                                            />
+                                            <Image
+                                            src={imageUrl}
+                                            alt={item.name}
+                                            className="rounded-md w-full h-full object-cover"
+                                        />
+                                            
                                         ) : (
                                             <div className="w-full h-full bg-gray-200 flex items-center justify-center rounded-md">
                                                 <span className="text-gray-500 text-xs">No image</span>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import apiClient from '@/utils/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
+import Image from 'next/image';
 
 export default function AddReviewPage() {
     const searchParams = useSearchParams();
@@ -29,14 +30,14 @@ export default function AddReviewPage() {
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [chatRoomId, setChatRoomId] = useState<string | null>(null);
 
-    const fetchReview = async () => {
+    const fetchReview = useCallback(async () => {
         try {
             const response = await apiClient.get(`/review/getUserReview/${orderId}/${productId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
+    
             if (response.data.success) {
                 setPrevRating(response.data.data.rating);
                 setPrevReview(response.data.data.reviewText);
@@ -44,7 +45,7 @@ export default function AddReviewPage() {
         } catch (err) {
             console.error('Error fetching product review:', err);
         }
-    };
+    }, [orderId, productId, token, setPrevRating, setPrevReview]);
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -67,7 +68,7 @@ export default function AddReviewPage() {
             fetchProductDetails();
             fetchReview();
         }
-    }, []);
+    }, [fetchReview, productId, token]);
 
     const handleSubmitReview = async () => {
         try {
@@ -134,27 +135,31 @@ export default function AddReviewPage() {
                         <p className="text-lg font-semibold mt-2">Price: ${productDetails.price}</p>
                         <p className="text-lg font-semibold">Quantity: {quantity}</p>
                         {productDetails.images.length > 0 && (
-                           <div className="mt-6 flex justify-center items-center">
-                           <div className="w-1/2 relative">
-                               <Swiper
-                                   navigation={true}
-                                   modules={[Navigation]}
-                                   className="mySwiper"
-                                   spaceBetween={10}
-                                   slidesPerView={1}
-                               >
-                                   {productDetails.images.map((imgUrl, index) => (
-                                       <SwiperSlide key={index}>
-                                           <img
-                                               src={imgUrl}
-                                               alt={productDetails.name}
-                                               className="m-auto w-64 h-64 object-cover rounded-lg"
-                                           />
-                                       </SwiperSlide>
-                                   ))}
-                               </Swiper>
-                           </div>
-                       </div>
+                            <div className="mt-6 flex justify-center items-center">
+                                <div className="w-1/2 relative">
+                                    <Swiper
+                                        navigation={true}
+                                        modules={[Navigation]}
+                                        className="mySwiper"
+                                        spaceBetween={10}
+                                        slidesPerView={1}
+                                    >
+                                        {productDetails.images.map((imgUrl, index) => (
+                                            <SwiperSlide key={index}>
+                                                <div className="m-auto w-64 h-64">
+                                                    <Image
+                                                        src={imgUrl}
+                                                        alt={productDetails.name}
+                                                        className="object-cover rounded-lg"
+                                                        width={256} // Match the width (64 * 4)
+                                                        height={256} // Match the height (64 * 4)
+                                                    />
+                                                </div>
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                </div>
+                            </div>
                         )}
                         <div className="mt-6">
                             {prevRating ? (

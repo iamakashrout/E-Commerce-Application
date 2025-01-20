@@ -106,9 +106,13 @@ export default function EditProduct({ product, onClose }: EditProductPopupProps)
         console.error("Failed to update product:", response.data.error);
         alert("Failed to update product.");
       }
-    } catch (err: any) {
-      console.error("Error updating product:", err);
-      alert("Error updating product.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error("Error updating product:", err.message);
+    } else {
+        console.error('An unknown error occurred:', err);
+    }
+    alert("Error updating product.");
     }
   };
 

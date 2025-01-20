@@ -1,14 +1,11 @@
 'use client'
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { clearUser } from "./redux/features/userSlice";
 import ProductsList from "@/components/ProductsList";
-import Link from "next/link";
 import HelpChat from "@/components/HelpChat";
 import HelpButton from "@/components/HelpButton";
-import NotificationsButton from "@/components/NotificationButton";
 import "@/styles/globals.css";
 import Navbar from "@/components/Navbar";
 
@@ -16,8 +13,6 @@ export default function Home() {
   const router = useRouter();
   const isAuth = useSelector((data: RootState) => data.userState.isAuthenticated);
   const user = useSelector((data: RootState) => data.userState.userEmail);
-  const dispatch = useDispatch();
-
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {

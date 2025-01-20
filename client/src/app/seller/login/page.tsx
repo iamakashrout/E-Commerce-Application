@@ -3,7 +3,6 @@ import SellerLogin from "@/app/seller/components/SellerLogin";
 import SellerRegister from "@/app/seller/components/SellerRegister";
 import { useState } from "react";
 import "@/styles/globals.css";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function SellerLoginPage () {

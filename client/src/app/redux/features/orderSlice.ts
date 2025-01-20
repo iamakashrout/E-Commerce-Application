@@ -1,5 +1,5 @@
 import { SelectedProduct, Total } from "@/types/order";
-import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface OrderState {
     user: string | null;

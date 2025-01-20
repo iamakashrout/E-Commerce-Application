@@ -79,9 +79,13 @@ export default function AddProduct({ onClose, onProductAdded }: AddProductPopupP
         );
         const data = await response.json();
         urls.push(data.secure_url);
-      } catch (err) {
-        console.error("Image upload failed:", err);
-        alert("Failed to upload an image. Please try again.");
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error("Image upload failed:", err.message);
+      } else {
+          console.error('An unknown error occurred:', err);
+      }
+      alert("Failed to upload an image. Please try again.");
       }
     }
     return urls;
@@ -115,9 +119,13 @@ export default function AddProduct({ onClose, onProductAdded }: AddProductPopupP
       console.log("response", response.data.data);
       onProductAdded(); // Trigger product list refresh
       alert("Product added successfully!");
-    } catch (err: any) {
-      console.log("Failed to add products", err);
-      alert("Adding product failed!");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.log("Failed to add products", err.message);
+    } else {
+        console.error('An unknown error occurred:', err);
+    }
+    alert("Adding product failed!");
     }
     onClose(); // Close the popup after submission
   };

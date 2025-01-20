@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 import LoginForm from "../../components/LoginForm";
-import RegisterForm from "../../components/RegisterForm";
+// import RegisterForm from "../../components/RegisterForm";
 import RegisterWithOTP from "@/components/RegisterFormWithOTP";
 import "@/styles/globals.css";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {

@@ -40,10 +40,14 @@ export default function PaymentStatus() {
           console.error('Failed to place order:', response.data.error);
           alert('Failed to place order. Please try again.');
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         setPaymentStatus("failed");
-        console.error('Order error:', err);
-        alert('An error occurred while placing the order.');
+        if (err instanceof Error) {
+          console.error('Order error: ', err.message);
+      } else {
+          console.error('An unknown error occurred:', err);
+      }
+      alert('An error occurred while placing the order.');
       }
     }
     // Check if order placement has already occurred

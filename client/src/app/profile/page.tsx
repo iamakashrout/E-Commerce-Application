@@ -38,13 +38,17 @@ export default function ProfilePage() {
                 } else {
                     console.error('Failed to fetch user details:', response.data.error);
                 }
-            } catch (err: any) {
-                console.error('Error fetching user details:', err);
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    console.error('Error fetching user details:', err.message);
+                } else {
+                    console.error('An unknown error occurred:', err);
+                }
             }
         };
 
         fetchUser();
-    }, []);
+    }, [token, userEmail]);
 
     return (
         <main className="dark:bg-black min-h-screen overflow-hidden">
