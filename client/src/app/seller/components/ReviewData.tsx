@@ -60,6 +60,21 @@ export default function ReviewData({ productId, onClose }: ReviewDataPopupProps)
         }
     };
 
+    // const handleHello = async () => {
+    //     try {
+    //         const response = await flaskClient.get(`/hello`);
+    //         if (response.data.success) {
+    //             console.log('hello', response.data);
+    //         } else {
+    //             alert("Failed to analyze reviews.");
+    //         }
+    //     } catch (error) {
+    //         console.error("Error analyzing reviews:", error);
+    //         alert("Error analyzing reviews.");
+    //     } finally {
+    //     }
+    // };
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-custom-light-teal p-6 rounded-lg w-4/5 max-w-4xl">
@@ -119,6 +134,14 @@ export default function ReviewData({ productId, onClose }: ReviewDataPopupProps)
                         )}
                     </>
                 )}
+                {/* <div className="mt-4 text-center">
+                    <button
+                        onClick={handleHello}
+                        className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition"
+                    >
+                        Hello
+                    </button>
+                </div> */}
                 <div className="mt-4 text-center">
                     <button
                         onClick={onClose}

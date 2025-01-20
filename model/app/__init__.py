@@ -12,7 +12,7 @@ def create_app():
     from .routes import review_routes, recommendation_routes, hello_routes
     app.register_blueprint(review_routes)
     app.register_blueprint(recommendation_routes)
-    app.register_blueprint(hello_routes)
+    # app.register_blueprint(hello_routes)
 
     # Home route
     @app.route('/')
