@@ -10,6 +10,8 @@ def create_app():
 
     # Import and register blueprints
     from .routes import review_routes, recommendation_routes
+    CORS(review_routes)
+    CORS(recommendation_routes)
     app.register_blueprint(review_routes)
     app.register_blueprint(recommendation_routes)
 
