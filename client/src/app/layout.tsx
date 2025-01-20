@@ -1,6 +1,6 @@
 'use client'
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Raleway, Londrina_Sketch } from "next/font/google";
 import '../styles/globals.css';
 
 import { Providers } from "./redux/providers";
@@ -17,6 +17,20 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const raleway = Raleway({
+  variable: "--font-raleway",
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+});
+
+const londrinaSketch = Londrina_Sketch({
+  variable: "--font-londrina-sketch",
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
 });
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
@@ -50,13 +64,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Londrina+Sketch&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"
-        />
-      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${raleway.variable} ${londrinaSketch.variable} antialiased`}
       >
         <Providers>
           <ThemeProvider>

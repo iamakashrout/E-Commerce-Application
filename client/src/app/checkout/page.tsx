@@ -3,8 +3,8 @@
 import { CartItem } from '@/types/cart';
 import { Address } from '@/types/address';
 import { Total } from '@/types/order';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import apiClient from '@/utils/axiosInstance';
@@ -13,12 +13,12 @@ import { setOrder } from '../redux/features/orderSlice';
 import "@/styles/globals.css";
 import Navbar from "@/components/Navbar";
 import { Product } from '@/types/product';
+import Image from 'next/image';
 
 export default function CheckoutPage() {
-    const router = useRouter();
     const searchParams = useSearchParams();
     const items = searchParams.get('items');
-    const selectedItems = items ? JSON.parse(items) : [];
+    const selectedItems = useMemo(() => (items ? JSON.parse(items) : []), [items]);
     const dispatch = useDispatch();
     const token = useSelector((data: RootState) => data.userState.token);
     const user = useSelector((data: RootState) => data.userState.userEmail);
@@ -47,18 +47,23 @@ export default function CheckoutPage() {
                 } else {
                     console.error('Failed to fetch addresses:', response.data.error);
                 }
-            } catch (err: any) {
-                console.error('Error fetching addresses:', err);
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    console.error('Error fetching addresses:', err.message);
+                } else {
+                    console.error('An unknown error occurred:', err);
+                }
             }
         };
 
         fetchAddresses();
-    }, []);
+    }, [token, user]);
 
     useEffect(()=>{
         const fetchProductDetails = async () => {
             try {
-                const productDetailsPromises = selectedItems.map(async (item: any) => {
+                console.log('selectedItems', selectedItems);
+                const productDetailsPromises = selectedItems.map(async (item: CartItem) => {
                     const response = await apiClient.get(`/products/getProductById/${item.productId}`, {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -73,16 +78,20 @@ export default function CheckoutPage() {
                 });
     
                 const fetchedProducts = await Promise.all(productDetailsPromises);
-                console.log('fetched products', fetchedProducts);
+                //console.log('fetched products', fetchedProducts);
                 setProducts(fetchedProducts.filter((product) => product !== null));
-            } catch (err: any) {
-                console.log('Error fetching product details: ', err);
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    console.log('Error fetching product details: ', err.message);
+                } else {
+                    console.error('An unknown error occurred:', err);
+                }
             }
         };
         if(selectedItems.length > 0){
             fetchProductDetails();
         }
-    }, [selectedItems]);
+    }, [selectedItems, token]);
 
     const handleAddAddress = async () => {
         if (!newAddressName || !newAddressValue) {
@@ -113,8 +122,12 @@ export default function CheckoutPage() {
             } else {
                 alert(response.data.error || 'Failed to add address.');
             }
-        } catch (error) {
-            console.error('Error adding address:', error);
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                console.error('Error adding address:', err.message);
+            } else {
+                console.error('An unknown error occurred:', err);
+            }
             alert('An error occurred while adding the address.');
         }
     };
@@ -184,8 +197,12 @@ export default function CheckoutPage() {
             }
 
             // router.push(`/paymentStatus?status=True`);
-        } catch (err: any) {
-            console.error('Order error:', err);
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                console.log('Order error: ', err.message);
+            } else {
+                console.error('An unknown error occurred:', err);
+            }
             alert('An error occurred while placing the order.');
         }
     };
@@ -215,11 +232,13 @@ export default function CheckoutPage() {
                                 <p className="text-md text-gray-800 font-semibold">Net: ${item.price*item.quantity}</p>
                             </div>
                             {imageUrl && (
-                                <img
-                                    src={imageUrl}
-                                    alt={item.name}
-                                    className="w-36 h-36 object-cover rounded-lg"
-                                />
+                                <Image
+                                src={imageUrl}
+                                alt={item.name}
+                                width={144} // 36 * 4 (tailwind w-36)
+                                height={144} // 36 * 4 (tailwind h-36)
+                                className="object-cover rounded-lg"
+                            />
                             )}
                         </div>
                     );
@@ -228,7 +247,7 @@ export default function CheckoutPage() {
             <p>
                 Total: $
                 {selectedItems
-                    .reduce((total: number, item: any) => total + item.price * item.quantity, 0)
+                    .reduce((total: number, item: CartItem) => total + item.price * item.quantity, 0)
                     .toFixed(2)}
             </p>
         </div>
