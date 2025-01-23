@@ -30,13 +30,17 @@ export default function AddressList() {
                 } else {
                     console.error('Failed to fetch addresses:', response.data.error);
                 }
-            } catch (err: any) {
-                console.error('Error fetching addresses:', err);
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    console.error('Error fetching addresses:', err.message);
+                } else {
+                    console.error('An unknown error occurred:', err);
+                }
             }
         };
 
         fetchAddresses();
-    }, []);
+    }, [token, user]);
 
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -70,8 +74,12 @@ export default function AddressList() {
                     console.error('Failed to add address:', response.data.error);
                 }
             }
-        } catch (err: any) {
-            console.error('Error adding address:', err);
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                console.error('Error adding addresses:', err.message);
+            } else {
+                console.error('An unknown error occurred:', err);
+            }
         }
 
     };
@@ -95,8 +103,12 @@ export default function AddressList() {
                 console.error('Failed to remove address:', response.data.error);
             }
 
-        } catch (err: any) {
-            console.error('Error removing address:', err);
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                console.error('Error removing addresses:', err.message);
+            } else {
+                console.error('An unknown error occurred:', err);
+            }
         }
     };
 

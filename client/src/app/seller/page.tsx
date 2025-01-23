@@ -3,12 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { clearSeller } from "../redux/features/sellerSlice";
 import SellerDetails from "./components/SellerDetails";
 import NotificationsButton from "@/components/NotificationButton";
 import "@/styles/globals.css";
-import { Button } from "@mui/material";
 
 export default function SellerPage() {
   const router = useRouter();

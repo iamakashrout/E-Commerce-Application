@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import apiClient from "@/utils/axiosInstance";
 import { io } from "socket.io-client";
 import socketURL from "@/utils/socketInstance";
+import { Message } from "@/types/message";
 
 const socket = io(socketURL);
 
@@ -14,7 +15,7 @@ interface ChatBoxProps {
 }
 
 export default function ChatBox({ chatRoomId, userId, receiverId, onClose }: ChatBoxProps) {
-    const [messages, setMessages] = useState<any[]>([]);
+    const [messages, setMessages] = useState<Message[]>([]);
     const [currentMessage, setCurrentMessage] = useState("");
     const messagesEndRef = useRef<HTMLDivElement>(null);
 

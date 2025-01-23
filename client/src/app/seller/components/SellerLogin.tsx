@@ -29,17 +29,24 @@ export default function LoginForm() {
       toast.success("Login successful!", { autoClose: 2000 });
       router.push('/seller');
       // if (onSuccess) onSuccess(response.data);
-    } catch (err: any) {
-      if(err.status===400){
-        toast.error("Invalid credentials!", { autoClose: 2000 });
-        return;
-      }
-      if(err.status===409){
-        toast.error("Seller does not exist!", { autoClose: 2000 });
-        return;
-      }
-      setError(err.response?.data?.message || "Login failed. Please try again.");
-      console.error("Login error:", err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error('Error fetching addresses:', err.message);
+
+
+        if(err.message==="Invalid credentials."){
+          toast.error("Invalid credentials!", { autoClose: 2000 });
+          return;
+        }
+        if(err.message==="Seller does not exist!"){
+          toast.error("Seller does not exist!", { autoClose: 2000 });
+          return;
+        }
+        setError(err.message || "Login failed. Please try again.");
+        console.error("Login error:", err);
+    } else {
+        console.error('An unknown error occurred:', err);
+    }
     }
   };
 

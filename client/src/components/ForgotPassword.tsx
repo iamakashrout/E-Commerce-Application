@@ -40,10 +40,16 @@ export default function ForgotPassword({ onClose }: ForgotPasswordPopupProps) {
         otp,
         newPassword,
       });
+      console.log(response);
       alert("Password changed successfully!");
       onClose(); // Close popup on success
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to reset password. Please try again.");
+      if (err instanceof Error) {
+        console.error('Error adding addresses:', err.message);
+        setError(err.message || "Failed to reset password. Please try again.");
+    } else {
+        console.error('An unknown error occurred:', err);
+    }
     }
   };
 

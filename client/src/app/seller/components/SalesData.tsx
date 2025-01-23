@@ -3,6 +3,7 @@ import apiClient from "@/utils/axiosInstance";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import ChatBox from "@/components/ChatBox";
+import { Sales } from "@/types/sales";
 
 interface SalesDataPopupProps {
     productId: string;
@@ -12,7 +13,7 @@ interface SalesDataPopupProps {
 export default function SalesData ({ productId, onClose }: SalesDataPopupProps) {
     const token = useSelector((data: RootState) => data.sellerState.token);
     const sellerName = useSelector((data: RootState) => data.sellerState.sellerName);
-    const [salesData, setSalesData] = useState<any[]>([]);
+    const [salesData, setSalesData] = useState<Sales[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [chatRoomId, setChatRoomId] = useState<string | null>(null);
@@ -41,7 +42,7 @@ export default function SalesData ({ productId, onClose }: SalesDataPopupProps) 
         };
 
         fetchSalesData();
-    }, [productId]);
+    }, [productId, token]);
 
     const calculateTotalSales = () => {
         const totalUnits = salesData.reduce((sum, sale) => sum + sale.quantity, 0);

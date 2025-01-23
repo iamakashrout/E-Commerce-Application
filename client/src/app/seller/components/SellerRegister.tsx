@@ -33,9 +33,12 @@ export default function SellerRegister() {
       dispatch(setSeller({sellerName: seller.name, sellerEmail: seller.email, token: token }));
       toast.success("Registration successful!", { autoClose: 2000 });
       router.push("/seller"); // Redirect to home page
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Registration failed. Please try again.");
-      console.error("Registration error:", err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error("Registration failed. Please try again.", err.message);
+    } else {
+        console.error('An unknown error occurred:', err);
+    }
     }
   };
 

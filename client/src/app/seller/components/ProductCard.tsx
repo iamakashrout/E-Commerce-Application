@@ -40,7 +40,7 @@ export default function ProductCard({
                         className="h-80"
                     >
                         {product.images.map((image, index) => (
-                            <div className="h-80 mx-auto">
+                            <div key={index} className="h-80 mx-auto">
                             <Image
                                 key={index}
                                 src={image}
