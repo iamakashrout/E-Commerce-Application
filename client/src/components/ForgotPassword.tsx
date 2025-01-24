@@ -22,12 +22,18 @@ export default function ForgotPassword({ onClose }: ForgotPasswordPopupProps) {
       const response = await apiClient.post(`/auth/forgotPassword/${email}`);
       setMessage(response.data.message || "OTP sent to your email.");
       setStep(2); // Move to OTP input step
-    } catch (err: any) {
-      if(err.status===409){
-        setError('User does not exist!');
-        return;
-      }
-      setError(err.response?.data?.message || "Failed to send OTP. Please try again.");
+    } catch (err: unknown) {
+      
+
+      if (err instanceof Error) {
+        if(err.message==="User does not exist!"){
+          setError('User does not exist!');
+          return;
+        }
+        setError(err.message || "Failed to send OTP. Please try again.");
+          } else {
+              console.error('An unknown error occurred:', err);
+          }
     }
   };
 
@@ -43,7 +49,7 @@ export default function ForgotPassword({ onClose }: ForgotPasswordPopupProps) {
       console.log(response);
       alert("Password changed successfully!");
       onClose(); // Close popup on success
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (err instanceof Error) {
         console.error('Error adding addresses:', err.message);
         setError(err.message || "Failed to reset password. Please try again.");

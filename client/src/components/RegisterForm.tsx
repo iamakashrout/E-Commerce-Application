@@ -33,9 +33,13 @@ export default function RegisterForm() {
       dispatch(setUser({ userEmail: user.email, token: token }));
       alert("Registration successful!");
       router.push("/"); // Redirect to home page
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Registration failed. Please try again.");
-      console.error("Registration error:", err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Registration failed. Please try again.");
+        console.error("Registration error:", err.message);
+    } else {
+        console.error('An unknown error occurred:', err);
+    }
     }
   };
 

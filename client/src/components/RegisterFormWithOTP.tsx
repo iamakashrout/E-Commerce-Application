@@ -35,9 +35,13 @@ export default function RegisterForm() {
       console.log("OTP Sent:", response.data);
       setOtpSent(true);
       toast.success("OTP sent successfully!", { autoClose: 2000 });
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Registration failed. Please try again.");
-      console.error("Registration error:", err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Registration failed. Please try again.");
+        console.error("Registration error:", err.message);
+    } else {
+        console.error('An unknown error occurred:', err);
+    }
     }
   };
 
@@ -58,13 +62,17 @@ export default function RegisterForm() {
       dispatch(setUser({ userEmail: user.email, token: token }));
       toast.success("Registration successful!", { autoClose: 2000 });
       router.push("/");
-    } catch (err: any) {
-      if(err.status===409){
-        toast.error("Invalid OTP!", { autoClose: 2000 });
-        return;
-      }
-      setError(err.response?.data?.error || "Registration failed. Please try again.");
-      console.error("Registration error:", err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        if(err.message==="Invalid OTP."){
+          toast.error("Invalid OTP!", { autoClose: 2000 });
+          return;
+        }
+        setError(err.message || "Registration failed. Please try again.");
+        console.error("Registration error:", err);
+    } else {
+        console.error('An unknown error occurred:', err);
+    }
     }
   };
 

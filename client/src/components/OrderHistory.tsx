@@ -2,7 +2,6 @@
 
 import { RootState } from "@/app/redux/store";
 import { Order } from "@/types/order";
-import { Address } from "@/types/address";
 import apiClient from "@/utils/axiosInstance";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -33,7 +32,7 @@ export default function OrderHistory() {
                 });
 
                 if (response.data.success) {
-                    const data: Order[] = (response.data.data || []).map((item: any): Order => {
+                    const data: Order[] = (response.data.data || []).map((item: Order): Order => {
                         return {
                             orderId: item.orderId,
                             user: item.user,
@@ -53,13 +52,17 @@ export default function OrderHistory() {
                 } else {
                     console.error('Failed to fetch orders:', response.data.error);
                 }
-            } catch (err: any) {
-                console.error('Error fetching orders:', err);
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    console.error('Error fetching orders:', err.message);
+                } else {
+                    console.error('An unknown error occurred:', err);
+                }
             }
         };
 
         fetchOrders();
-    }, []);
+    }, [token, user]);
 
     const [isExpanded, setIsExpanded] = useState(false);
 

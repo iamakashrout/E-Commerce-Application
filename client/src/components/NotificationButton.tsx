@@ -58,7 +58,7 @@ export default function NotificationsButton({ userId }: NotificationsProps) {
         return () => {
             socket.off(`notification-${userId}`);
         };
-    }, []);
+    }, [userId]);
 
     const handleChatOpen = async (chatRoomId: string, receiverId: string, senderId: string) => {
         try {

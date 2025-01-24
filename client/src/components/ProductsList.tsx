@@ -5,10 +5,11 @@ import { Product } from "@/types/product";
 import apiClient from "@/utils/axiosInstance";
 import flaskClient from "@/utils/flaskInstance";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import SearchBar from "./SearchBar";
 import DummyImage from './DummyImage';
+import Image from "next/image";
 
 export default function ProductsList() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -20,18 +21,20 @@ export default function ProductsList() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [loading, setLoading] = useState(true);
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
-      const response = selectedCategory === 'recommended' ?
-        await flaskClient.get(`/get_recommendations/${user}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }) : await apiClient.get('/products/getAllProducts', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      const response =
+        selectedCategory === 'recommended'
+          ? await flaskClient.get(`/get_recommendations/${user}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+          : await apiClient.get('/products/getAllProducts', {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
       if (response.data.success) {
         setProducts(response.data.data);
         setFilteredProducts(response.data.data);
@@ -39,14 +42,18 @@ export default function ProductsList() {
       } else {
         console.error('Failed to fetch products:', response.data.error);
       }
-    } catch (err: any) {
-      console.error("Fetch error:", err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error('Error fetching products:', err.message);
+      } else {
+        console.error('An unknown error occurred:', err);
+      }
     }
-  };
+  }, [selectedCategory, user, token]);
 
   useEffect(() => {
     fetchProducts();
-  }, [selectedCategory]);
+  }, [selectedCategory, fetchProducts]);
 
   const handleQuantityChange = (productId: string, value: number) => {
     setQuantities((prev) => ({
@@ -84,9 +91,13 @@ export default function ProductsList() {
         console.error('Failed to add to cart:', response.data.error);
         alert('Failed to add product to cart.');
       }
-    } catch (err: any) {
-      console.error("Add to cart error:", err);
-      alert('An error occurred while adding the product to the cart.');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error("Add to cart error:", err.message);
+        alert('An error occurred while adding the product to the cart.');
+      } else {
+        console.error('An unknown error occurred:', err);
+      }
     }
   };
 
@@ -170,10 +181,12 @@ export default function ProductsList() {
                             <ChevronLeft className="w-6 h-6" />
                           </button>
                         )}
-                        <img
+                        <Image
                           src={product.images[currentImageIndex[product.id] || 0]}
-                          alt={`${product.name}`}
-                          className="w-48 h-48 object-cover rounded-lg"
+                          alt={product.name}
+                          width={192} // Equivalent to w-48 (48 * 4 = 192px)
+                          height={192} // Equivalent to h-48 (48 * 4 = 192px)
+                          className="object-cover rounded-lg"
                         />
                         {product.images.length > 1 && (
                           <button
@@ -188,9 +201,9 @@ export default function ProductsList() {
                     </div>
                   ) : (
                     <div className="mb-4">
-          <DummyImage />
-          {/* <p className="text-gray-500 italic mt-2"></p> */}
-        </div>
+                      <DummyImage />
+                      {/* <p className="text-gray-500 italic mt-2"></p> */}
+                    </div>
                   )}
                   <h2 className="text-xl font-bold mb-2 text-custom-purple">{product.name}</h2>
                   <p className="text-gray-600 font-semibold mb-1">{product.company}, Category: {product.category}</p>

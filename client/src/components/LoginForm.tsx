@@ -30,17 +30,22 @@ export default function LoginForm() {
       dispatch(setUser({userEmail: user.email, token: token}));
       toast.success("Login successful!", { autoClose: 2000 });
       router.push('/');
-    } catch (err: any) {
-      if(err.status===400){
-        toast.error("Invalid credentials!", { autoClose: 2000 });
-        return;
-      }
-      if(err.status===409){
-        toast.error("User does not exist!", { autoClose: 2000 });
-        return;
-      }
-      setError(err.response?.data?.message || "Login failed. Please try again.");
-      console.error("Login error:", err);
+    } catch (err: unknown) {
+      
+      if (err instanceof Error) {
+        if(err.message==="Invalid credentials."){
+          toast.error("Invalid credentials!", { autoClose: 2000 });
+          return;
+        }
+        if(err.message==="User does not exist!"){
+          toast.error("User does not exist!", { autoClose: 2000 });
+          return;
+        }
+        setError(err.message || "Login failed. Please try again.");
+        console.error("Login error:", err);
+    } else {
+        console.error('An unknown error occurred:', err);
+    }
     }
   };
 
