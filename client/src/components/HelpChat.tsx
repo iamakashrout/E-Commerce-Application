@@ -52,11 +52,10 @@ export default function HelpChat({ onClose }: { onClose: () => void }) {
               }`}
             >
               <Markdown
-                children={message.content}
                 remarkPlugins={[remarkGfm]}
                 components={{
-                  code({ node, inLine, className, children, ...props }) {
-                    return inLine ? (
+                  code({ inline, children, ...props }) {
+                    return inline ? (
                       <code
                         {...props}
                         className="bg-gray-200 px-1 py-0.5 rounded-md"
@@ -64,11 +63,8 @@ export default function HelpChat({ onClose }: { onClose: () => void }) {
                         {children}
                       </code>
                     ) : (
-                      <pre
-                        {...props}
-                        className="bg-gray-200 p-2 rounded-md"
-                      >
-                        <code>{children}</code>
+                      <pre className="bg-gray-200 p-2 rounded-md">
+                        <code {...props}>{children}</code>
                       </pre>
                     );
                   },
@@ -79,7 +75,9 @@ export default function HelpChat({ onClose }: { onClose: () => void }) {
                     <ol className="pl-5 list-decimal">{children}</ol>
                   ),
                 }}
-              />
+              >
+                {message.content}
+              </Markdown>
             </div>
           </div>
         ))}

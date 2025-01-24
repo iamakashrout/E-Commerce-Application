@@ -3,7 +3,7 @@
 import { RootState } from "@/app/redux/store";
 import { Product } from "@/types/product";
 import apiClient from "@/utils/axiosInstance";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import EditProduct from "./EditProduct";
 import SalesData from "./SalesData";
@@ -37,11 +37,9 @@ export default function SellerProducts({ sellerName, refreshCount }: SellerProdu
     const [isSalesPopupOpen, setIsSalesPopupOpen] = useState(false);
     const [isReviewsPopupOpen, setIsReviewsPopupOpen] = useState(false);
     const [currentProductId, setCurrentProductId] = useState<string | null>(null);
-    const token = useSelector((data: RootState) => data.sellerState.token);
+    const token = useSelector((state: RootState) => state.sellerState.token);
 
-
-
-    const fetchProducts = async () => {
+    const fetchProducts = useCallback(async () => {
         try {
             const response = await apiClient.get(`/seller/getSellerProducts/${sellerName}`, {
                 headers: {
@@ -58,16 +56,14 @@ export default function SellerProducts({ sellerName, refreshCount }: SellerProdu
             if (err instanceof Error) {
                 console.error("Error fetching seller products:", err.message);
             } else {
-                console.error('An unknown error occurred:', err);
+                console.error("An unknown error occurred:", err);
             }
         }
-    };
-
-    const memoizedFetchProducts = useMemo(() => fetchProducts, [ fetchProducts]);
+    }, [sellerName, token]);
 
     useEffect(() => {
-        memoizedFetchProducts();
-    }, [refreshCount, memoizedFetchProducts]);
+        fetchProducts();
+    }, [refreshCount, fetchProducts]);
 
     const handleDeleteProduct = async (productId: string) => {
         try {
@@ -89,7 +85,7 @@ export default function SellerProducts({ sellerName, refreshCount }: SellerProdu
                 console.error("Error deleting product:", err.message);
                 alert("Error deleting product.");
             } else {
-                console.error('An unknown error occurred:', err);
+                console.error("An unknown error occurred:", err);
             }
         }
     };
@@ -153,5 +149,5 @@ export default function SellerProducts({ sellerName, refreshCount }: SellerProdu
                 <EditProduct product={editProduct} onClose={handleCloseEditPopup} />
             )}
         </div>
-    );
+    );
 }
