@@ -145,5 +145,7 @@ Make sure you have Docker and Docker Compose installed and set up.
 
 ### See deployed site!
 
+https://e-commerce-application-puce.vercel.app/
+
 
 
